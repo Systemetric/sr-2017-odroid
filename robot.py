@@ -9,7 +9,14 @@ class Test(Robot):
         print('Start Hobo init')
         super(Test, self).__init__()
         print('Robot initialised')
-        self.forwards(2)
+        self.turn(360)
+        time.sleep(2)
+        self.turn(270)
+        time.sleep(2)
+        self.turn(180)
+        time.sleep(2)
+        self.turn(90)
+        time.sleep(2)
 
     
     def find_markers(self, minimum=1, max_loop=10):
@@ -33,7 +40,17 @@ class Test(Robot):
         print "Slept"
         self.motors[0].m0.power = 0
         self.motors[0].m1.power = 0
-
+        
+    def turn(degrees, power=50, ratio=-1.05, sleep_360=2.4):
+        #2.4 seconds to do approxamately 360 degrees, 50 speed.      
+        self.motors[0].m0.power = power*-ratio
+        self.motors[0].m1.power = power
+        time.sleep(sleep_360*360/degrees)
+        self.motors[0].m0.power = 0
+        self.motors[0].m1.power = 0
+        
+        
+        
         
 if __name__ == "__main__":
     Test()
