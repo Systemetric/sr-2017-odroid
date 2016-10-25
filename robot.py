@@ -9,14 +9,7 @@ class Test(Robot):
         print('Start Hobo init')
         super(Test, self).__init__()
         print('Robot initialised')
-        self.turn(360)
-        time.sleep(2)
-        self.turn(270)
-        time.sleep(2)
-        self.turn(180)
-        time.sleep(2)
-        self.turn(90)
-        time.sleep(2)
+        self.turn(360*10)
 
     
     def find_markers(self, minimum=1, max_loop=10):
