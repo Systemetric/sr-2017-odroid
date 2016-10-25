@@ -23,11 +23,11 @@ class Test(Robot):
                 raise MarkerNotFoundError("Marker (minimum {}) not found after {} loops".format(minimum, max_loop))
         return markers
         
-    def forwards(self, distance, speed=0.1, ratio=-1, speed_power = 50):        
+    def forwards(self, distance, speed=0.1, ratio=-1, speed_power = 500):        
         power = speed * speed_power
         self.motors[0].m0.power = power*ratio
         self.motors[0].m1.power = power
-        sleep_time = distance / speed
+        sleep_time = distance / power
         print(sleep_time, power)
         time.sleep(sleep_time)
         self.motors[0].m0.power = 0
