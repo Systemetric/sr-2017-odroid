@@ -28,8 +28,9 @@ class Test(Robot):
         self.motors[0].m0.power = power*ratio
         self.motors[0].m1.power = power
         sleep_time = distance / speed
-        print(sleep_time, power)
+        print sleep_time, power
         time.sleep(sleep_time)
+        print "Slept"
         self.motors[0].m0.power = 0
         self.motors[0].m1.power = 0
 
