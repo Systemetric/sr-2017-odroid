@@ -9,7 +9,7 @@ class Test(Robot):
         print('Start Hobo init')
         super(Test, self).__init__()
         print('Robot initialised')
-        self.forwards(1)
+        self.forwards(2)
 
     
     def find_markers(self, minimum=1, max_loop=10):
