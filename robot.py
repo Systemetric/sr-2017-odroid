@@ -9,8 +9,10 @@ class Test(Robot):
         print('Start Hobo init')
         super(Test, self).__init__()
         print('Robot initialised')
-        self.turn(360*10)
-
+        while 1:
+            marker = self.find_markers()[0]
+            print "rot_x", marker.orientation.rot_x, "rot_y", marker.orientation.rot_y, "rot_z", marker.orientation.rot_z
+            print "pol_rot_x", marker.centre.polar.rot_x, "pol_rot_z", marker.centre.polar.rot_y
     
     def find_markers(self, minimum=1, max_loop=10):
         cur = 0
