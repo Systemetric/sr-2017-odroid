@@ -34,7 +34,7 @@ class Test(Robot):
         self.motors[0].m0.power = 0
         self.motors[0].m1.power = 0
         
-    def turn(self, degrees, power=50, ratio=-1, sleep_360=2.15):
+    def turn(self, degrees, power=50, ratio=-1, sleep_360=2.14):
         #2.4 seconds to do approxamately 360 degrees, 50 speed.      
         self.motors[0].m0.power = power*-ratio
         self.motors[0].m1.power = power
