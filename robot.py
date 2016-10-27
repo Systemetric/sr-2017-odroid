@@ -29,9 +29,9 @@ class Test(Robot):#Object
     def goTo(self, marker):
         lengthOne = float
         turnThree = float
-        turnOne = marker.centre.polar.rot_y
+        turnOne = marker.centre.polar.rot_y #Turns the robot to face the marker
         print('Turn one', turnOne)
-        if marker.orientation.rot_y < 0:
+        if marker.orientation.rot_y < 0:#Turns the robot left or right to be perpendicular to the marker
             turnTwo = (90 - math.fabs(marker.orientation.rot_y))
             print('Turn right', turnTwo)
         else:
@@ -40,9 +40,9 @@ class Test(Robot):#Object
         print('Turn two', turnTwo)
         lengthOne = marker.dist
         print('Length from marker', marker.dist)
-        lengthTwo = (lengthOne) * math.sin(math.radians(marker.orientation.rot_y))
+        lengthTwo = (lengthOne) * math.sin(math.radians(marker.orientation.rot_y))#Works out the length to travel to be perpendicualr to the marker
         print('Length two', lengthTwo)
-        if  marker.centre.polar.rot_y < 0:
+        if  marker.centre.polar.rot_y < 0:#Turns lefts or right depending on which side the marker is
             turnThree = -90
             print('Left turn', turnThree)
         else:
@@ -63,7 +63,7 @@ class Test(Robot):#Object
             print('Looking for markers')
             self.turn(30)
             time.sleep(0.5)
-        if markers[0].dist > 1:
+        if markers[0].dist > 1:#Moves forward so the robot is 1m away from the marker
             lengthOne = markers[0].dist - 1
             print('New length from marker', markers[0].dist)
             self.forwards(lengthOne)
