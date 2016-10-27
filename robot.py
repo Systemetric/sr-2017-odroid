@@ -30,28 +30,27 @@ class Test(Robot):#Object
         lengthOne = float
         turnThree = float
         print('Markers', marker)
-        turnOne = self.turn(marker.centre.polar.rot_x)
-        turnTwo = ((90 - marker.orientation.rot_y))
+        turnOne = marker.centre.polar.rot_y
+        turnTwo = ((90 - math.fabs(marker.orientation.rot_y)))
         print('Turn one', turnOne)
         lengthOne = marker.dist
         print('Length from marker', marker.dist)
         lengthTwo = (lengthOne / math.sin(math.radians(90))) * (math.sin(math.radians(marker.orientation.rot_y)))
         print('Length two', lengthTwo)
-        if  marker.orientation.rot_y < 0:
+        if  marker.centre.polar.rot_y < 0:
             turnThree = 90
             print(turnThree)
         else:
-            print(turnThree)
             turnThree = -90
+            print(turnThree)
+        self.turn(turnOne)
         self.turn(turnTwo)
-        print('Turn one function:',self.turn)
         self.forwards(lengthTwo)
-        if turnOne <= 90:
-            self.turn(turnTwo)
+        self.turn(turnThree)
         markers = self.see()
         for m in markers:
             lengthOne = marker.dist
-            print('Length from marker', marker.dist)
+            print('New length from marker', marker.dist)
         self.forwards(lengthOne)
         
     
