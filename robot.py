@@ -32,7 +32,7 @@ class Test(Robot):#Object
         turnOne = marker.centre.polar.rot_y
         print('Turn one', turnOne)
         if marker.orientation.rot_y < 0:
-            turnTwo = -(90 - math.fabs(marker.orientation.rot_y))
+            turnTwo = (90 - math.fabs(marker.orientation.rot_y))
             print('Turn right', turnTwo)
         else:
             turnTwo = (90 - marker.orientation.rot_y)
@@ -59,6 +59,10 @@ class Test(Robot):#Object
         time.sleep(2)
         markers = self.see()
         print('Looking for marker')
+        while markers.count == 0:
+            print('Looking for markers')
+            self.turn(30)
+            time.sleep(0.5)
         if markers[0].dist > 1:
             lengthOne = markers[0].dist - 1
             print('New length from marker', markers[0].dist)
