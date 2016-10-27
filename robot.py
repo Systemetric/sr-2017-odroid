@@ -3,7 +3,7 @@
 
 from sr.robot import *
 import time
-from math import *
+import math
 
 class MarkerNotFoundError(Exception): pass
 
@@ -13,15 +13,19 @@ class Test(Robot):#Object
         print('Start Hobo init')
         super(Test, self).__init__()
         print('Robot initialised')
+        while True:
+            marker = self.find_markers(max_loop=20)[0]
+            if marker > 0:
+                self.goTo(marker)
         #while 1:
             #marker = self.find_markers(max_loop=10000)[0]
             #print "rot_x", marker.orientation.rot_x, "rot_y", marker.orientation.rot_y, "rot_z", marker.orientation.rot_z# marker rotation
             #print "pol_rot_x", marker.centre.polar.rot_x, "pol_rot_z", marker.centre.polar.rot_y#Marker rotation from robot
             
-    def goTo(self):
+    def goTo(self, marker):
         markers = []
         lengthOne = float
-        self.find_markers(markers)
+        marker = self.find_markers(max_loop=10000)[0]
         print('Markers', markers)
         turnOne = 180 - (marker.oreientation.rot_y + marker.centre.polar.rot_y)
         for m in markers:
