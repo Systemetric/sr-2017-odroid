@@ -54,7 +54,7 @@ class Test(Robot):#Object
     
 
         
-#if __name__ == "__main__":
-Test()
+if __name__ == "__main__":
+    Test()
 
 
