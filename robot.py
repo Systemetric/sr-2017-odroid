@@ -34,7 +34,7 @@ class Test(Robot):#Object
         turnTwo = 90
         self.turn((turnOne / 2))
         print('Turn one functiond:',self.turn)
-        self.forwards(((-1) *(lengthTwo))
+        self.forwards(((-1)) *(lengthTwo))
         self.turn(turnTwo)
         markers = self.see()
         for m in markers:
