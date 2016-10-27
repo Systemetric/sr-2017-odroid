@@ -35,7 +35,7 @@ class Test(Robot):#Object
         print('Turn one', turnOne)
         lengthOne = marker.dist
         print('Length from marker', marker.dist)
-        lengthTwo = (lengthOne) * (math.sin(math.radians(marker.orientation.rot_y)))
+        lengthTwo = (lengthOne) * math.fabs((math.sin(math.radians(marker.orientation.rot_y))))
         print('Length two', lengthTwo)
         if  marker.centre.polar.rot_y < 0:
             turnThree = -90
