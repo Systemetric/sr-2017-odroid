@@ -26,11 +26,14 @@ class Test(Robot):#Object
         lengthOne = float
         print('Markers', marker)
         turnOne = 180 - (marker.orientation.rot_y + marker.centre.polar.rot_y)
+        print('Turn one', turnOne)
         lengthOne = marker.dist
         print('Length from marker', marker.dist)
         lengthTwo = (lengthOne / math.sin(math.radians(90))) * (math.sin(math.radians(marker.orientation.rot_y)))
+        print('Length two', lengthTwo)
         turnTwo = 90
         self.turn(turnOne)
+        print('Turn one functiond:',self.turn)
         self.forwards(lengthTwo)
         self.turn(turnTwo)
         markers = self.see()
