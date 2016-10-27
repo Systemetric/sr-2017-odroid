@@ -26,17 +26,17 @@ class Test(Robot):#Object
     def goTo(self, marker):
         lengthOne = float
         print('Markers', marker)
-        turnOne = 180 - (marker.orientation.rot_y + marker.centre.polar.rot_y)
+        turnOne = (180 - (marker.orientation.rot_y + marker.centre.polar.rot_y) / 2)
         print('Turn one', turnOne)
         lengthOne = marker.dist
         print('Length from marker', marker.dist)
         lengthTwo = (lengthOne / math.sin(math.radians(90))) * (math.sin(math.radians(marker.orientation.rot_y)))
         print('Length two', lengthTwo)
         turnTwo = 270
-        self.turn((turnOne / 2))
+        self.turn(turnOne)
         print('Turn one function:',self.turn)
         self.forwards(math.fabs(lengthTwo))
-        if turnOne > 0:
+        if turnOne <= 90:
             self.turn(turnTwo)
         markers = self.see()
         for m in markers:
