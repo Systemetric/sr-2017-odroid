@@ -29,10 +29,10 @@ class Test(Robot):#Object
     def goTo(self, marker):
         lengthOne = float
         turnThree = float
-        print('Markers', marker)
         turnOne = marker.centre.polar.rot_y
-        turnTwo = ((90 - math.fabs(marker.orientation.rot_y)))
         print('Turn one', turnOne)
+        turnTwo = ((90 - math.fabs(marker.orientation.rot_y)))
+        print('Turn two', turnTwo)
         lengthOne = marker.dist
         print('Length from marker', marker.dist)
         lengthTwo = (lengthOne) * math.sin(math.radians(marker.orientation.rot_y))
@@ -44,7 +44,6 @@ class Test(Robot):#Object
             turnTwo= -(turnTwo)
             turnThree = 90
             print('Right turn', turnThree)
-            
         self.turn(turnOne)
         time.sleep(2)
         self.turn(turnTwo)
@@ -61,6 +60,7 @@ class Test(Robot):#Object
             self.forwards(lengthOne)
         markers = self.see()
         while markers.count == 0:
+            print('Looking for markers')
             self.turn(30)
             time.sleep(0.5) 
         print('Marker rotation', markers[0].centre.polar.rot_y)
@@ -87,7 +87,7 @@ class Test(Robot):#Object
         distance = math.fabs(distance)
         power = speed * speed_power
         sleep_time = distance / speed
-        print "D", distance, "ST",sleep_time, "P", power, "PR", power*ratio 
+        print "Distance", distance, "ST",sleep_time, "P", power, "PR", power*ratio 
         self.motors[0].m0.power = power*ratio
         self.motors[0].m1.power = power
         time.sleep(sleep_time)
