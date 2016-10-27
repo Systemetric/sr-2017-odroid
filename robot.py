@@ -21,13 +21,13 @@ class Test(Robot):#Object
     def goTo(self):
         markers = []
         lengthOne = float
-        self.findMarkers(markers)
+        self.find_markers(markers)
         print('Markers', markers)
         turnOne = 180 - (marker.oreientation.rot_y + marker.centre.polar.rot_y)
         for m in markers:
             lengthOne = m.dist
             print('Length from marker', m.dist)
-        lengthTwo = (lengthOne / math.degrees(math.sin(90))) * math.degrees((math.sin(marker.oreientation.rot_y)))
+        lengthTwo = (lengthOne / math.sin(math.radians(90))) * (math.sin(math.radians(marker.oreientation.rot_y)))
         turnTwo = 90
         self.turn(turnOne)
         self.forwards(lengthTwo)
