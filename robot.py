@@ -42,6 +42,7 @@ class Test(Robot):#Object
             print('Right turn', turnThree)
         else:
             turnThree = -90
+            turnTwo= -(turnTwo)
             print('Left turn', turnThree)
         self.turn(turnOne)
         time.sleep(5)
