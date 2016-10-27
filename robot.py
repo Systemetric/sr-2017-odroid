@@ -54,13 +54,15 @@ class Test(Robot):#Object
         self.turn(turnThree)
         time.sleep(2)
         markers = self.see()
+        print('Looking for marker')
         for m in markers:
             if m.dist > 1:
                 lengthOne = marker.dist - 1
                 print('New length from marker', marker.dist)
-        self.forwards(lengthOne)
+                self.forwards(lengthOne)
         markers = self.see()
         for m in markers:
+            print('Marker rotation', marker.centre.polar.rot_y)
             while marker.centre.polar.rot_y != 0:
                 self.turn(marker.centre.polar.rot_y)
                 time.sleep(0.5)
