@@ -62,7 +62,7 @@ class Test(Robot):#Object
         markers = self.see()
         for m in markers:
             while marker.centre.polar.rot_y != 0:
-                self.turnmarker.centre.polar.rot_y)
+                self.turn(marker.centre.polar.rot_y)
                 time.sleep(0.5)
             lengthOne = m.dist
         self.forward(lengthOne)
