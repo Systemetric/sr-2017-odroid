@@ -6,7 +6,7 @@ import time
 
 class MarkerNotFoundError(Exception): pass
 
-class Test(Robot):
+class Test(Robot):#Object
     
     def __init__(self):
         print('Start Hobo init')
@@ -45,6 +45,13 @@ class Test(Robot):
         time.sleep(sleep_360/360*degrees)
         self.motors[0].m0.power = 0
         self.motors[0].m1.power = 0
+        
+        
+    forwards(1)
+    turn(180)
+    forwards(1)
+    
+    def goto_marker(
         
         
         
