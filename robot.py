@@ -3,6 +3,7 @@
 
 from sr.robot import *
 import time
+from math import *
 
 class MarkerNotFoundError(Exception): pass
 
@@ -12,14 +13,30 @@ class Test(Robot):#Object
         print('Start Hobo init')
         super(Test, self).__init__()
         print('Robot initialised')
-        self.forwards(1)
-        self.turn(180)
-        self.forwards(1)
-        while 1:
-            marker = self.find_markers(max_loop=10000)[0]
-            print "rot_x", marker.orientation.rot_x, "rot_y", marker.orientation.rot_y, "rot_z", marker.orientation.rot_z
-            print "pol_rot_x", marker.centre.polar.rot_x, "pol_rot_z", marker.centre.polar.rot_y
+        #while 1:
+            #marker = self.find_markers(max_loop=10000)[0]
+            #print "rot_x", marker.orientation.rot_x, "rot_y", marker.orientation.rot_y, "rot_z", marker.orientation.rot_z# marker rotation
+            #print "pol_rot_x", marker.centre.polar.rot_x, "pol_rot_z", marker.centre.polar.rot_y#Marker rotation from robot
             
+    def goTo(self):
+        markers = []
+        lengthOne = real
+        findMarkers()
+        print('Markers', markers)
+        turnOne = 180 - (marker.oreientation.rot_y + marker.centre.polar.rot_y)
+        for m in markers:
+            lengthOne = m.dist
+            print('Length from marker', m.dist)
+        lengthTwo = (lengthOne / sin(90)) * (sin(marker.oreientation.rot_y)))
+        turnTwo = 90
+        self.turn(turnOne)
+        self.forwards(lengthTwo)
+        self.turn(turnTwo)
+        markers = self.see()
+        for m in markers:
+            lengthOne = m.dist
+            print('Length from marker', m.dist)
+        self.forwards(lengthOne)
         
     
     def find_markers(self, minimum=1, max_loop=20):
