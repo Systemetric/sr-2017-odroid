@@ -12,14 +12,15 @@ class Test(Robot):#Object
         print('Start Hobo init')
         super(Test, self).__init__()
         print('Robot initialised')
+        self.forwards(1)
+        self.turn(180)
+        self.forwards(1)
         while 1:
             marker = self.find_markers(max_loop=10000)[0]
             print "rot_x", marker.orientation.rot_x, "rot_y", marker.orientation.rot_y, "rot_z", marker.orientation.rot_z
             print "pol_rot_x", marker.centre.polar.rot_x, "pol_rot_z", marker.centre.polar.rot_y
             
-        self.forwards(1)
-        self.turn(180)
-        self.forwards(1)
+        
     
     def find_markers(self, minimum=1, max_loop=20):
         cur = 0
