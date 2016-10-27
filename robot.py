@@ -14,7 +14,7 @@ class Test(Robot):#Object
         super(Test, self).__init__()
         print('Robot initialised')
         while True:
-            marker = self.find_markers(max_loop=20)[0]
+            marker = self.find_markers(max_loop=2000)[0]
             if marker > 0:
                 #self.goTo(marker)
                 print "pol_rot_x", marker.centre.polar.rot_x, "pol_rot_y", marker.centre.polar.rot_y#Marker rotation from robot
@@ -78,19 +78,15 @@ class Test(Robot):#Object
         
     def turn(self, degrees, power=50, ratio=-1, sleep_360=2.14):
         if degrees <= 0:
-            degrees = 360 - math.fabs(degrees)
-        if degrees < 25 or degrees > 335:
+            degrees = -(degrees)
+            power = -(power)
+        if degrees < 25:
             power = power / 2
             sleep_360 = sleep_360 * 2
         print "Turn",degrees, "Power", power
-        if degrees <= 180:
-            self.motors[0].m0.power = power*-ratio
-            self.motors[0].m1.power = power
-            time.sleep(sleep_360/360*degrees)
-        else:
-            self.motors[0].m0.power = -power*ratio
-            self.motors[0].m1.power = -power
-            time.sleep(sleep_360/360*(180 - degrees))
+        self.motors[0].m0.power = power*-ratio
+        self.motors[0].m1.power = power
+        time.sleep(sleep_360/360*degrees)
         
         self.motors[0].m0.power = 0
         self.motors[0].m1.power = 0
