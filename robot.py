@@ -27,7 +27,7 @@ class Test(Robot):#Object
         for m in markers:
             lengthOne = m.dist
             print('Length from marker', m.dist)
-        lengthTwo = (lengthOne / math.degrees(math.sin(90))) * math.degrees((math.sin(marker.oreientation.rot_y))))
+        lengthTwo = (lengthOne / math.degrees(math.sin(90))) * math.degrees((math.sin(marker.oreientation.rot_y)))
         turnTwo = 90
         self.turn(turnOne)
         self.forwards(lengthTwo)
