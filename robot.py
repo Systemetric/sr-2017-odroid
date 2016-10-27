@@ -24,7 +24,7 @@ class Test(Robot):#Object
             
     def goTo(self, marker):
         lengthOne = float
-        print('Markers', markers)
+        print('Markers', marker)
         turnOne = 180 - (marker.oreientation.rot_y + marker.centre.polar.rot_y)
         lengthOne = marker.dist
         print('Length from marker', marker.dist)
@@ -33,9 +33,10 @@ class Test(Robot):#Object
         self.turn(turnOne)
         self.forwards(lengthTwo)
         self.turn(turnTwo)
-        marker = self.see()
-        lengthOne = marker.dist
-        print('Length from marker', marker.dist)
+        markers = self.see()
+        for m in markers:
+            lengthOne = marker.dist
+            print('Length from marker', marker.dist)
         self.forwards(lengthOne)
         
     
