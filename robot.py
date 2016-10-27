@@ -37,15 +37,15 @@ class Test(Robot):#Object
         print('Length from marker', marker.dist)
         lengthTwo = (lengthOne / math.sin(math.radians(90))) * (math.sin(math.radians(marker.orientation.rot_y)))
         print('Length two', lengthTwo)
-        if  marker.orientation.rot_y > 0:
-            turnThree = 270
+        if  marker.orientation.rot_y < 0:
+            turnThree = 90
             print(turnThree)
         else:
             print(turnThree)
-            turnThree = 90
+            turnThree = -90
         self.turn(turnTwo)
         print('Turn one function:',self.turn)
-        self.forwards(math.fabs(lengthTwo))
+        self.forwards(lengthTwo)
         if turnOne <= 90:
             self.turn(turnTwo)
         markers = self.see()
@@ -66,7 +66,8 @@ class Test(Robot):#Object
                 raise MarkerNotFoundError("Marker (minimum {}) not found after {} loops".format(minimum, max_loop))
         return markers
         
-    def forwards(self, distance, speed=0.75, ratio=-1.05, speed_power = 77):        
+    def forwards(self, distance, speed=0.75, ratio=-1.05, speed_power = 77):  
+        distance = math.fabs(distance)
         power = speed * speed_power
         sleep_time = distance / speed
         print "D", distance, "ST",sleep_time, "P", power, "PR", power*ratio 
