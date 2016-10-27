@@ -46,12 +46,13 @@ class Test(Robot):#Object
         self.motors[0].m0.power = 0
         self.motors[0].m1.power = 0
         
-        
-        
-forwards(1)
-turn(180)
-forwards(1)
+                
+
 
         
 if __name__ == "__main__":
     Test()
+    
+    forwards(1)
+    turn(180)
+    forwards(1)    
