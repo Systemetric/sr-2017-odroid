@@ -77,7 +77,10 @@ class Test(Robot):#Object
         self.motors[0].m1.power = 0
         
     def turn(self, degrees, power=50, ratio=-1, sleep_360=2.14):
-        print "T",degrees, "P", power
+        if degrees < 25 or degrees > 335:
+            power = power / 2
+            sleep_360 = sleep_360 / 2
+        print "Turn",degrees, "Power", power
         if degrees <= 180:
             self.motors[0].m0.power = power*-ratio
             self.motors[0].m1.power = power
