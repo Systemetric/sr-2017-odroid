@@ -67,7 +67,7 @@ class Test(Robot):#Object
         self.motors[0].m1.power = 0
         
     def turn(self, degrees, power=50, ratio=-1, sleep_360=2.14):
-        if degrees <= 180:
+        if degrees >= 180:
             self.motors[0].m0.power = power*-ratio
             self.motors[0].m1.power = power
         else:
