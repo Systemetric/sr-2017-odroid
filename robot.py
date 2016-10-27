@@ -35,18 +35,22 @@ class Test(Robot):#Object
         print('Turn one', turnOne)
         lengthOne = marker.dist
         print('Length from marker', marker.dist)
-        lengthTwo = (lengthOne / math.sin(math.radians(90))) * (math.sin(math.radians(marker.orientation.rot_y)))
+        lengthTwo = (lengthOne ) * (math.sin(math.radians(marker.orientation.rot_y)))#/ math.sin(math.radians(90))
         print('Length two', lengthTwo)
         if  marker.centre.polar.rot_y < 0:
             turnThree = 90
-            print(turnThree)
+            print('Right turn', turnThree)
         else:
             turnThree = -90
-            print(turnThree)
+            print('Left turn', turnThree)
         self.turn(turnOne)
+        time.sleep(5)
         self.turn(turnTwo)
+        time.sleep(5)
         self.forwards(lengthTwo)
+        time.sleep(5)
         self.turn(turnThree)
+        time.sleep(5)
         markers = self.see()
         for m in markers:
             lengthOne = marker.dist
