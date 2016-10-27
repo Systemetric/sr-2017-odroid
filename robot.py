@@ -48,13 +48,13 @@ class Test(Robot):#Object
         
         
     
-    def goto_marker(
+    def goto_marker()
         
-while x >= 1:
+        
     forwards(1)
     turn(180)
     forwards(1)
-    x +=1
+
         
-#if __name__ == "__main__":
-#    Test()
+if __name__ == "__main__":
+    Test()
