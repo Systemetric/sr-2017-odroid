@@ -31,12 +31,13 @@ class Test(Robot):#Object
         turnThree = float
         turnOne = marker.centre.polar.rot_y
         print('Turn one', turnOne)
-        if marker.orientation.rot_y < 0:
-            turnTwo = (90 - math.fabs(marker.orientation.rot_y))
-            print('Turn right', turnTwo)
-        else:
-            turnTwo = (90 - marker.orientation.rot_y)
-            print('Turn left', turnTwo)
+        turnTwo = (90 - math.fabs(marker.orientation.rot_y))
+        #if marker.orientation.rot_y < 0:
+         #   turnTwo = (90 - math.fabs(marker.orientation.rot_y))
+          #  print('Turn right', turnTwo)
+        #else:
+         #   turnTwo = (90 - marker.orientation.rot_y)
+          #  print('Turn left', turnTwo)
         print('Turn two', turnTwo)
         lengthOne = marker.dist
         print('Length from marker', marker.dist)
