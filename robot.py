@@ -38,12 +38,13 @@ class Test(Robot):#Object
         lengthTwo = (lengthOne ) * (math.sin(math.radians(marker.orientation.rot_y)))#/ math.sin(math.radians(90))
         print('Length two', lengthTwo)
         if  marker.centre.polar.rot_y < 0:
+            turnThree = -90
+            print('Left turn', turnThree)
+        else:
+            turnTwo= -(turnTwo)
             turnThree = 90
             print('Right turn', turnThree)
-        else:
-            turnThree = -90
-            turnTwo= -(turnTwo)
-            print('Left turn', turnThree)
+            
         self.turn(turnOne)
         time.sleep(5)
         self.turn(turnTwo)
