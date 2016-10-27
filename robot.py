@@ -33,10 +33,10 @@ class Test(Robot):#Object
         print('Turn one', turnOne)
         if marker.orientation.rot_y < 0:
             turnTwo = -(90 - math.fabs(marker.orientation.rot_y))
-            print('Turn left', turnTwo)
+            print('Turn right', turnTwo)
         else:
             turnTwo = (90 - marker.orientation.rot_y)
-            print('Turn right', turnTwo)
+            print('Turn left', turnTwo)
         print('Turn two', turnTwo)
         lengthOne = marker.dist
         print('Length from marker', marker.dist)
@@ -47,7 +47,7 @@ class Test(Robot):#Object
             print('Left turn', turnThree)
         else:
             turnTwo= -(turnTwo)
-            turnThree = -90
+            turnThree = 90
             print('Right turn', turnThree)
         self.turn(turnOne)
         time.sleep(2)
