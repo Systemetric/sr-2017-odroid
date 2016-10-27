@@ -17,26 +17,33 @@ class Test(Robot):#Object
             marker = self.find_markers(max_loop=20)[0]
             if marker > 0:
                 #self.goTo(marker)
-                print "pol_rot_x", marker.centre.polar.rot_x, "pol_rot_z", marker.centre.polar.rot_y#Marker rotation from robot
-                self.turn(marker.centre.polar.rot_x)
+                print "pol_rot_x", marker.centre.polar.rot_x, "pol_rot_y", marker.centre.polar.rot_y#Marker rotation from robot
+                self.turn(marker.centre.polar.rot_y)
                 time.sleep(5)
                 
         #while 1:
             #marker = self.find_markers(max_loop=10000)[0]
-            #print "rot_x", marker.orientation.rot_x, "rot_y", marker.orientation.rot_y, "rot_z", marker.orientation.rot_z# marker rotation
+            #print "rot_x", marker.orientation.rot_x, "rot_y", marker.orientation.rot_y, "rot_y", marker.orientation.rot_z# marker rotation
             #print "pol_rot_x", marker.centre.polar.rot_x, "pol_rot_z", marker.centre.polar.rot_y#Marker rotation from robot
             
     def goTo(self, marker):
         lengthOne = float
+        turnThree = float
         print('Markers', marker)
-        turnOne = ((90 - marker.orientation.rot_y) + marker.centre.polar.rot_y)
+        turnOne = self.turn(marker.centre.polar.rot_x)
+        turnTwo = ((90 - marker.orientation.rot_y))
         print('Turn one', turnOne)
         lengthOne = marker.dist
         print('Length from marker', marker.dist)
         lengthTwo = (lengthOne / math.sin(math.radians(90))) * (math.sin(math.radians(marker.orientation.rot_y)))
         print('Length two', lengthTwo)
-        turnTwo = 270
-        self.turn(turnOne)
+        if  marker.orientation.rot_y > 0:
+            turnThree = 270
+            print(turnThree)
+        else:
+            print(turnThree)
+            turnThree = 90
+        self.turn(turnTwo)
         print('Turn one function:',self.turn)
         self.forwards(math.fabs(lengthTwo))
         if turnOne <= 90:
