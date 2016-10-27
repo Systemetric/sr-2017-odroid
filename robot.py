@@ -65,7 +65,7 @@ class Test(Robot):#Object
                 self.turn(marker.centre.polar.rot_y)
                 time.sleep(0.5)
             lengthOne = m.dist
-        self.forward(lengthOne)
+        self.forwards(lengthOne)
     
     def find_markers(self, minimum=1, max_loop=20):
         cur = 0
