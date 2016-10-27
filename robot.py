@@ -26,7 +26,7 @@ class Test(Robot):#Object
     def goTo(self, marker):
         lengthOne = float
         print('Markers', marker)
-        turnOne = (180 - (marker.orientation.rot_y + marker.centre.polar.rot_y) / 2)
+        turnOne = ((90 - marker.orientation.rot_y) + marker.centre.polar.rot_y) )
         print('Turn one', turnOne)
         lengthOne = marker.dist
         print('Length from marker', marker.dist)
