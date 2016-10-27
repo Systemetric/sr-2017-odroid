@@ -59,16 +59,16 @@ class Test(Robot):#Object
         
     def forwards(self, distance, speed=0.75, ratio=-1.05, speed_power = 77):        
         power = speed * speed_power
-        self.motors[0].m0.power = power*ratio
-        self.motors[0].m1.power = power
         sleep_time = distance / speed
         print "ST",sleep_time, "P", power, "PR", power*ratio
+        self.motors[0].m0.power = power*ratio
+        self.motors[0].m1.power = power
         time.sleep(sleep_time)
-        print "Slept"
         self.motors[0].m0.power = 0
         self.motors[0].m1.power = 0
         
     def turn(self, degrees, power=50, ratio=-1, sleep_360=2.14):
+        print "D",degrees, "P", power
         if degrees <= 180:
             self.motors[0].m0.power = power*-ratio
             self.motors[0].m1.power = power
