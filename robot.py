@@ -48,9 +48,9 @@ class Test(Robot):#Object
         
         
         
-    forwards(1)
-    turn(180)
-    forwards(1)
+forwards(1)
+turn(180)
+forwards(1)
 
         
 if __name__ == "__main__":
