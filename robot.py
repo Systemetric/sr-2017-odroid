@@ -17,7 +17,9 @@ class Test(Robot):#Object
             marker = self.find_markers(max_loop=20)[0]
             if marker > 0:
                 #self.goTo(marker)
-                self.turn(marker)
+                print "pol_rot_x", marker.centre.polar.rot_x, "pol_rot_z", marker.centre.polar.rot_y#Marker rotation from robot
+                self.turn(marker.centre.polar.rot_x)
+                time.sleep(5)
                 
         #while 1:
             #marker = self.find_markers(max_loop=10000)[0]
@@ -60,7 +62,7 @@ class Test(Robot):#Object
     def forwards(self, distance, speed=0.75, ratio=-1.05, speed_power = 77):        
         power = speed * speed_power
         sleep_time = distance / speed
-        print "ST",sleep_time, "P", power, "PR", power*ratio
+        print "D", distance, "ST",sleep_time, "P", power, "PR", power*ratio 
         self.motors[0].m0.power = power*ratio
         self.motors[0].m1.power = power
         time.sleep(sleep_time)
@@ -68,7 +70,7 @@ class Test(Robot):#Object
         self.motors[0].m1.power = 0
         
     def turn(self, degrees, power=50, ratio=-1, sleep_360=2.14):
-        print "D",degrees, "P", power
+        print "T",degrees, "P", power
         if degrees <= 180:
             self.motors[0].m0.power = power*-ratio
             self.motors[0].m1.power = power
