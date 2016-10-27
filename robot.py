@@ -55,19 +55,19 @@ class Test(Robot):#Object
         time.sleep(2)
         markers = self.see()
         print('Looking for marker')
-        for m in markers:
-            if m.dist > 1:
-                lengthOne = marker.dist - 1
-                print('New length from marker', marker.dist)
-                self.forwards(lengthOne)
+        if markers[0].dist > 1:
+            lengthOne = markers[0].dist - 1
+            print('New length from marker', markers[0].dist)
+            self.forwards(lengthOne)
         markers = self.see()
-        for m in markers:
-            print('Marker rotation', marker.centre.polar.rot_y)
-            while marker.centre.polar.rot_y != 0:
-                self.turn(marker.centre.polar.rot_y)
-                time.sleep(0.5)
-            lengthOne = m.dist
+        print('Marker rotation', markers[0].centre.polar.rot_y)
+        while markers[0].centre.polar.rot_y != 0:
+            print('Not centered')
+            self.turn(markers[0].centre.polar.rot_y)
+            time.sleep(0.5)
+        lengthOne = markers[0].dist
         self.forwards(lengthOne)
+        return
     
     def find_markers(self, minimum=1, max_loop=20):
         cur = 0
