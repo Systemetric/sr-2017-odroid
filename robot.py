@@ -90,7 +90,7 @@ class Test(Robot):#Object
         else:
             self.motors[0].m0.power = -power*ratio
             self.motors[0].m1.power = -power
-            time.sleep(sleep_360/360*(180 - degrees)
+            time.sleep(sleep_360/360*(180 - degrees))
         
         self.motors[0].m0.power = 0
         self.motors[0].m1.power = 0
