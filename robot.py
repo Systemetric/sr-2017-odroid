@@ -47,9 +47,6 @@ class Test(Robot):#Object
         self.motors[0].m1.power = 0
         
         
-    
-    def goto_marker()
-        
         
     forwards(1)
     turn(180)
