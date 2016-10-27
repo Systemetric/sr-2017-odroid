@@ -31,7 +31,7 @@ class Test(Robot):#Object
         turnThree = float
         turnOne = marker.centre.polar.rot_y
         print('Turn one', turnOne)
-        if marker.orientation.rot_y > 0:
+        if marker.orientation.rot_y < 0:
             turnTwo = (90 - marker.orientation.rot_y)
         else:
             turnTwo = -(90 - math.fabs(marker.orientation.rot_y))
