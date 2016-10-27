@@ -16,8 +16,9 @@ class Test(Robot):#Object
         while True:
             marker = self.find_markers(max_loop=20)[0]
             if marker > 0:
-                self.goTo(marker)
-            
+                #self.goTo(marker)
+                self.turn(marker)
+                
         #while 1:
             #marker = self.find_markers(max_loop=10000)[0]
             #print "rot_x", marker.orientation.rot_x, "rot_y", marker.orientation.rot_y, "rot_z", marker.orientation.rot_z# marker rotation
@@ -71,11 +72,12 @@ class Test(Robot):#Object
         if degrees <= 180:
             self.motors[0].m0.power = power*-ratio
             self.motors[0].m1.power = power
+            time.sleep(sleep_360/360*degrees)
         else:
             self.motors[0].m0.power = -power*ratio
             self.motors[0].m1.power = -power
+            time.sleep(sleep_360/(360-degrees)*360)
         
-        time.sleep(sleep_360/360*degrees)
         self.motors[0].m0.power = 0
         self.motors[0].m1.power = 0
         
