@@ -47,14 +47,13 @@ class Test(Robot):#Object
         self.motors[0].m1.power = 0
         
         
-    forwards(1)
-    turn(180)
-    forwards(1)
     
     def goto_marker(
         
         
+forwards(1)
+turn(180)
+forwards(1)        
         
-        
-if __name__ == "__main__":
-    Test()
+#if __name__ == "__main__":
+#    Test()
