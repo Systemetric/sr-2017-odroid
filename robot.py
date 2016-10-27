@@ -16,8 +16,8 @@ class Test(Robot):#Object
         while True:
             marker = self.find_markers(max_loop=20)[0]
             if marker > 0:
-                #self.goTo(marker)
-                self.forwards(-0.5)
+                self.goTo(marker)
+            
         #while 1:
             #marker = self.find_markers(max_loop=10000)[0]
             #print "rot_x", marker.orientation.rot_x, "rot_y", marker.orientation.rot_y, "rot_z", marker.orientation.rot_z# marker rotation
@@ -34,8 +34,8 @@ class Test(Robot):#Object
         print('Length two', lengthTwo)
         turnTwo = 90
         self.turn((turnOne / 2))
-        print('Turn one functiond:',self.turn)
-        self.forwards(((-1)) *(lengthTwo))
+        print('Turn one function:',self.turn)
+        self.forwards(math.fabs(lengthTwo))
         self.turn(turnTwo)
         markers = self.see()
         for m in markers:
