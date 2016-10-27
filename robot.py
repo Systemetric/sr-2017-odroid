@@ -20,8 +20,8 @@ class Test(Robot):#Object
             
     def goTo(self):
         markers = []
-        lengthOne = real
-        findMarkers()
+        lengthOne = float
+        self.findMarkers(markers)
         print('Markers', markers)
         turnOne = 180 - (marker.oreientation.rot_y + marker.centre.polar.rot_y)
         for m in markers:
