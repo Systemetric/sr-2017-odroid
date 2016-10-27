@@ -25,7 +25,6 @@ class Test(Robot):#Object
     def goTo(self, marker):
         markers = []
         lengthOne = float
-        marker = self.find_markers(max_loop=10000)[0]
         print('Markers', markers)
         turnOne = 180 - (marker.oreientation.rot_y + marker.centre.polar.rot_y)
         for m in markers:
