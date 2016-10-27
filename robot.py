@@ -18,7 +18,7 @@ class Test(Robot):#Object
             if marker > 0:
                 #self.goTo(marker)
                 print "pol_rot_x", marker.centre.polar.rot_x, "pol_rot_y", marker.centre.polar.rot_y#Marker rotation from robot
-                self.turn(marker.centre.polar.rot_y)
+                self.goTo(marker)
                 time.sleep(5)
                 
         #while 1:
