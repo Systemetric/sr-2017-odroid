@@ -17,7 +17,7 @@ class Test(Robot):#Object
             marker = self.find_markers(max_loop=20)[0]
             if marker > 0:
                 #self.goTo(marker)
-                self.forwards(0.5)
+                self.forwards(-0.5)
         #while 1:
             #marker = self.find_markers(max_loop=10000)[0]
             #print "rot_x", marker.orientation.rot_x, "rot_y", marker.orientation.rot_y, "rot_z", marker.orientation.rot_z# marker rotation
