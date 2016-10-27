@@ -35,7 +35,7 @@ class Test(Robot):#Object
         print('Turn one', turnOne)
         lengthOne = marker.dist
         print('Length from marker', marker.dist)
-        lengthTwo = (lengthOne ) * (math.sin(math.radians(marker.orientation.rot_y)))#/ math.sin(math.radians(90))
+        lengthTwo = (lengthOne) * (math.sin(math.radians(marker.orientation.rot_y)))
         print('Length two', lengthTwo)
         if  marker.centre.polar.rot_y < 0:
             turnThree = -90
@@ -46,19 +46,26 @@ class Test(Robot):#Object
             print('Right turn', turnThree)
             
         self.turn(turnOne)
-        time.sleep(5)
+        time.sleep(2)
         self.turn(turnTwo)
-        time.sleep(5)
+        time.sleep(2)
         self.forwards(lengthTwo)
-        time.sleep(5)
+        time.sleep(2)
         self.turn(turnThree)
-        time.sleep(5)
+        time.sleep(2)
         markers = self.see()
         for m in markers:
-            lengthOne = marker.dist
-            print('New length from marker', marker.dist)
+            if m.dist > 1:
+                lengthOne = marker.dist - 1
+                print('New length from marker', marker.dist)
         self.forwards(lengthOne)
-        
+        markers = self.see()
+        for m in markers:
+            while marker.centre.polar.rot_y != 0:
+                self.turnmarker.centre.polar.rot_y)
+                time.sleep(0.5)
+            lengthOne = m.dist
+        self.forward(lengthOne)
     
     def find_markers(self, minimum=1, max_loop=20):
         cur = 0
