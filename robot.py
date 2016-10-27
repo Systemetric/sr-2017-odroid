@@ -61,6 +61,9 @@ class Test(Robot):#Object
             self.forwards(lengthOne)
         markers = self.see()
         print('Marker rotation', markers[0].centre.polar.rot_y)
+        while markers.count == 0:
+            self.turn(30)
+            time.sleep(0.5)  
         while markers[0].centre.polar.rot_y != 0:
             print('Not centered')
             self.turn(markers[0].centre.polar.rot_y)
