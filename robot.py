@@ -69,12 +69,15 @@ class Test(Robot):#Object
         """
         cur = 0
         markers = []
+        # While the amount of markers found is less than the minimum required:
         while len(markers) < minimum:
             cur += 1
-            print("Searching for markers...")
-            markers = self.see()
+            # If maximum tries is hit, give up.
             if cur == max_loop:
                 raise MarkerNotFoundError("Marker (minimum {}) not found after {} loops".format(minimum, max_loop))
+            # Search for markers
+            print("Searching for markers...")
+            markers = self.see()
         return markers
         
     def forwards(self, distance, speed=0.75, ratio=-1.05, speed_power = 77):
