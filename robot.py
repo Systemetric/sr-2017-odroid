@@ -50,10 +50,11 @@ class Test(Robot):#Object
     
     def goto_marker(
         
-        
-forwards(1)
-turn(180)
-forwards(1)        
+while x >= 1:
+    forwards(1)
+    turn(180)
+    forwards(1)
+    x +=1
         
 #if __name__ == "__main__":
 #    Test()
