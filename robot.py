@@ -36,7 +36,8 @@ class Test(Robot):#Object
         self.turn((turnOne / 2))
         print('Turn one function:',self.turn)
         self.forwards(math.fabs(lengthTwo))
-        self.turn(turnTwo)
+        if turnOne > 0:
+            self.turn(turnTwo)
         markers = self.see()
         for m in markers:
             lengthOne = marker.dist
