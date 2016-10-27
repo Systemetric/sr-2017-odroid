@@ -52,8 +52,7 @@ class Test(Robot):#Object
         
 #if __name__ == "__main__":
 #    Test()
-while x < 1:
-    forwards(1)
-    turn(180)
-    forwards(1)
-    x += 1
+
+forwards(1)
+turn(180)
+forwards(1)
