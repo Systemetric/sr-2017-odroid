@@ -5,7 +5,11 @@ from sr.robot import *
 import time
 import math
 
-class MarkerNotFoundError(Exception): pass
+class MarkerNotFoundError(Exception):
+    """
+    This exception should always be handled.
+    """
+    pass
 
 class Test(Robot):#Object
     """
@@ -15,8 +19,13 @@ class Test(Robot):#Object
     """
     def __init__(self):
         print('Start Hobo init')
+        # Initialise the motors and powerboard
+        # We're inheriting from sr.robot.Robot so any documentation with robot.*
+        # Should instead be written as self.*
         super(Test, self).__init__()
+        # Completed initialisation
         print('Robot initialised')
+        # Test functionality currently being worked on
         while True:
             marker = self.find_markers(max_loop=20)[0]
             if marker > 0:
@@ -31,8 +40,8 @@ class Test(Robot):#Object
         """
         Go to the given marker
         """
-        lengthOne = float
-        print('Markers', marker)
+        lengthOne = 1.0
+        print('Marker:', marker)
         turnOne = 180 - (marker.orientation.rot_y + marker.centre.polar.rot_y)
         print('Turn one', turnOne)
         lengthOne = marker.dist
