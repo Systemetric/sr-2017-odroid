@@ -32,7 +32,7 @@ class Test(Robot):#Object
         lengthTwo = (lengthOne / math.sin(math.radians(90))) * (math.sin(math.radians(marker.orientation.rot_y)))
         print('Length two', lengthTwo)
         turnTwo = 90
-        self.turn(turnOne)
+        self.turn((turnOne / 2))
         print('Turn one functiond:',self.turn)
         self.forwards(lengthTwo)
         self.turn(turnTwo)
