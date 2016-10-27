@@ -23,22 +23,19 @@ class Test(Robot):#Object
             #print "pol_rot_x", marker.centre.polar.rot_x, "pol_rot_z", marker.centre.polar.rot_y#Marker rotation from robot
             
     def goTo(self, marker):
-        markers = []
         lengthOne = float
         print('Markers', markers)
         turnOne = 180 - (marker.oreientation.rot_y + marker.centre.polar.rot_y)
-        for m in markers:
-            lengthOne = m.dist
-            print('Length from marker', m.dist)
+        lengthOne = marker.dist
+        print('Length from marker', marker.dist)
         lengthTwo = (lengthOne / math.sin(math.radians(90))) * (math.sin(math.radians(marker.oreientation.rot_y)))
         turnTwo = 90
         self.turn(turnOne)
         self.forwards(lengthTwo)
         self.turn(turnTwo)
-        markers = self.see()
-        for m in markers:
-            lengthOne = m.dist
-            print('Length from marker', m.dist)
+        marker = self.see()
+        lengthOne = marker.dist
+        print('Length from marker', marker.dist)
         self.forwards(lengthOne)
         
     
