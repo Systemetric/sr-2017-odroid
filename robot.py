@@ -32,7 +32,7 @@ class Test(Robot):#Object
         turnOne = marker.centre.polar.rot_y #Turns the robot to face the marker
         print('Turn one', turnOne)
         if marker.orientation.rot_y < 0:#Turns the robot left or right to be perpendicular to the marker
-            turnTwo = -(90 - math.fabs(marker.orientation.rot_y))
+            turnTwo = (90 - math.fabs(marker.orientation.rot_y))
             print('Turn right', turnTwo)
         else:
             turnTwo = (90 - marker.orientation.rot_y)
@@ -43,11 +43,11 @@ class Test(Robot):#Object
         lengthTwo = (lengthOne) * math.sin(math.radians(marker.orientation.rot_y))#Works out the length to travel to be perpendicualr to the marker
         print('Length two', lengthTwo)
         if  marker.centre.polar.rot_y < 0:#Turns lefts or right depending on which side the marker is
-            turnThree = 90
+            turnThree = -90
             print('Left turn', turnThree)
         else:
             turnTwo= -(turnTwo)
-            turnThree = -90
+            turnThree = 90
             print('Right turn', turnThree)
         self.turn(turnOne)
         time.sleep(2)
