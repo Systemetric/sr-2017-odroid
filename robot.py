@@ -29,7 +29,7 @@ class Test(Robot):#Object
     def goTo(self, marker):
         lengthOne = float
         turnThree = float
-        turnOne = marker.centre.polar.rot_y #Turns the robot to face the marker
+        turnOne =  marker.orientation.rot_y# CHANGEmarker.centre.polar.rot_y #Turns the robot to face the marker
         print('Turn one', turnOne)
         if marker.orientation.rot_y < 0:#Turns the robot left or right to be perpendicular to the marker
             turnTwo = -(90 - math.fabs(marker.orientation.rot_y))
