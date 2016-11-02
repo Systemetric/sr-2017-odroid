@@ -43,11 +43,11 @@ class Test(Robot):#Object
         lengthTwo = (lengthOne) * math.sin(math.radians(marker.orientation.rot_y))#Works out the length to travel to be perpendicualr to the marker
         print('Length two', lengthTwo)
         if  marker.centre.polar.rot_y < 0:#Turns lefts or right depending on which side the marker is
-            turnThree = -90
+            turnThree = 90
             print('Left turn', turnThree)
         else:
             turnTwo= -(turnTwo)
-            turnThree = 90
+            turnThree = -90
             print('Right turn', turnThree)
         self.turn(turnOne)
         time.sleep(2)
@@ -108,7 +108,7 @@ class Test(Robot):#Object
             degrees = -(degrees)
             power = -(power)
         if degrees < 25:
-            power = power / 2
+            power = 30
             sleep_360 = sleep_360 * 2
         print "Turn",degrees, "Power", power
         self.motors[0].m0.power = power*-ratio
