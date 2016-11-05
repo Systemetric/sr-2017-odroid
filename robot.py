@@ -60,16 +60,12 @@ class Test(Robot):#Object
         else:
             turnTwo = (90 -  math.fabs(marker.orientation.rot_y))
             print('Turn two, right', turnTwo)
-        self.turn(turnTwo)     
-        marker = self.see()
-        if marker > 0:
-            self.turnParallelToMarker()
+        self.turn(turnTwo)
+        time.sleep(2)
         lengthOne = marker.dist
         print('Length from marker to robot', marker.dist)
         lengthTwo = (lengthOne) * math.sin(math.radians(marker.orientation.rot_y))#Works out the length to travel to be perpendicualr to the marker
         print('Length two', lengthTwo)
-        
-        time.sleep(2)
         print('Moving to be perpendicular to marker')
         self.forwards(lengthTwo)
         
