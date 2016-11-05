@@ -104,7 +104,7 @@ class Test(Robot):#Object
         time.sleep(0.5)#Rest so camera can focus
         marker = []
         i = 0
-        while i <= 10 and marker == 0:
+        while i <= 10 and marker.count == 0:
             print('Cannot see a marker')
             marker = self.see()
         return marker 
