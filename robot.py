@@ -19,7 +19,7 @@ class Test(Robot):#Object
                 #self.goTo(marker)
                 print('marker.centre.polar.rot_y = ', marker.centre.polar.rot_y)#The angle the marker is from the robot
                 print('marker.orientation.rot_y = ', marker.orientation.rot_y)# The rotation of the marker
-                #self.goTo(marker)
+                self.goTo(marker)
                 time.sleep(2)
                 
         #while 1:
@@ -35,10 +35,10 @@ class Test(Robot):#Object
         turnOne = marker.centre.polar.rot_y #Turns the robot to face the marker
         print('Turn one', turnOne)
         if turnOne < 0:#Turns the robot left or right to be perpendicular to the marker
-            turnTwo = -(90 -  math.fabs(marker.centre.polar.rot_y) + math.fabs(marker.orientation.rot_y))
+            turnTwo = -(90 -  math.fabs(marker.centre.polar.rot_y))
             print('Turn two, left', turnTwo)
         else:
-            turnTwo = (90 -  math.fabs(marker.centre.polar.rot_y) + math.fabs(marker.orientation.rot_y))
+            turnTwo = (90 -  math.fabs(marker.centre.polar.rot_y))
             print('Turn two, right', turnTwo)
         lengthOne = marker.dist
         print('Length from marker', marker.dist)
@@ -106,7 +106,7 @@ class Test(Robot):#Object
         self.motors[0].m1.power = 0
         
     def turn(self, degrees, power=50, ratio=-1, sleep_360=2.14):
-        if degrees <= 0:
+        if degrees < 0:
             power = -(power)
             degrees = math.fabs(degrees)
         if degrees < 25:
