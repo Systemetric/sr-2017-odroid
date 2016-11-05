@@ -76,6 +76,7 @@ class Test(Robot):#Object
         print('Turning to face marker')
         self.turn(turnThree)
         time.sleep(2)
+        marker = self.find_markers(max_loop=2000)[0]
         while math.fabs(marker.centre.polar.rot_y) > 5.0: #If the robot is not facing the marker
             marker = self.find_markers(max_loop=2000)[0]
             print('Not correctly aligned')
