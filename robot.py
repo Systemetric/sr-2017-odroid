@@ -63,7 +63,7 @@ class Test(Robot):#Object
         self.forwards(lengthTwo)
         time.sleep(2)
         
-    def turnPerpendicularToFaceMarker(self)
+    def turnPerpendicularToFaceMarker(self):
         if  lastTurn == 'Left':#Turns lefts or right depending on which side the marker is
             turnThree = 90
             print('right turn', turnThree)
