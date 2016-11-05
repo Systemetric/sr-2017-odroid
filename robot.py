@@ -17,9 +17,10 @@ class Test(Robot):#Object
             marker = self.find_markers(max_loop=2000)[0]
             if marker > 0:
                 #self.goTo(marker)
-                print "pol_rot_x", marker.centre.polar.rot_x, "pol_rot_y", marker.centre.polar.rot_y#Marker rotation from robot
-                self.goTo(marker)
-                time.sleep(5)
+                print('marker.centre.polar.rot_y = ', marker.centre.polar.rot_y)#The angle the marker is from the robot
+                print('marker.orientation.rot_y = ', marker.orientation.rot_y)# The rotation of the marker
+                #self.goTo(marker)
+                time.sleep(2)
                 
         #while 1:
             #marker = self.find_markers(max_loop=10000)[0]
@@ -29,17 +30,16 @@ class Test(Robot):#Object
     def goTo(self, marker):
         lengthOne = float
         turnThree = float
-        print('marker.centre.polar.rot_y = ', marker.centre.polar.rot_y)
-        print('marker.orientation.rot_y = ', marker.orientation.rot_y)
+        print('marker.centre.polar.rot_y = ', marker.centre.polar.rot_y)#The angle the marker is from the robot
+        print('marker.orientation.rot_y = ', marker.orientation.rot_y)# The rotation of the marker
         turnOne = marker.centre.polar.rot_y #Turns the robot to face the marker
         print('Turn one', turnOne)
         if turnOne < 0:#Turns the robot left or right to be perpendicular to the marker
-            turnTwo = -(90 - math.fabs(marker.orientation.rot_y))
-            print('Turn left', turnTwo)
+            turnTwo = -(90 -  math.fabs(marker.centre.polar.rot_y) + math.fabs(marker.orientation.rot_y))
+            print('Turn two, left', turnTwo)
         else:
-            turnTwo = (90 - marker.orientation.rot_y)
-            print('Turn right', turnTwo)
-        print('Turn two', turnTwo)
+            turnTwo = (90 -  math.fabs(marker.centre.polar.rot_y) + math.fabs(marker.orientation.rot_y))
+            print('Turn two, right', turnTwo)
         lengthOne = marker.dist
         print('Length from marker', marker.dist)
         lengthTwo = (lengthOne) * math.sin(math.radians(marker.orientation.rot_y))#Works out the length to travel to be perpendicualr to the marker
