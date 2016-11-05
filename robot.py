@@ -54,20 +54,22 @@ class Test(Robot):#Object
             print('Turn two, right', turnTwo)
                 
         lengthOne = marker.dist
-        print('Length from marker', marker.dist)
+        print('Length from marker to robot', marker.dist)
         lengthTwo = (lengthOne) * math.degrees(math.sin(math.radians(marker.orientation.rot_y)))#Works out the length to travel to be perpendicualr to the marker
         print('Length two', lengthTwo)
+        self.turn(turnTwo)
+        time.sleep(2)
+        print('Moving to be perpendicular to marker')
+        self.forwards(lengthTwo)
+        time.sleep(2)
+        
+    def turnPerpendicularToFaceMarker(self)
         if  lastTurn == 'Left':#Turns lefts or right depending on which side the marker is
             turnThree = 90
             print('right turn', turnThree)
         else:
             turnThree = -90
             print('left turn', turnThree)
-        self.turn(turnTwo)
-        time.sleep(2)
-        print('Moving to be perpendicular to marker')
-        self.forwards(lengthTwo)
-        time.sleep(2)
         print('Turning to face marker')
         self.turn(turnThree)
         time.sleep(2)
