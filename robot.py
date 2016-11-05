@@ -131,11 +131,11 @@ class Test(Robot):#Object
         
     def turn(self, degrees, power=50, ratio=-1, sleep_360=2.14):
         if degrees < 0:
-            lastTurn = 'Left'
+            global lastTurn = 'Left'
             power = -(power)
             degrees = math.fabs(degrees)
         else:
-            lastTurn = 'Right'
+            global lastTurn = 'Right'
         if degrees < 25:
             power = power / 2
             sleep_360 = sleep_360 * 2
