@@ -137,7 +137,7 @@ class Test(Robot):#Object
         else:
             lastTurn = 'Right'
         if degrees < 25:
-            power = 30
+            power = power / 2
             sleep_360 = sleep_360 * 2
         print "Turn",degrees, "Power", power
         self.motors[0].m0.power = power*-ratio
