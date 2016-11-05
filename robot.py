@@ -87,26 +87,27 @@ class Test(Robot):#Object
             self.turn(turnOne)
     
     def find_markers(self, minimum=1, max_loop=20):
-        cur = 0
         markers = []
-        while len(markers) < minimum:
-            cur += 1
-            print("Searching for markers...")
-            markers = self.see()
-            time.sleep(0.5)
-            if len(markers) < minimum:
-                self.turn(20)
-                markers = self.see()
-                time.sleep(0.5)
-                if len(markers) < minimum:
-                    self.turn(-40)
-                    markers = self.see()
-                    time.sleep(0.5)
-                    
-                
-            if cur == max_loop:
-                raise MarkerNotFoundError("Marker (minimum {}) not found after {} loops".format(minimum, max_loop))
+        print("Searching for markers...")
+        markers = self.lookForMarkers()
+        if len(markers) < minimum:#If the robot cannot see a marker
+            self.turn(20)
+            markers = self.lookForMarkers()
+        
+        if len(markers) < minimum:
+            self.turn(-40)
+            markers = self.lookForMarkers()
+        if len(markers) < minimum:
+            raise MarkerNotFoundError("Marker (minimum {}) not found after {} loops".format(minimum, max_loop))
         return markers
+        
+    def lookForMarkers(self):
+        time.sleep(0.5)#Rest so camera can focus
+        markers = []
+        while i <= 10 and len(markers) == 0:
+             markers = self.see()
+        return markers 
+    
         
     def forwards(self, distance, speed=0.75, ratio=-1.05, speed_power = 80):  
         distance = math.fabs(distance)
