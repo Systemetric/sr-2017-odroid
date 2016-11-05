@@ -57,7 +57,7 @@ class Test(Robot):#Object
                 
         lengthOne = marker.dist
         print('Length from marker to robot', marker.dist)
-        lengthTwo = (lengthOne) * math.degrees(math.sin(math.radians(marker.orientation.rot_y)))#Works out the length to travel to be perpendicualr to the marker
+        lengthTwo = (lengthOne) * math.sin(math.radians(marker.orientation.rot_y))#Works out the length to travel to be perpendicualr to the marker
         print('Length two', lengthTwo)
         self.turn(turnTwo)
         time.sleep(2)
