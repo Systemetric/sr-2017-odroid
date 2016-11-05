@@ -4,6 +4,7 @@
 from sr.robot import *
 import time
 import math
+import serial
 
 class MarkerNotFoundError(Exception): pass
 lastTurn = ''
@@ -17,7 +18,6 @@ class Test(Robot):#Object
         while True:
             marker = self.find_markers(max_loop=2000)[0]
             if marker > 0:
-                #self.goTo(marker)
                 print('marker.centre.polar.rot_y = ', marker.centre.polar.rot_y)#The angle the marker is from the robot
                 print('marker.orientation.rot_y = ', marker.orientation.rot_y)# The rotation of the marker
                 self.faceMarker(marker)
@@ -87,28 +87,27 @@ class Test(Robot):#Object
             self.turn(turnOne)
     
     def find_markers(self, minimum=1, max_loop=20):
-        markers = []
         print("Searching for markers...")
-        markers = self.lookForMarkers()
-        if len(markers) < minimum:#If the robot cannot see a marker
+        marker = self.lookForMarkers()
+        if marker < minimum:#If the robot cannot see a marker
             self.turn(20)
-            markers = self.lookForMarkers()
+            marker = self.lookForMarkers()
         
-        if len(markers) < minimum:
+        if marker < minimum:
             self.turn(-40)
-            markers = self.lookForMarkers()
-        if len(markers) < minimum:
+            marker = self.lookForMarkers()
+        if marker < minimum:
             raise MarkerNotFoundError("Marker (minimum {}) not found after {} loops".format(minimum, max_loop))
-        return markers
+        return marker
         
     def lookForMarkers(self):
         time.sleep(0.5)#Rest so camera can focus
-        markers = []
+        marker = []
         i = 0
-        while i <= 10 and len(markers) == 0:
+        while i <= 10 and marker == 0:
             print('Cannot see a marker')
-            markers = self.see()
-        return markers 
+            marker = self.see()
+        return marker 
     
         
     def forwards(self, distance, speed=0.75, ratio=-1.05, speed_power = 80):  
