@@ -61,7 +61,7 @@ class Test(Robot):#Object
             turnTwo = (90 -  math.fabs(marker.orientation.rot_y))
             print('Turn two, right', turnTwo)
         self.turn(turnTwo)     
-        marker = self.find_markers(max_loop=2000)[0]
+        marker = self.see()
         if marker > 0:
             self.turnParallelToMarker()
         lengthOne = marker.dist
