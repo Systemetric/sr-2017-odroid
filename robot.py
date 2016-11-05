@@ -22,6 +22,7 @@ class Test(Robot):#Object
                 print('marker.orientation.rot_y = ', marker.orientation.rot_y)# The rotation of the marker
                 self.faceMarker(marker)
                 self.turnParallelToMarker()
+                self.turnPerpendicularToFaceMarker()
                 time.sleep(2)
                 
         #while 1:
