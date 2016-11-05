@@ -66,7 +66,6 @@ class Test(Robot):#Object
         time.sleep(2)
         print('Moving to be perpendicular to marker')
         self.forwards(lengthTwo)
-        time.sleep(2)
         
     def turnPerpendicularToFaceMarker(self):
         if  lastTurn == 'Left':#Turns lefts or right depending on which side the marker is
@@ -77,7 +76,6 @@ class Test(Robot):#Object
             print('left turn', turnThree)
         print('Turning to face marker')
         self.turn(turnThree)
-        time.sleep(2)
         marker = self.find_markers(max_loop=2000)[0]
         while math.fabs(marker.centre.polar.rot_y) > 5.0: #If the robot is not facing the marker
             marker = self.find_markers(max_loop=2000)[0]
@@ -106,6 +104,7 @@ class Test(Robot):#Object
         i = 0
         while i <= 10 and len(marker) == 0:
             print('Cannot see a marker')
+            i ++1
             marker = self.see()
         return marker 
     
