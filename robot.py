@@ -21,7 +21,9 @@ class Test(Robot):#Object
                 print('marker.centre.polar.rot_y = ', marker.centre.polar.rot_y)#The angle the marker is from the robot
                 print('marker.orientation.rot_y = ', marker.orientation.rot_y)# The rotation of the marker
                 self.faceMarker(marker)
+                time.sleep(2)
                 self.turnParallelToMarker()
+                time.sleep(2)
                 self.turnPerpendicularToFaceMarker()
                 time.sleep(2)
                 
@@ -83,41 +85,6 @@ class Test(Robot):#Object
             print('marker.centre.polar.rot_y = ', marker.centre.polar.rot_y)#The angle the marker is from the robot
             turnOne = marker.centre.polar.rot_y #Turns the robot to face the marker
             self.turn(turnOne)
-        
-    
-    def goTo(self, marker):
-        lengthOne = float
-        turnThree = float
-        
-        
-        
-        
-        
-        time.sleep(2)
-        
-        markers = self.see()
-        print('Looking for marker')
-        while markers.count == 0:
-            print('Looking for markers')
-            self.turn(30)
-            time.sleep(0.5)
-        if markers[0].dist > 1:#Moves forward so the robot is 1m away from the marker
-            lengthOne = markers[0].dist - 1
-            print('New length from marker', markers[0].dist)
-            self.forwards(lengthOne)
-        markers = self.see()
-        while markers.count == 0:
-            print('Looking for markers')
-            self.turn(30)
-            time.sleep(0.5) 
-        print('Marker rotation', markers[0].centre.polar.rot_y)
-        while markers[0].centre.polar.rot_y != 0:
-            print('Not centered')
-            self.turn(markers[0].centre.polar.rot_y)
-            time.sleep(0.5)
-        lengthOne = markers[0].dist
-        self.forwards(lengthOne)
-        return
     
     def find_markers(self, minimum=1, max_loop=20):
         cur = 0
@@ -126,6 +93,13 @@ class Test(Robot):#Object
             cur += 1
             print("Searching for markers...")
             markers = self.see()
+            if len(markers) < minimum:
+                self.turn(20)
+                markers = self.see()
+                if len(markers) < minimum:
+                    self.turn(-40)
+                    markers = self.see()
+                
             if cur == max_loop:
                 raise MarkerNotFoundError("Marker (minimum {}) not found after {} loops".format(minimum, max_loop))
         return markers
