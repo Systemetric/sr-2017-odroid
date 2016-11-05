@@ -6,6 +6,7 @@ import time
 import math
 
 class MarkerNotFoundError(Exception): pass
+lastTurn = string()
 
 class Test(Robot):#Object
     
@@ -19,7 +20,8 @@ class Test(Robot):#Object
                 #self.goTo(marker)
                 print('marker.centre.polar.rot_y = ', marker.centre.polar.rot_y)#The angle the marker is from the robot
                 print('marker.orientation.rot_y = ', marker.orientation.rot_y)# The rotation of the marker
-                self.goTo(marker)
+                self.faceMarker(marker)
+                self.turnParellelToMarker()
                 time.sleep(2)
                 
         #while 1:
@@ -27,38 +29,56 @@ class Test(Robot):#Object
             #print "rot_x", marker.orientation.rot_x, "rot_y", marker.orientation.rot_y, "rot_y", marker.orientation.rot_z# marker rotation
             #print "pol_rot_x", marker.centre.polar.rot_x, "pol_rot_z", marker.centre.polar.rot_y#Marker rotation from robot
             
-    def goTo(self, marker):
-        lengthOne = float
-        turnThree = float
+    
+    def faceMarker(self, marker):
         print('marker.centre.polar.rot_y = ', marker.centre.polar.rot_y)#The angle the marker is from the robot
         print('marker.orientation.rot_y = ', marker.orientation.rot_y)# The rotation of the marker
         turnOne = marker.centre.polar.rot_y #Turns the robot to face the marker
-        print('Turn one', turnOne)
-        if turnOne < 0:#Turns the robot left or right to be perpendicular to the marker
-            turnTwo = -(90 -  math.fabs(marker.centre.polar.rot_y))
+        self.turn(turnOne)
+        if math.fabs(marker.centre.polar.rot_y) > 5.0: #If the robot is not facing the marker
+            marker = self.find_markers(max_loop=2000)[0]
+            print('Not correctly aligned')
+            print('marker.centre.polar.rot_y = ', marker.centre.polar.rot_y)#The angle the marker is from the robot
+            turnOne = marker.centre.polar.rot_y #Turns the robot to face the marker
+            self.turn(turnOne)
+    
+    def turnParallelToMarker(self):
+        marker = self.find_markers(max_loop=2000)[0]
+        if lastTurn == 'Left':#Turns the robot left or right to be perpendicular to the marker
+            turnTwo = -(90 -  math.fabs(marker.orientation.rot_y))
             print('Turn two, left', turnTwo)
         else:
-            turnTwo = (90 -  math.fabs(marker.centre.polar.rot_y))
+            turnTwo = (90 -  math.fabs(marker.orientation.rot_y))
             print('Turn two, right', turnTwo)
+                
         lengthOne = marker.dist
         print('Length from marker', marker.dist)
-        lengthTwo = (lengthOne) * math.sin(math.radians(marker.orientation.rot_y))#Works out the length to travel to be perpendicualr to the marker
+        lengthTwo = (lengthOne) * math.degrees(math.sin(math.radians(marker.orientation.rot_y)))#Works out the length to travel to be perpendicualr to the marker
         print('Length two', lengthTwo)
-        if  turnOne < 0:#Turns lefts or right depending on which side the marker is
+        if  lastTurn == 'Left':#Turns lefts or right depending on which side the marker is
             turnThree = 90
             print('right turn', turnThree)
         else:
-            #turnTwo = -(turnTwo)
             turnThree = -90
             print('left turn', turnThree)
-        self.turn(turnOne)
-        time.sleep(2)
         self.turn(turnTwo)
         time.sleep(2)
         self.forwards(lengthTwo)
         time.sleep(2)
         self.turn(turnThree)
         time.sleep(2)
+        
+    
+    def goTo(self, marker):
+        lengthOne = float
+        turnThree = float
+        
+        print('Turn one', turnOne)
+        
+        
+        
+        time.sleep(2)
+        
         markers = self.see()
         print('Looking for marker')
         while markers.count == 0:
@@ -107,8 +127,11 @@ class Test(Robot):#Object
         
     def turn(self, degrees, power=50, ratio=-1, sleep_360=2.14):
         if degrees < 0:
+            lastTurn = 'Left'
             power = -(power)
             degrees = math.fabs(degrees)
+        else:
+            lastTurn = 'Right'
         if degrees < 25:
             power = 30
             sleep_360 = sleep_360 * 2
