@@ -26,6 +26,8 @@ class Test(Robot):#Object
                 time.sleep(2)
                 self.turnPerpendicularToFaceMarker()
                 time.sleep(2)
+                self.MoveToCube()
+                time.sleep(2)
                 
         #while 1:
             #marker = self.find_markers(max_loop=10000)[0]
@@ -84,7 +86,19 @@ class Test(Robot):#Object
             print('marker.centre.polar.rot_y = ', marker.centre.polar.rot_y)#The angle the marker is from the robot
             turnOne = marker.centre.polar.rot_y #Turns the robot to face the marker
             self.turn(turnOne)
-    
+   
+   def moveToCube(self):
+        marker = self.find_markers(max_loop=2000)[0]
+        while marker.dist > 0.5:
+            self.forwards(marker.dist - (marker.dist / 2))
+            while math.fabs(marker.centre.polar.rot_y) > 5.0: #If the robot is not facing the marker
+                marker = self.find_markers(max_loop=2000)[0]
+                print('Not correctly aligned')
+                print('marker.centre.polar.rot_y = ', marker.centre.polar.rot_y)#The angle the marker is from the robot
+                turnOne = marker.centre.polar.rot_y #Turns the robot to face the marker
+                self.turn(turnOne)
+        
+        
     def find_markers(self, minimum=1, max_loop=20):
         print("Searching for markers...")
         marker = self.lookForMarkers()
@@ -133,9 +147,6 @@ class Test(Robot):#Object
         if degrees < 25:
             power = power / 2
             sleep_360 = sleep_360 * 2
-        if degrees < 10:
-            power = power / 2.5
-            sleep_360 = sleep_360 * 2.5
         print "Turn",degrees, "Power", power
         self.motors[0].m0.power = power*-ratio
         self.motors[0].m1.power = power
