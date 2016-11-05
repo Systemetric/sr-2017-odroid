@@ -6,7 +6,7 @@ import time
 import math
 
 class MarkerNotFoundError(Exception): pass
-lastTurn = string
+lastTurn = ''
 
 class Test(Robot):#Object
     
