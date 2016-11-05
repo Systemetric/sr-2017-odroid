@@ -93,12 +93,16 @@ class Test(Robot):#Object
             cur += 1
             print("Searching for markers...")
             markers = self.see()
+            time.sleep(0.5)
             if len(markers) < minimum:
                 self.turn(20)
                 markers = self.see()
+                time.sleep(0.5)
                 if len(markers) < minimum:
                     self.turn(-40)
                     markers = self.see()
+                    time.sleep(0.5)
+                    
                 
             if cur == max_loop:
                 raise MarkerNotFoundError("Marker (minimum {}) not found after {} loops".format(minimum, max_loop))
