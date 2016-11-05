@@ -123,7 +123,7 @@ class Test(Robot):#Object
                 raise MarkerNotFoundError("Marker (minimum {}) not found after {} loops".format(minimum, max_loop))
         return markers
         
-    def forwards(self, distance, speed=0.75, ratio=-1.05, speed_power = 77):  
+    def forwards(self, distance, speed=0.75, ratio=-1.05, speed_power = 80):  
         distance = math.fabs(distance)
         power = speed * speed_power
         sleep_time = distance / speed
