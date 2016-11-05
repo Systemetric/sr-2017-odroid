@@ -39,6 +39,7 @@ class Test(Robot):#Object
         print('marker.orientation.rot_y = ', marker.orientation.rot_y)# The rotation of the marker
         turnOne = marker.centre.polar.rot_y #Turns the robot to face the marker
         self.turn(turnOne)
+        marker = self.find_markers(max_loop=2000)[0]
         while math.fabs(marker.centre.polar.rot_y) > 5.0: #If the robot is not facing the marker
             marker = self.find_markers(max_loop=2000)[0]
             print('Not correctly aligned')
@@ -87,14 +88,14 @@ class Test(Robot):#Object
     def find_markers(self, minimum=1, max_loop=20):
         print("Searching for markers...")
         marker = self.lookForMarkers()
-        if marker < minimum:#If the robot cannot see a marker
+        if len(marker) < minimum:#If the robot cannot see a marker
             self.turn(20)
             marker = self.lookForMarkers()
         
-        if marker < minimum:
+        if len(marker) < minimum:
             self.turn(-40)
             marker = self.lookForMarkers()
-        if marker < minimum:
+        if len(marker) < minimum:
             raise MarkerNotFoundError("Marker (minimum {}) not found after {} loops".format(minimum, max_loop))
         return marker
         
@@ -133,8 +134,8 @@ class Test(Robot):#Object
             power = power / 2
             sleep_360 = sleep_360 * 2
         if degrees < 10:
-            power = power / 3
-            sleep_360 = sleep_360 * 3
+            power = power / 2.5
+            sleep_360 = sleep_360 * 2.5
         print "Turn",degrees, "Power", power
         self.motors[0].m0.power = power*-ratio
         self.motors[0].m1.power = power
