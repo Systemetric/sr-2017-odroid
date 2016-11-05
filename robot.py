@@ -106,6 +106,7 @@ class Test(Robot):#Object
     def turn(self, degrees, power=50, ratio=-1, sleep_360=2.14):
         if degrees <= 0:
             power = -(power)
+            degrees = math.fabs(degrees)
         if degrees < 25:
             power = 30
             sleep_360 = sleep_360 * 2
