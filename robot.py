@@ -104,6 +104,7 @@ class Test(Robot):#Object
     def lookForMarkers(self):
         time.sleep(0.5)#Rest so camera can focus
         markers = []
+        i = 0
         while i <= 10 and len(markers) == 0:
              markers = self.see()
         return markers 
