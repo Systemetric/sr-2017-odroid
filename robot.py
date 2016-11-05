@@ -87,7 +87,7 @@ class Test(Robot):#Object
             turnOne = marker.centre.polar.rot_y #Turns the robot to face the marker
             self.turn(turnOne)
    
-   def moveToCube(self):
+    def moveToCube(self):
         marker = self.find_markers(max_loop=2000)[0]
         while marker.dist > 0.5:
             self.forwards(marker.dist - (marker.dist / 2))
