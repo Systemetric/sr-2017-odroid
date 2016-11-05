@@ -6,7 +6,7 @@ import time
 import math
 
 class MarkerNotFoundError(Exception): pass
-lastTurn = string()
+lastTurn = string
 
 class Test(Robot):#Object
     
@@ -21,7 +21,7 @@ class Test(Robot):#Object
                 print('marker.centre.polar.rot_y = ', marker.centre.polar.rot_y)#The angle the marker is from the robot
                 print('marker.orientation.rot_y = ', marker.orientation.rot_y)# The rotation of the marker
                 self.faceMarker(marker)
-                self.turnParellelToMarker()
+                self.turnParallelToMarker()
                 time.sleep(2)
                 
         #while 1:
@@ -73,7 +73,7 @@ class Test(Robot):#Object
         lengthOne = float
         turnThree = float
         
-        print('Turn one', turnOne)
+        
         
         
         
