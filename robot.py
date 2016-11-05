@@ -107,7 +107,7 @@ class Test(Robot):#Object
         i = 0
         while i <= 10 and len(markers) == 0:
             print('Cannot see a marker')
-             markers = self.see()
+            markers = self.see()
         return markers 
     
         
