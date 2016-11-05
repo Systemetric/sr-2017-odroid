@@ -31,6 +31,7 @@ class Test(Robot):#Object
             
     
     def faceMarker(self, marker):
+        print('Turning to face marker')
         print('marker.centre.polar.rot_y = ', marker.centre.polar.rot_y)#The angle the marker is from the robot
         print('marker.orientation.rot_y = ', marker.orientation.rot_y)# The rotation of the marker
         turnOne = marker.centre.polar.rot_y #Turns the robot to face the marker
@@ -43,6 +44,7 @@ class Test(Robot):#Object
             self.turn(turnOne)
     
     def turnParallelToMarker(self):
+        print('Turning parallel to marker') 
         marker = self.find_markers(max_loop=2000)[0]
         if lastTurn == 'Left':#Turns the robot left or right to be perpendicular to the marker
             turnTwo = -(90 -  math.fabs(marker.orientation.rot_y))
@@ -63,8 +65,10 @@ class Test(Robot):#Object
             print('left turn', turnThree)
         self.turn(turnTwo)
         time.sleep(2)
+        print('Moving to be perpendicular to marker')
         self.forwards(lengthTwo)
         time.sleep(2)
+        print('Turning to face marker')
         self.turn(turnThree)
         time.sleep(2)
         
