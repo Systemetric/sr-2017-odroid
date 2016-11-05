@@ -45,6 +45,8 @@ class Test(Robot):#Object
     
     def turnParallelToMarker(self):
         print('Turning parallel to marker') 
+        print('marker.centre.polar.rot_y = ', marker.centre.polar.rot_y)#The angle the marker is from the robot
+        print('marker.orientation.rot_y = ', marker.orientation.rot_y)# The rotation of the marker
         marker = self.find_markers(max_loop=2000)[0]
         if lastTurn == 'Left':#Turns the robot left or right to be perpendicular to the marker
             turnTwo = -(90 -  math.fabs(marker.orientation.rot_y))
