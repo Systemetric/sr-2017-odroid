@@ -26,7 +26,7 @@ class Test(Robot):#Object
                 time.sleep(2)
                 self.turnPerpendicularToFaceMarker()
                 time.sleep(2)
-                self.MoveToCube()
+                self.moveToCube()
                 time.sleep(2)
                 
         #while 1:
