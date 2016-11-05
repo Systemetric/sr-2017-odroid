@@ -90,7 +90,8 @@ class Test(Robot):#Object
     def moveToCube(self):
         marker = self.find_markers(max_loop=2000)[0]
         while marker.dist > 0.5:
-            self.forwards(marker.dist - (marker.dist / 2))
+            print('Moving towards marker')
+            self.forwards(marker.dist - (marker.dist / 3))
             while math.fabs(marker.centre.polar.rot_y) > 5.0: #If the robot is not facing the marker
                 marker = self.find_markers(max_loop=2000)[0]
                 print('Not correctly aligned')
