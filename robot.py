@@ -104,7 +104,7 @@ class Test(Robot):#Object
         i = 0
         while i <= 10 and len(marker) == 0:
             print('Cannot see a marker')
-            i ++1
+            i = i+1
             marker = self.see()
         return marker 
     
@@ -132,6 +132,9 @@ class Test(Robot):#Object
         if degrees < 25:
             power = power / 2
             sleep_360 = sleep_360 * 2
+        if degrees < 10:
+            power = power / 3
+            sleep_360 = sleep_360 * 3
         print "Turn",degrees, "Power", power
         self.motors[0].m0.power = power*-ratio
         self.motors[0].m1.power = power
