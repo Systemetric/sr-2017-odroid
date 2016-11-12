@@ -56,7 +56,7 @@ class Test(Robot):#Object
         self.log.debug('marker.orientation.rot_y = %s', marker.orientation.rot_y)# The rotation of the marker
         if self.lastTurn == 'Left':#Turns the robot left or right to be perpendicular to the marker
             turnTwo = -(90 -  math.fabs(marker.orientation.rot_y))
-            self.log.debug('Turn two, left', turnTwo)
+            self.log.debug('Turn two, left %s degrees', turnTwo)
         else:
             turnTwo = (90 -  math.fabs(marker.orientation.rot_y))
             self.log.debug('Turn two, right %s degrees', turnTwo)
