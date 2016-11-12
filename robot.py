@@ -5,162 +5,214 @@ from sr.robot import *
 import time
 import math
 import serial
+import logging
 
 class MarkerNotFoundError(Exception): pass
-lastTurn = ''
 
 class Test(Robot):#Object
     
     def __init__(self):
-        print('Start Hobo init')
+        self.init_logger()
+        # Please use `log.debug`, `log.info`, `log.warning` or `log.error` instead of `print`
+
+        self.log.info('Start Hobo init')
         super(Test, self).__init__()
-        print('Robot initialised')
+        self.log.info('Robot initialised')
+        self.lastTurn = ''
         while True:
-            marker = self.find_markers(max_loop=2000)[0]
-            if marker > 0:
-                print('marker.centre.polar.rot_y = ', marker.centre.polar.rot_y)#The angle the marker is from the robot
-                print('marker.orientation.rot_y = ', marker.orientation.rot_y)# The rotation of the marker
-                self.faceMarker(marker)
-                time.sleep(2)
-                self.turnParallelToMarker()
-                time.sleep(2)
-                self.turnPerpendicularToFaceMarker()
-                time.sleep(2)
-                self.moveToCube()
-                time.sleep(2)
-                
-        #while 1:
-            #marker = self.find_markers(max_loop=10000)[0]
-            #print "rot_x", marker.orientation.rot_x, "rot_y", marker.orientation.rot_y, "rot_y", marker.orientation.rot_z# marker rotation
-            #print "pol_rot_x", marker.centre.polar.rot_x, "pol_rot_z", marker.centre.polar.rot_y#Marker rotation from robot
-            
+            self.log.info("Start goto cube.")
+            marker = self.find_markers()[0]
+            self.log.debug('marker.centre.polar.rot_y = %s', marker.centre.polar.rot_y) #The angle the marker is from the robot
+            self.log.debug('marker.orientation.rot_y = %s', marker.orientation.rot_y) #The rotation of the marker
+            self.faceMarker(marker)
+            time.sleep(2)
+            self.turnParallelToMarker()
+            time.sleep(2)
+            self.turnPerpendicularToFaceMarker()
+            time.sleep(2)
+            self.moveToCube()
+            time.sleep(2)
+
     
     def faceMarker(self, marker):
-        print('Turning to face marker')
-        print('marker.centre.polar.rot_y = ', marker.centre.polar.rot_y)#The angle the marker is from the robot
-        print('marker.orientation.rot_y = ', marker.orientation.rot_y)# The rotation of the marker
+        self.log.info('Turning to face marker')
+        self.log.debug('marker.centre.polar.rot_y = %s', marker.centre.polar.rot_y) #The angle the marker is from the robot
+        self.log.debug('marker.orientation.rot_y = %s', marker.orientation.rot_y) #The rotation of the marker
         turnOne = marker.centre.polar.rot_y #Turns the robot to face the marker
         self.turn(turnOne)
-        marker = self.find_markers(max_loop=2000)[0]
+        marker = self.find_markers()[0]
         while math.fabs(marker.centre.polar.rot_y) > 5.0: #If the robot is not facing the marker
-            marker = self.find_markers(max_loop=2000)[0]
-            print('Not correctly aligned')
-            print('marker.centre.polar.rot_y = ', marker.centre.polar.rot_y)#The angle the marker is from the robot
+            marker = self.find_markers(delta_angle=10)[0]
+            self.log.debug('Not correctly aligned')
+            self.log.debug('marker.centre.polar.rot_y = %s', marker.centre.polar.rot_y) #The angle the marker is from the robot
             turnOne = marker.centre.polar.rot_y #Turns the robot to face the marker
             self.turn(turnOne)
     
+
     def turnParallelToMarker(self):
-        print('Turning parallel to marker') 
-        marker = self.find_markers(max_loop=2000)[0]
-        print('marker.centre.polar.rot_y = ', marker.centre.polar.rot_y)#The angle the marker is from the robot
-        print('marker.orientation.rot_y = ', marker.orientation.rot_y)# The rotation of the marker
-        if lastTurn == 'Left':#Turns the robot left or right to be perpendicular to the marker
+        self.log.info('Turning parallel to marker') 
+        marker = self.find_markers()[0]
+        self.log.debug('marker.centre.polar.rot_y = %s', marker.centre.polar.rot_y)#The angle the marker is from the robot
+        self.log.debug('marker.orientation.rot_y = %s', marker.orientation.rot_y)# The rotation of the marker
+        if self.lastTurn == 'Left':#Turns the robot left or right to be perpendicular to the marker
             turnTwo = -(90 -  math.fabs(marker.orientation.rot_y))
-            print('Turn two, left', turnTwo)
+            self.log.debug('Turn two, left', turnTwo)
         else:
             turnTwo = (90 -  math.fabs(marker.orientation.rot_y))
-            print('Turn two, right', turnTwo)
+            self.log.debug('Turn two, right %s degrees', turnTwo)
+                
+        lengthOne = marker.dist
+        self.log.debug('Length from marker to robot: %s', marker.dist)
+        lengthTwo = (lengthOne) * math.sin(math.radians(marker.orientation.rot_y))#Works out the length to travel to be perpendicualr to the marker
+        self.log.debug('Length two: %s', lengthTwo)
         self.turn(turnTwo)
         time.sleep(2)
-        lengthOne = marker.dist
-        print('Length from marker to robot', marker.dist)
-        lengthTwo = (lengthOne) * math.sin(math.radians(marker.orientation.rot_y))#Works out the length to travel to be perpendicualr to the marker
-        print('Length two', lengthTwo)
-        print('Moving to be perpendicular to marker')
+        self.log.info('Moving to be perpendicular to marker')
         self.forwards(lengthTwo)
         
+
     def turnPerpendicularToFaceMarker(self):
-        if  lastTurn == 'Left':#Turns lefts or right depending on which side the marker is
+        if  self.lastTurn == 'Left':# Turns left or right depending on which side the marker is
             turnThree = 90
-            print('right turn', turnThree)
+            self.log.debug('right turn %s degrees', turnThree)
         else:
             turnThree = -90
-            print('left turn', turnThree)
-        print('Turning to face marker')
+            self.log.debug('left turn %s degrees', turnThree)
+        self.log.info('Turning to face marker')
         self.turn(turnThree)
-        marker = self.find_markers(max_loop=2000)[0]
+        marker = self.find_markers()[0]
         while math.fabs(marker.centre.polar.rot_y) > 5.0: #If the robot is not facing the marker
-            marker = self.find_markers(max_loop=2000)[0]
-            print('Not correctly aligned')
-            print('marker.centre.polar.rot_y = ', marker.centre.polar.rot_y)#The angle the marker is from the robot
+            marker = self.find_markers(delta_angle=10)[0]
+            self.log.debug('Not correctly aligned')
+            self.log.debug('marker.centre.polar.rot_y = %s', marker.centre.polar.rot_y)#The angle the marker is from the robot
             turnOne = marker.centre.polar.rot_y #Turns the robot to face the marker
             self.turn(turnOne)
    
+
     def moveToCube(self):
-        marker = self.find_markers(max_loop=2000)[0]
+        marker = self.find_markers()[0]
         distanceFromCube = marker.dist
         while distanceFromCube > 0.5:
-            print('Moving towards marker')
-            marker = self.find_markers(max_loop=2000)[0]
+            self.log.info('Moving towards marker')
+            marker = self.find_markers()[0]
             distanceFromCube = marker.dist
             self.forwards(distanceFromCube - (distanceFromCube / 3))
             while math.fabs(marker.centre.polar.rot_y) > 5.0: #If the robot is not facing the marker
-                marker = self.find_markers(max_loop=2000)[0]
-                print('Not correctly aligned')
-                print('marker.centre.polar.rot_y = ', marker.centre.polar.rot_y)#The angle the marker is from the robot
+                marker = self.find_markers()[0]
+                self.log.debug('Not correctly aligned')
+                self.log.debug('marker.centre.polar.rot_y = %s', marker.centre.polar.rot_y)#The angle the marker is from the robot
                 turnOne = marker.centre.polar.rot_y #Turns the robot to face the marker
                 self.turn(turnOne)
         
         
-    def find_markers(self, minimum=1, max_loop=20):
-        print("Searching for markers...")
-        marker = self.lookForMarkers()
-        if len(marker) < minimum:#If the robot cannot see a marker
-            self.turn(20)
-            marker = self.lookForMarkers()
+    def find_markers(self, minimum=1, max_loop=10, delta_angle=20):
+        """
+        Find at least minimum markers.
+        Try max_loop attempts for each direction.
+
+        Scans at 0. (relative)
+        If fail, scan -20.
+        If fail, scan +40.
+        If fail, while not scanned 360,
+            scan +20
+        If fail raise MarkerNotFoundError
+        """
+
+        self.log.info("Searching for markers...")
+        #Scan 0.
+        self.log.debug("Searching for markers... (direction = 0)")
+        markers = self.lookForMarkers(max_loop=max_loop)
+        if len(markers) >= minimum:
+            # If found correct number of markers, stop and return them
+            return markers
+        # If the robot cannot see a marker
+        self.log.debug("Searching for markers... (direction = %s)", -delta_angle)
+        self.turn(-delta_angle)
+        markers = self.lookForMarkers(max_loop=max_loop)
+        if len(markers) >= minimum:
+            return markers
+        self.turn(delta_angle * 2)
+        i = delta_angle
+        while i <= 360:
+            # Continue scanning in a circle - probably not in a simple arc
+            self.log.debug("Searching for markers... (direction = %s)", i)
+            markers = self.lookForMarkers(max_loop=max_loop)
+            if len(markers) >= minimum:
+                return markers
+            i += delta_angle
+            self.turn(delta_angle)
+        # Current direction is ~360 (no change)
+        self.log.error("Marker(s) (minimum %s) not found with %s loops per direction", minimum, max_loop)
+        return markers
         
-        if len(marker) < minimum:
-            self.turn(-40)
-            marker = self.lookForMarkers()
-        if len(marker) < minimum:
-            raise MarkerNotFoundError("Marker (minimum {}) not found after {} loops".format(minimum, max_loop))
-        return marker
-        
-    def lookForMarkers(self):
-        time.sleep(0.5)#Rest so camera can focus
-        marker = self.see()
+
+    def lookForMarkers(self, max_loop=float("inf"), sleep_time=0.5):
+        """
+        Look for markers.
+        if none found within max_loop, return []
+        """
+        self.log.info("Looking for markers...")
+        time.sleep(sleep_time)# Rest so camera can focus
+        markers = self.see()
         i = 0
-        while i <= 10 and len(marker) == 0:
-            print('Cannot see a marker')
-            i = i+1
-            marker = self.see()
-        return marker 
+        while i <= max_loop and len(markers) == 0:
+            self.log.debug("Cannot see a marker")
+            i += 1
+            markers = self.see()
+        return markers
     
         
-    def forwards(self, distance, speed=0.75, ratio=-1.05, speed_power = 80):  
-        distance = math.fabs(distance)
+    def forwards(self, distance, speed=0.75, ratio=-1.05, speed_power = 80):
+        """
+        Go forwards (distance) meters
+        """
+        if distance < 0:
+            self.log.warning("robot.forwards() passed a negative distance, inverting!")
+            distance = -distance
         power = speed * speed_power
         sleep_time = distance / speed
-        print "Distance", distance, "ST",sleep_time, "P", power, "PR", power*ratio 
+        self.log.info("Moving forwards %s meters", distance)
         self.motors[0].m0.power = power*ratio
         self.motors[0].m1.power = power
         time.sleep(sleep_time)
         self.motors[0].m0.power = 0
         self.motors[0].m1.power = 0
         
+
     def turn(self, degrees, power=60, ratio=-1, sleep_360=2.14):
+        """
+        Turn degrees anticlockwise.
+        If passed negative, turn clockwise
+        """
         if degrees < 0:
-            global lastTurn
-            lastTurn = 'Left'
-            power = -(power)
+            self.lastTurn = 'Left'
+            power = -power
             degrees = math.fabs(degrees)
         else:
-            global lastTurn 
-            lastTurn = 'Right'
+            self.lastTurn = 'Right'
         if degrees < 25:
             power = power / 2
             sleep_360 = sleep_360 * 2
-        print "Turn",degrees, "Power", power
+        self.log.info("Turning %s degrees", degrees)
         self.motors[0].m0.power = power*-ratio
         self.motors[0].m1.power = power
         time.sleep(sleep_360/360*degrees)
         
         self.motors[0].m0.power = 0
         self.motors[0].m1.power = 0
-        
-                
-    
 
+    def init_logger(self):
+        """
+        Initialise logger.
+        """
+        self.log = logging.getLogger(__name__)
+        self.log.setLevel(logging.DEBUG)
+        console_handler = logging.StreamHandler()
+        console_handler.setLevel(logging.DEBUG)
+        formatter = logging.Formatter('%(name)s - %(levelname)s - %(message)s')
+        console_handler.setFormatter(formatter)
+        self.log.addHandler(console_handler)
+        
         
 if __name__ == "__main__":
     Test()
