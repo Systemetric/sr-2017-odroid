@@ -10,12 +10,15 @@ import logging
 class MarkerNotFoundError(Exception): pass
 
 class Test(Robot):#Object
+    """
+    A path-finding robot.
+    """
     
     def __init__(self):
         self.init_logger()
         # Please use `log.debug`, `log.info`, `log.warning` or `log.error` instead of `print`
 
-        self.log.info('Start Hobo init')
+        self.log.info('Start TobyDragon init')
         super(Test, self).__init__()
         self.log.info('Robot initialised')
         self.lastTurn = ''
@@ -35,6 +38,9 @@ class Test(Robot):#Object
 
     
     def faceMarker(self, marker):
+        """
+        Given a marker, point towards it.
+        """
         self.log.info('Turning to face marker')
         self.log.debug('marker.centre.polar.rot_y = %s', marker.centre.polar.rot_y) #The angle the marker is from the robot
         self.log.debug('marker.orientation.rot_y = %s', marker.orientation.rot_y) #The rotation of the marker
@@ -50,6 +56,10 @@ class Test(Robot):#Object
     
 
     def turnParallelToMarker(self):
+        """
+        After facing marker, change direction so parallel to marker
+        Move so in a straight line with marker.
+        """
         self.log.info('Turning parallel to marker') 
         marker = self.find_markers()[0]
         self.log.debug('marker.centre.polar.rot_y = %s', marker.centre.polar.rot_y)#The angle the marker is from the robot
@@ -72,6 +82,10 @@ class Test(Robot):#Object
         
 
     def turnPerpendicularToFaceMarker(self):
+        """
+        Given a turn 0f 90 degrees would face towards cube,
+        Work out which direction and turn.
+        """
         if  self.lastTurn == 'Left':# Turns left or right depending on which side the marker is
             turnThree = 90
             self.log.debug('right turn %s degrees', turnThree)
@@ -90,6 +104,11 @@ class Test(Robot):#Object
    
 
     def moveToCube(self):
+        """
+        Given that robot is facing cube,
+        Move towards cube in a straight line,
+        Rechecking straight every 2/3 distance.
+        """
         marker = self.find_markers()[0]
         distanceFromCube = marker.dist
         while distanceFromCube > 0.5:
