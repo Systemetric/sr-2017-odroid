@@ -192,6 +192,7 @@ class Test(Robot):#Object
         """
         Go forwards (distance) meters
         """
+        #Sasha Shtyrov decreased the power to the motors to prevent current overload
         if distance < 0:
             self.log.warning("robot.forwards() passed a negative distance, inverting!")
             distance = -distance
