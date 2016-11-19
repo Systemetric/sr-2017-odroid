@@ -181,7 +181,7 @@ class Test(Robot):#Object
         return markers
     
         
-    def forwards(self, distance, speed=0.75, ratio=-1.05, speed_power = 70):
+    def forwards(self, distance, speed=0.75, ratio=-1.05, speed_power = 60):
         """
         Go forwards (distance) meters
         """
