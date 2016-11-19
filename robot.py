@@ -116,6 +116,7 @@ class Test(Robot):#Object
             marker = self.find_markers()[0]
             distanceFromCube = marker.dist
             self.log.debug("Marker distance: %s", marker.dist)
+            self.log.debug("Marker size: %s", marker.info.size)
             if marker.dist < 0.9:
                 self.forwards(distanceFromCube + 1)
                 break
