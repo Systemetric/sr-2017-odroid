@@ -103,11 +103,12 @@ class Test(Robot):#Object
             self.turn(turnOne)
    
 
-    def moveToCube(self):
+    def moveToCube(self, minimum_check_distance=0.9):
         """
         Given that robot is facing cube,
         Move towards cube in a straight line,
         Rechecking straight every 2/3 distance.
+        minimum_check_distance is the distance to the cube below which the robot does not stop to recheck straightness.
         """
         marker = self.find_markers()[0]
         distanceFromCube = marker.dist
@@ -117,7 +118,7 @@ class Test(Robot):#Object
             distanceFromCube = marker.dist
             self.log.debug("Marker distance: %s", marker.dist)
             self.log.debug("Marker size: %s", marker.info.size)
-            if marker.dist < 0.9:
+            if marker.dist < minimum_check_distance: #If robot is close to the cube, just drive over it
                 self.forwards(distanceFromCube + 1)
                 break
             self.forwards(distanceFromCube - (distanceFromCube / 3))
