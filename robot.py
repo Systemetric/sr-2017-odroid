@@ -116,6 +116,9 @@ class Test(Robot):#Object
             marker = self.find_markers()[0]
             distanceFromCube = marker.dist
             self.log.debug("Marker distance: %s", marker.dist)
+            if marker.dist < 0.9:
+                self.forwards(distanceFromCube + 1)
+                break
             self.forwards(distanceFromCube - (distanceFromCube / 3))
             while math.fabs(marker.centre.polar.rot_y) > 5.0: #If the robot is not facing the marker
                 marker = self.find_markers()[0]
