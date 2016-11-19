@@ -116,6 +116,7 @@ class Test(Robot):#Object
             self.log.info('Moving towards marker')
             marker = self.find_markers()[0]
             distanceFromCube = marker.dist
+            #Sasha Shtyrov has added this code and extra debug information, to make sure the robot actually reaches the cube and drives over it.
             self.log.debug("Marker distance: %s", marker.dist)
             self.log.debug("Marker size: %s", marker.info.size)
             if marker.dist < minimum_check_distance: #If robot is close to the cube, just drive over it
