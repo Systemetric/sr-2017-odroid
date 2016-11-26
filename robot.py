@@ -219,7 +219,7 @@ class Test(Robot):#Object
         self.motors[1].m1.power = power*0.7
         t_end = time.time() + 0.02
         while time.time() < t_end:
-            self.log.info("starting %s Amps, starting %s Volts", self.power.battery.current, self.power.battery.voltage)
+            self.log.info("stopping %s Amps, stopping %s Volts", self.power.battery.current, self.power.battery.voltage)
             #time.sleep(0.001)
         #close of code to stop slower
         self.motors[0].m0.power = 0
