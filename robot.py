@@ -200,10 +200,10 @@ class Test(Robot):#Object
         sleep_time = distance / speed
         self.log.info("Moving forwards %s meters", distance)
         self.motors[0].m0.power = power*ratio
-        self.motors[0].m1.power = power
+        self.motors[1].m1.power = power
         time.sleep(sleep_time)
         self.motors[0].m0.power = 0
-        self.motors[0].m1.power = 0
+        self.motors[1].m1.power = 0
         
 
     def turn(self, degrees, power=60, ratio=-1, sleep_360=2.14):
@@ -222,11 +222,11 @@ class Test(Robot):#Object
             sleep_360 = sleep_360 * 2
         self.log.info("Turning %s degrees", degrees)
         self.motors[0].m0.power = power*-ratio
-        self.motors[0].m1.power = power
+        self.motors[1].m1.power = power
         time.sleep(sleep_360/360*degrees)
         
         self.motors[0].m0.power = 0
-        self.motors[0].m1.power = 0
+        self.motors[1].m1.power = 0
 
     def init_logger(self):
         """
