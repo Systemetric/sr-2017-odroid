@@ -201,20 +201,18 @@ class Test(Robot):#Object
         self.log.info("Moving forwards %s meters", distance)
         self.motors[0].m0.power = power*ratio
         self.motors[1].m1.power = power
-        self.log.info("current draw is %s Amps", self.power.battery.current)
-        time.sleep(0.001)
-        self.log.info("current draw is %s Amps", self.power.battery.current)
-        time.sleep(0.001)
-        self.log.info("current draw is %s Amps", self.power.battery.current)
+        t_end = time.time() + 1
+        while time.time() < t_end:
+            self.log.info("current draw is %s Amps", self.power.battery.current)
+            time.sleep(0.001)
         time.sleep(sleep_time)
         self.log.info("current draw is %s Amps", self.power.battery.current)
         self.motors[0].m0.power = 0
         self.motors[1].m1.power = 0
-        self.log.info("current draw is %s Amps", self.power.battery.current)
-        time.sleep(0.001)
-        self.log.info("current draw is %s Amps", self.power.battery.current)
-        time.sleep(0.001)
-        self.log.info("current draw is %s Amps", self.power.battery.current)
+        t_end = time.time() + 1
+        while time.time() < t_end:
+            self.log.info("current draw is %s Amps", self.power.battery.current)
+            time.sleep(0.001)
 
     def turn(self, degrees, power=60, ratio=-1, sleep_360=2.14):
         """
