@@ -229,7 +229,7 @@ class Test(Robot):#Object
             self.log.info("current draw is %s Amps, voltage draw is %s Volts", self.power.battery.current, self.power.battery.voltage)
 
 
-    def turn(self, degrees, power=60, ratio=-1, sleep_360=2.14):
+    def turn(self, degrees, power=40, ratio=-1, sleep_360=2.14):
         """
         Turn degrees anticlockwise.
         If passed negative, turn clockwise
