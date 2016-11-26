@@ -201,6 +201,7 @@ class Test(Robot):#Object
         self.log.info("Moving forwards %s meters", distance)
         self.motors[0].m0.power = power*ratio
         self.motors[1].m1.power = power
+        self.log.info("current draw is %s Amps", self.power.battery.current)
         time.sleep(sleep_time)
         self.motors[0].m0.power = 0
         self.motors[1].m1.power = 0
