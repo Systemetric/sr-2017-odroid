@@ -205,22 +205,21 @@ class Test(Robot):#Object
         t_end = time.time() + 0.02
         while time.time() < t_end:
             self.log.info("starting %s Amps, starting %s Volts", self.power.battery.current, self.power.battery.voltage)
-            time.sleep(0.001)
+            #time.sleep(0.001)
         #close of code to start slower
         self.motors[0].m0.power = power*ratio
         self.motors[1].m1.power = power
-        t_end = time.time() + 1
+        t_end = time.time() + sleep_time
         while time.time() < t_end:
             self.log.info("current draw is %s Amps, voltage draw is %s Volts", self.power.battery.current, self.power.battery.voltage)
-            time.sleep(0.001)
-        time.sleep(sleep_time)
+            #time.sleep(0.001) implicit wait from log code
         self.log.info("current draw is %s Amps, voltage draw is %s Volts", self.power.battery.current, self.power.battery.voltage)
         self.motors[0].m0.power = 0
         self.motors[1].m1.power = 0
-        t_end = time.time() + 1
+        t_end = time.time() + 0.04
         while time.time() < t_end:
             self.log.info("current draw is %s Amps, voltage draw is %s Volts", self.power.battery.current, self.power.battery.voltage)
-            time.sleep(0.001)
+
 
     def turn(self, degrees, power=60, ratio=-1, sleep_360=2.14):
         """
@@ -239,7 +238,10 @@ class Test(Robot):#Object
         self.log.info("Turning %s degrees", degrees)
         self.motors[0].m0.power = power*-ratio
         self.motors[1].m1.power = power
-        time.sleep(sleep_360/360*degrees)
+        
+        t_end = time.time() + sleep_360/360*degrees
+        while time.time() < t_end:
+            self.log.info("starting %s Amps, starting %s Volts", self.power.battery.current, self.power.battery.voltage)
         
         self.motors[0].m0.power = 0
         self.motors[1].m1.power = 0
