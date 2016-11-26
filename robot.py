@@ -199,6 +199,14 @@ class Test(Robot):#Object
         power = speed * speed_power
         sleep_time = distance / speed
         self.log.info("Moving forwards %s meters", distance)
+        #adding lines to start motors at lower power then up to full power
+        self.motors[0].m0.power = power*ratio*0.5
+        self.motors[1].m1.power = power*0.5
+        t_end = time.time() + 0.02
+        while time.time() < t_end:
+            self.log.info("current draw when starting is %s Amps", self.power.battery.current)
+            time.sleep(0.001)
+        #close of code to start slower
         self.motors[0].m0.power = power*ratio
         self.motors[1].m1.power = power
         t_end = time.time() + 1
