@@ -215,11 +215,11 @@ class Test(Robot):#Object
             #time.sleep(0.001) implicit wait from log code
         self.log.info("current draw is %s Amps, voltage draw is %s Volts", self.power.battery.current, self.power.battery.voltage)
         #adding lines to slow down motors at lower power then up to zero power
-        self.motors[0].m0.power = power*ratio*0.7
-        self.motors[1].m1.power = power*0.7
-        t_end = time.time() + 0.02
-        while time.time() < t_end:
-            self.log.info("stopping %s Amps, stopping %s Volts", self.power.battery.current, self.power.battery.voltage)
+        #self.motors[0].m0.power = power*ratio*0.7
+        #self.motors[1].m1.power = power*0.7
+        #t_end = time.time() + 0.02
+        #while time.time() < t_end:
+        #    self.log.info("stopping %s Amps, stopping %s Volts", self.power.battery.current, self.power.battery.voltage)
             #time.sleep(0.001)
         #close of code to stop slower
         self.motors[0].m0.power = 0
