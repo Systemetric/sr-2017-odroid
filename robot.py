@@ -128,7 +128,7 @@ class Test(Robot):#Object
                 self.log.debug('Not correctly aligned')
                 self.log.debug('marker.centre.polar.rot_y = %s', marker.centre.polar.rot_y)#The angle the marker is from the robot
                 turnOne = marker.centre.polar.rot_y #Turns the robot to face the marker
-                self.turn(turnOne)
+                #self.turn(turnOne)
         
         
     def find_markers(self, minimum=1, max_loop=10, delta_angle=20):
