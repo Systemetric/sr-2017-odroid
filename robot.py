@@ -255,20 +255,20 @@ class Test(Robot):#Object
         self.motors[0].m0.power = 0
         self.motors[1].m1.power = 0
         
-    def routeNine(self): #Code for moving along a route to pick up cubes  B2,C,A1
+    def routeNine(self):      #Code for moving along a route to pick up cubes  B2,C,A1
         self.forwards(3.5)    #Move along the edge of arena
         self.turn(90)         #Turn to face 1st marker/cube: B2
         marker = self.find_markers()[0]#Look for the marker/cube: B2 to get distance and rotation
-        self.faceMarker(marker)             #Make sure robot is facing cube
-        self.moveToCube(marker)           #Drive towards marker/cube:B2
+        self.faceMarker(marker)        #Make sure robot is facing cube
+        self.moveToCube(marker)        #Drive towards marker/cube:B2
         marker = self.find_markers()[0]#Look for the marker/cube:C which should be in front of the robot
-        self.faceMarker(marker)             #Make sure robot is facing marker/cube:C
-        self.moveToCube(marker)           #Move towards cube/marker: C
-        self.turn(135)                      #Turn to face cube/marker: A1
+        self.faceMarker(marker)        #Make sure robot is facing marker/cube:C
+        self.moveToCube(marker)        #Move towards cube/marker: C
+        self.turn(135)                 #Turn to face cube/marker: A1
         marker = self.find_markers()[0]#Look for the marker/cube: A1 to get distance and rotation
-        self.faceMarker(marker)             #Make sure robot is facing marker/cube: A1
-        self.moveToCube(marker)           #Move towards cube/marker: A1
-        self.forwards(3.5)                  #Move HOME
+        self.faceMarker(marker)        #Make sure robot is facing marker/cube: A1
+        self.moveToCube(marker)        #Move towards cube/marker: A1
+        self.forwards(3.5)             #Move HOME
         
 
     def init_logger(self):
