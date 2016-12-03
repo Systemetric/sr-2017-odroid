@@ -256,8 +256,8 @@ class Test(Robot):#Object
         self.motors[1].m1.power = 0
         
     def routeNine(self): #Code for moving along a route to pick up cubes  B2,C,A1
-        forwards(3.5)    #Move along the edge of arena
-        turn(90)         #Turn to face 1st marker/cube: B2
+        self.forwards(3.5)    #Move along the edge of arena
+        self.turn(90)         #Turn to face 1st marker/cube: B2
         marker = self.find_markers()[0]#Look for the marker/cube: B2 to get distance and rotation
         self.faceMarker(marker)             #Make sure robot is facing cube
         self.moveToCube(marker)           #Drive towards marker/cube:B2
