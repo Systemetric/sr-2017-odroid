@@ -260,14 +260,14 @@ class Test(Robot):#Object
         turn(90)         #Turn to face 1st marker/cube: B2
         marker = self.find_markers()[0]#Look for the marker/cube: B2 to get distance and rotation
         self.faceMarker(marker)             #Make sure robot is facing cube
-        self.moveToMarker(marker)           #Drive towards marker/cube:B2
+        self.moveToCube(marker)           #Drive towards marker/cube:B2
         marker = self.find_markers()[0]#Look for the marker/cube:C which should be in front of the robot
         self.faceMarker(marker)             #Make sure robot is facing marker/cube:C
-        self.moveToMarker(marker)           #Move towards cube/marker: C
+        self.moveToCube(marker)           #Move towards cube/marker: C
         self.turn(135)                      #Turn to face cube/marker: A1
         marker = self.find_markers()[0]#Look for the marker/cube: A1 to get distance and rotation
         self.faceMarker(marker)             #Make sure robot is facing marker/cube: A1
-        self.moveToMarker(marker)           #Move towards cube/marker: A1
+        self.moveToCube(marker)           #Move towards cube/marker: A1
         self.forwards(3.5)                  #Move HOME
         
 
