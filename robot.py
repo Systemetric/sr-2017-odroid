@@ -151,24 +151,34 @@ class Test(Robot):#Object
         if len(markers) >= minimum:
             # If found correct number of markers, stop and return them
             return markers
-        # If the robot cannot see a marker
-        self.log.debug("Searching for markers... (direction = %s)", -delta_angle)
-        #self.turn(-delta_angle)
-        markers = self.lookForMarkers(max_loop=max_loop)
-        if len(markers) >= minimum:
-            return markers
-        self.turn(delta_angle * 2)
-        i = delta_angle
-        while i <= 360:
-            # Continue scanning in a circle - probably not in a simple arc
-            self.log.debug("Searching for markers... (direction = %s)", i)
+        else:
+            
+            # If the robot cannot see a marker
+            self.log.debug("Searching for markers... (direction = %s)", -delta_angle)
+            self.turn(-delta_angle)
             markers = self.lookForMarkers(max_loop=max_loop)
             if len(markers) >= minimum:
+                i = 361
                 return markers
-            i += delta_angle
-            self.turn(delta_angle)
+            else:                
+                self.turn(delta_angle * 2)
+                i = delta_angle
+            while i <= 360:
+            # Continue scanning in a circle - probably not in a simple arc
+                self.log.debug("Searching for markers... (direction = %s)", i)
+                markers = self.lookForMarkers(max_loop=max_loop)
+                self.turn(delta_angle)
+                if len(markers) >= minimum:
+                    i = 361
+                    return markers
+                    
+                else:
+                    i += delta_angle
+            
         # Current direction is ~360 (no change)
-        self.log.error("Marker(s) (minimum %s) not found with %s loops per direction", minimum, max_loop)
+        if markers ==0:
+            
+            self.log.error("Marker(s) (minimum %s) not found with %s loops per direction", minimum, max_loop)
         return markers
         
 
