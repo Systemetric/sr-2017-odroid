@@ -212,6 +212,7 @@ class Test(Robot):#Object
         t_end = time.time() + sleep_time
         while time.time() < t_end:
             self.log.info("current draw is %s Amps, voltage draw is %s Volts", self.power.battery.current, self.power.battery.voltage)
+            self.log.info("time left is %s milliseconds," t_end - time.time())
             #time.sleep(0.001) implicit wait from log code
         self.log.info("current draw is %s Amps, voltage draw is %s Volts", self.power.battery.current, self.power.battery.voltage)
         #adding lines to slow down motors at lower power then up to zero power
