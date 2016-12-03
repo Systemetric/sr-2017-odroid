@@ -153,7 +153,7 @@ class Test(Robot):#Object
             return markers
         # If the robot cannot see a marker
         self.log.debug("Searching for markers... (direction = %s)", -delta_angle)
-        self.turn(-delta_angle)
+        #self.turn(-delta_angle)
         markers = self.lookForMarkers(max_loop=max_loop)
         if len(markers) >= minimum:
             return markers
