@@ -6,7 +6,7 @@ class StepperMotors():
     def __init__(self, port, timeout=0.2):
         self.mbed = serial.Serial(port, timeout=timeout, writeTimeout=timeout)
 
-    def move(self, amount: int):
+    def move(self, amount):
         """
         Move the motors `abs(amount)`cm.
         If negative, go backwards
@@ -16,7 +16,7 @@ class StepperMotors():
         else:
             self.backwards(amount)
     
-    def turn(self, amount: int):
+    def turn(self, amount):
         """
         Turn amount degrees right (clockwise)
         This function is clever and will turn the right direction
@@ -28,23 +28,23 @@ class StepperMotors():
             self.turn_right(amount)
         
     
-    def forwards(self, amount: int):
+    def forwards(self, amount):
         """
         Go forwards `amount` cm.
         """
         
-    def backwards(self, amount: int):
+    def backwards(self, amount):
         """
         Go backwards `amount` cm.
         """
     
-    def turn_left(self, amount: int):
+    def turn_left(self, amount):
         """
         Turn left `amount` degrees.
         This function is not clever and will turn more than 180 degrees if asked.
         """
     
-    def turn_right(self, amount: int):
+    def turn_right(self, amount):
         """
         Turn right `amount` degrees.
         This function is not clever and will turn more than 180 degrees if asked.
