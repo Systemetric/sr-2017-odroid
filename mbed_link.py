@@ -6,7 +6,8 @@ class StepperMotors():
     def __init__(self, log, timeout=None):
         self.log = log
         port = '/dev/ttyACM0'
-        self.mbed = serial.Serial(port, timeout=timeout, writeTimeout=timeout)
+        baudrate = 115200
+        self.mbed = serial.Serial(port, baudrate=baudrate, timeout=timeout, writeTimeout=timeout)
         self.lastTurn = ''
 
     def move(self, amount):
