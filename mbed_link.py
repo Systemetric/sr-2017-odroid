@@ -72,7 +72,7 @@ class StepperMotors():
             self.log.error("Timeout sending {} character to mbed with data {}. Not retrying.".format(command, data))
             return "Error"
         while not self.mbed.inWaiting():
-            pass
+            self.log.debug("Waiting for response.")
         response = self.mbed.read(1)
         if response != "d":
             self.log.error("Mbed sent us a bad response. May or may not have done `{}`".format(command))
