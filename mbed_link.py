@@ -76,5 +76,6 @@ class StepperMotors():
             self.log.error("Mbed sent us a bad response. May or may not have done `{}`".format(command))
             return "Error"
         self.mbed.flushInput()
+        self.log.debug("Sucessfully completed {}({})".format(command, data))
         return
         
