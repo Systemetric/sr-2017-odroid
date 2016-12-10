@@ -64,6 +64,7 @@ class StepperMotors():
         Send the `command` (character) to the mbed with 1 byte of data (int)
         """
         
+        self.log.debug("Starting mbed command {}({})".format(command, data))
         try:
             self.mbed.write(command)
             self.mbed.write(chr(data))
