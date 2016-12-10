@@ -3,8 +3,8 @@ import serial
 
 
 class StepperMotors():
-    def __init__(self, port, logger, timeout=None):
-        self.logger = logger
+    def __init__(self, port, log, timeout=None):
+        self.log = log
         self.mbed = serial.Serial(port, timeout=timeout, writeTimeout=timeout)
 
     def move(self, amount):
