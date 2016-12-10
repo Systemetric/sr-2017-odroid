@@ -35,20 +35,20 @@ class StepperMotors():
         """
         Go forwards `amount` cm.
         """
-        self.send_command("f", amount)
+        self.send_command("f", int(amount))
         
     def backwards(self, amount):
         """
         Go backwards `amount` cm.
         """
-        self.send_command("b", amount)
+        self.send_command("b", int(amount))
     
     def turn_left(self, amount):
         """
         Turn left `amount` degrees.
         This function is not clever and will turn more than 180 degrees if asked.
         """
-        self.send_command("l", amount)
+        self.send_command("l", int(amount))
         self.lastTurn = "Left"
     
     def turn_right(self, amount):
@@ -56,7 +56,7 @@ class StepperMotors():
         Turn right `amount` degrees.
         This function is not clever and will turn more than 180 degrees if asked.
         """
-        self.send_command("r", amount)
+        self.send_command("r", int(amount))
         self.lastTurn = "Right"
     
     def send_command(self, command, data):
