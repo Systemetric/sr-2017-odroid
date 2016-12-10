@@ -24,7 +24,11 @@ class Test(Robot):#Object
         self.log.info('Robot initialised')
         self.wheels = StepperMotors(self.log)
         while 1:
-            self.wheels.forwards(10)
+            #self.wheels.forwards(126)
+            
+            self.wheels.mbed.write('f')
+            self.wheels.mbed.write('~')
+            self.log.info(self.wheels.mbed.read(1))
         while True:
             self.log.info("Start goto cube.")
             marker = self.find_markers()[0]
