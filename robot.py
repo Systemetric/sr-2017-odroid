@@ -28,7 +28,6 @@ class Test(Robot):#Object
             
             self.wheels.mbed.write('f')
             self.wheels.mbed.write('~')
-            self.log.info(self.wheels.mbed.read(1))
         while True:
             self.log.info("Start goto cube.")
             marker = self.find_markers()[0]
