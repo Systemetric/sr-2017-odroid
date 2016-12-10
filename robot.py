@@ -28,8 +28,8 @@ class Test(Robot):#Object
             
             self.wheels.mbed.write('f')
             self.wheels.mbed.write('~')
-            while not self.mbed.inWaiting(): pass
-            response = self.mbed.read(1)
+            while not self.wheels.mbed.inWaiting(): pass
+            response = self.wheels.mbed.read(1)
             self.log.debug(response)
         while True:
             self.log.info("Start goto cube.")
