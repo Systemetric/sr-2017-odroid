@@ -26,7 +26,7 @@ class StepperMotors():
         """
         amount %= 360
         if amount > 180:
-            self.turn_left(360-amount)
+            self.turn_left(360 - amount)
         else:
             self.turn_right(amount)
 
@@ -77,4 +77,3 @@ class StepperMotors():
             return "Error"
         self.mbed.flushInput()
         self.log.debug("Sucessfully completed {}({})".format(command, data))
-        
