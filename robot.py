@@ -1,6 +1,5 @@
 #Just a quick note, can people who work on this code add comments, so when other people get to it they know what is going on. Thank you.
 
-
 from sr.robot import *
 import time
 import math
@@ -14,7 +13,7 @@ class Test(Robot):#Object
     """
     A path-finding robot.
     """
-    
+
     def __init__(self):
         self.init_logger()
         # Please use `log.debug`, `log.info`, `log.warning` or `log.error` instead of `print`
@@ -37,7 +36,6 @@ class Test(Robot):#Object
             self.moveToCube()
             time.sleep(2)
 
-    
     def faceMarker(self, marker):
         """
         Given a marker, point towards it.
@@ -54,7 +52,6 @@ class Test(Robot):#Object
             self.log.debug('marker.centre.polar.rot_y = %s', marker.centre.polar.rot_y) #The angle the marker is from the robot
             turnOne = marker.centre.polar.rot_y #Turns the robot to face the marker
             self.wheels.turn(turnOne)
-    
 
     def turnParallelToMarker(self):
         """
@@ -71,7 +68,7 @@ class Test(Robot):#Object
         else:
             turnTwo = (90 -  abs(marker.orientation.rot_y))
             self.log.debug('Turn two, right %s degrees', turnTwo)
-                
+
         lengthOne = marker.dist
         self.log.debug('Length from marker to robot: %s', marker.dist)
         lengthTwo = (lengthOne) * math.sin(math.radians(marker.orientation.rot_y))#Works out the length to travel to be perpendicualr to the marker
@@ -80,7 +77,6 @@ class Test(Robot):#Object
         time.sleep(2)
         self.log.info('Moving to be perpendicular to marker')
         self.wheels.forwards(lengthTwo)
-        
 
     def turnPerpendicularToFaceMarker(self):
         """
@@ -102,7 +98,6 @@ class Test(Robot):#Object
             self.log.debug('marker.centre.polar.rot_y = %s', marker.centre.polar.rot_y)#The angle the marker is from the robot
             turnOne = marker.centre.polar.rot_y #Turns the robot to face the marker
             self.wheels.turn(turnOne)
-   
 
     def moveToCube(self, minimum_check_distance=0.9):
         """
@@ -130,8 +125,7 @@ class Test(Robot):#Object
                 self.log.debug('marker.centre.polar.rot_y = %s', marker.centre.polar.rot_y)#The angle the marker is from the robot
                 turnOne = marker.centre.polar.rot_y #Turns the robot to face the marker
                 #self.turn(turnOne)
-        
-        
+
     def find_markers(self, minimum=1, max_loop=10, delta_angle=20):
         """
         Find at least minimum markers.
@@ -153,7 +147,6 @@ class Test(Robot):#Object
             # If found correct number of markers, stop and return them
             return markers
         else:
-            
             # If the robot cannot see a marker
             self.log.debug("Searching for markers... (direction = %s)", -delta_angle)
             self.wheels.turn(-delta_angle)
@@ -172,16 +165,12 @@ class Test(Robot):#Object
                 if len(markers) >= minimum:
                     i = 361
                     return markers
-                    
                 else:
                     i += delta_angle
-            
         # Current direction is ~360 (no change)
-        if markers ==0:
-            
+        if markers == 0:
             self.log.error("Marker(s) (minimum %s) not found with %s loops per direction", minimum, max_loop)
         return markers
-        
 
     def lookForMarkers(self, max_loop=float("inf"), sleep_time=0.5):
         """
@@ -197,7 +186,7 @@ class Test(Robot):#Object
             i += 1
             markers = self.see()
         return markers
-        
+
     def routeNine(self):      #Code for moving along a route to pick up cubes  B2,C,A1
         self.wheels.forwards(3)      #Move along the edge of arena //Should be 3.5m but for testing its 3m
         self.wheels.turn(90)         #Turn to face 1st marker/cube: B2
@@ -212,7 +201,6 @@ class Test(Robot):#Object
         self.faceMarker(marker)        #Make sure robot is facing marker/cube: A1
         self.moveToCube(marker)        #Move towards cube/marker: A1
         self.wheels.forwards(3.5)             #Move HOME
-        
 
     def init_logger(self):
         """
@@ -225,9 +213,7 @@ class Test(Robot):#Object
         formatter = logging.Formatter('%(name)s - %(levelname)s - %(message)s')
         console_handler.setFormatter(formatter)
         self.log.addHandler(console_handler)
-        
-        
+
 if __name__ == "__main__":
     Test()
-
 
