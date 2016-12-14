@@ -5,8 +5,7 @@ class DCMotors():
         self.log = log
         self.motors = motors
         self.lastTurn = ''
-    
-        
+
     def forwards(self, distance, speed=0.75, ratio=-1.05, speed_power = 80):
         """
         Go forwards (distance) meters
@@ -48,7 +47,6 @@ class DCMotors():
         while time.time() < t_end:
             self.log.info("current draw is %s Amps, voltage draw is %s Volts", self.power.battery.current, self.power.battery.voltage)
 
-
     def turn(self, degrees, power=40, ratio=-1, sleep_360=2.14):
         """
         Turn degrees anticlockwise.
@@ -66,10 +64,10 @@ class DCMotors():
         self.log.info("Turning %s degrees", degrees)
         self.motors[0].m0.power = power*-ratio
         self.motors[1].m1.power = power
-        
+
         t_end = time.time() + sleep_360/360*degrees
         while time.time() < t_end:
             self.log.info("starting %s Amps, starting %s Volts", self.power.battery.current, self.power.battery.voltage)
-        
+
         self.motors[0].m0.power = 0
         self.motors[1].m1.power = 0
