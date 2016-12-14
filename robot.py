@@ -48,7 +48,7 @@ class Test(Robot):#Object
         turnOne = marker.centre.polar.rot_y #Turns the robot to face the marker
         self.wheels.turn(turnOne)
         marker = self.find_markers()[0]
-        while math.fabs(marker.centre.polar.rot_y) > 5.0: #If the robot is not facing the marker
+        while abs(marker.centre.polar.rot_y) > 5.0: #If the robot is not facing the marker
             marker = self.find_markers(delta_angle=10)[0]
             self.log.debug('Not correctly aligned')
             self.log.debug('marker.centre.polar.rot_y = %s', marker.centre.polar.rot_y) #The angle the marker is from the robot
@@ -66,10 +66,10 @@ class Test(Robot):#Object
         self.log.debug('marker.centre.polar.rot_y = %s', marker.centre.polar.rot_y)#The angle the marker is from the robot
         self.log.debug('marker.orientation.rot_y = %s', marker.orientation.rot_y)# The rotation of the marker
         if self.wheels.lastTurn == 'Left':#Turns the robot left or right to be perpendicular to the marker
-            turnTwo = -(90 -  math.fabs(marker.orientation.rot_y))
+            turnTwo = -(90 -  abs(marker.orientation.rot_y))
             self.log.debug('Turn two, left %s degrees', turnTwo)
         else:
-            turnTwo = (90 -  math.fabs(marker.orientation.rot_y))
+            turnTwo = (90 -  abs(marker.orientation.rot_y))
             self.log.debug('Turn two, right %s degrees', turnTwo)
                 
         lengthOne = marker.dist
@@ -96,7 +96,7 @@ class Test(Robot):#Object
         self.log.info('Turning to face marker')
         self.wheels.turn(turnThree)
         marker = self.find_markers()[0]
-        while math.fabs(marker.centre.polar.rot_y) > 5.0: #If the robot is not facing the marker
+        while abs(marker.centre.polar.rot_y) > 5.0: #If the robot is not facing the marker
             marker = self.find_markers(delta_angle=10)[0]
             self.log.debug('Not correctly aligned')
             self.log.debug('marker.centre.polar.rot_y = %s', marker.centre.polar.rot_y)#The angle the marker is from the robot
@@ -124,7 +124,7 @@ class Test(Robot):#Object
                 self.wheels.forwards(distanceFromCube + 1)
                 break
             self.wheels.forwards(distanceFromCube - (distanceFromCube / 3))
-            while math.fabs(marker.centre.polar.rot_y) > 5.0: #If the robot is not facing the marker
+            while abs(marker.centre.polar.rot_y) > 5.0: #If the robot is not facing the marker
                 marker = self.find_markers()[0]
                 self.log.debug('Not correctly aligned')
                 self.log.debug('marker.centre.polar.rot_y = %s', marker.centre.polar.rot_y)#The angle the marker is from the robot
