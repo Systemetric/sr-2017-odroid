@@ -1,4 +1,3 @@
-
 import serial
 
 
@@ -19,7 +18,7 @@ class StepperMotors():
             self.forwards(amount)
         else:
             self.backwards(amount)
-    
+
     def turn(self, amount):
         """
         Turn amount degrees right (clockwise)
@@ -30,20 +29,19 @@ class StepperMotors():
             self.turn_left(360-amount)
         else:
             self.turn_right(amount)
-        
-    
+
     def forwards(self, amount):
         """
         Go forwards `amount` cm.
         """
         self.send_command("f", int(amount))
-        
+
     def backwards(self, amount):
         """
         Go backwards `amount` cm.
         """
         self.send_command("b", int(amount))
-    
+
     def turn_left(self, amount):
         """
         Turn left `amount` degrees.
@@ -51,7 +49,7 @@ class StepperMotors():
         """
         self.send_command("l", int(amount))
         self.lastTurn = "Left"
-    
+
     def turn_right(self, amount):
         """
         Turn right `amount` degrees.
@@ -59,12 +57,11 @@ class StepperMotors():
         """
         self.send_command("r", int(amount))
         self.lastTurn = "Right"
-    
+
     def send_command(self, command, data):
         """
         Send the `command` (character) to the mbed with 1 byte of data (int)
         """
-        
         self.log.debug("Starting mbed command {}({})".format(command, data))
         try:
             self.mbed.write(command)
@@ -80,5 +77,4 @@ class StepperMotors():
             return "Error"
         self.mbed.flushInput()
         self.log.debug("Sucessfully completed {}({})".format(command, data))
-        return
         
