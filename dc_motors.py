@@ -57,7 +57,7 @@ class DCMotors():
         if degrees < 0:
             self.lastTurn = 'Left'
             power = -power
-            degrees = math.fabs(degrees)
+            degrees = abs(degrees)
         else:
             self.lastTurn = 'Right'
         if degrees < 25:
