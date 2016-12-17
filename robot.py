@@ -20,9 +20,9 @@ class Test(Robot):
         self.init_logger()
         # Please use `log.debug`, `log.info`, `log.warning` or `log.error` instead of `print`
 
-        time.sleep(15)
         self.log.info('Start TobyDragon init')
         super(Test, self).__init__()
+        time.sleep(15)
         self.log.info('Robot initialised')
         self.wheels = StepperMotors(self.log)
         while True:
