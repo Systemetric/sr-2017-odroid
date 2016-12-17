@@ -132,8 +132,7 @@ class Test(Robot):
 
     def moveToCube(self, check_at=1, max_safe_distance=1.5):
         """
-        Given that robot is facing cube,
-        Move towards cube in a straight line,
+        Given that the robot is facing a cube, move to finish on top of the cube.
 
         check_at is the distance from the cube to check whether we're still driving towards the cube
         max_safe_distance is the maximum distance from the cube before check_at comes into effect
