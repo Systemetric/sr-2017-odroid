@@ -22,7 +22,7 @@ class Test(Robot):
 
         self.log.info('Start TobyDragon init')
         super(Test, self).__init__()
-        time.sleep(15)
+        time.sleep(15)  # Wait for people to get out of the way
         self.log.info('Robot initialised')
         self.wheels = StepperMotors(self.log)
         while True:
@@ -170,7 +170,7 @@ class Test(Robot):
         If fail, scan +40.
         If fail, while not scanned 360,
             scan +20
-        If fail raise MarkerNotFoundError
+        If fail, log an error but return `markers` anyway
         """
 
         self.log.info("Searching for markers...")
