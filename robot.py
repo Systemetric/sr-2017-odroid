@@ -37,7 +37,6 @@ class Test(Robot):
 
         self.log.info('Start TobyDragon init')
         super(Test, self).__init__()
-        time.sleep(15)  # Wait for people to get out of the way
         self.log.info('Robot initialised')
         self.wheels = StepperMotors(self.log)
 
@@ -173,10 +172,9 @@ class Test(Robot):
                 self.log.debug("moveToCube: not correctly aligned")
                 self.log.debug("moveToCube: we're %s degrees off, correcting...", marker.centre.polar.rot_y)  # The angle the marker is from the robot
                 self.wheels.turn(marker.centre.polar.rot_y)
-            self.log.debug("moveToCube: moving the rest of the way to the cube (%s); this should be about 1 metre", marker.dist)
+            self.log.debug("moveToCube: moving the rest of the way to the cube (%s + cube_size (0.255)); this should be about 1.255 metres", marker.dist)
             self.wheels.forwards(marker.dist + cube_size)
         self.log.debug("moveToCube: done moving to cube")
-        while True: time.sleep(10)
 
     def find_markers(self, minimum=1, max_loop=10, delta_angle=20):
         """
