@@ -25,6 +25,17 @@ def route(name):
     return wrap
 
 
+@route(0)
+def route_test():
+    self.log.debug("start of test route")
+    marker = self.find_markers()[0]
+    self.log.debug("found marker, facing it")
+    self.faceMarker(marker)
+    self.log.debug("moving to cube")
+    self.moveToCube(marker)
+    self.log.debug("finished test route")
+
+
 class Test(Robot):
     """
     A path-finding robot.
@@ -253,16 +264,6 @@ class Test(Robot):
         self.faceMarker(marker)          # Make sure robot is facing marker/cube: A1
         self.moveToCube(marker)          # Move towards cube/marker: A1
         self.wheels.forwards(3.5)        # Move HOME
-
-    @route(0)
-    def route_test(self):
-        self.log.debug("start of test route")
-        marker = self.find_markers()[0]
-        self.log.debug("found marker, facing it")
-        self.faceMarker(marker)
-        self.log.debug("moving to cube")
-        self.moveToCube(marker)
-        self.log.debug("finished test route")
 
     def init_logger(self):
         """
