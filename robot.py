@@ -276,12 +276,13 @@ class Test(Robot):
     @route(0)
     def route_test(self):
         """
-        Find a marker, then face it and move over it.
+        Move onto marker A.
         """
         self.log.debug("route_test: starting")
+        self.log.debug("route_test: facing marker")
+        self.wheels.turn(45)  # Turn ~45 degrees to face the marker
         marker = self.find_markers()[0]
-        self.log.debug("route_test: found marker, facing it")
-        self.faceMarker(marker)
+        self.faceMarker(marker)  # Perform corrections to face the marker
         self.log.debug("route_test: moving to cube")
         self.moveToCube()
         self.log.debug("route_test: on top of cube")
