@@ -83,8 +83,7 @@ class Test(Robot):
 
     def turnPerpendicularToFaceMarker(self):
         """
-        Given a turn 0f 90 degrees would face towards cube,
-        Work out which direction and turn.
+        Given a turn of 90 degrees would face towards cube, work out which direction and turn.
         """
         if self.wheels.lastTurn == 'Left':  # Turns left or right depending on which side the marker is
             turnThree = 90
