@@ -256,6 +256,9 @@ class Test(Robot):
 
     @route(0)
     def route_test(self):
+        """
+        Find a marker, then face it and move over it.
+        """
         self.log.debug("start of test route")
         marker = self.find_markers()[0]
         self.log.debug("found marker, facing it")
@@ -263,6 +266,31 @@ class Test(Robot):
         self.log.debug("moving to cube")
         self.moveToCube(marker)
         self.log.debug("finished test route")
+
+    @route(9)
+    def route_nine(self):
+        """
+        Collect cube B, cube C, cube A and return home, in a triangle shape.
+        
+        This is the anticlockwise version of route 9, where the robot first goes
+        along the arena wall to its right, then turns left to collect cubes.
+        """
+        self.wheels.forwards(3.5)  # Move halfway down the arena
+        self.wheels.turn(-90)  # Turn left to face into the arena
+        marker = self.find_specific_marker("B")
+        self.faceMarker(marker)
+        self.moveToCube()
+        # Now on top of cube B
+        marker = self.find_specific_marker("C")
+        self.faceMarker(marker)  # We *should* be facing there already
+        self.moveToCube()
+        # Now on top of cube C
+        self.wheels.turn(-135)  # Now facing cube A/our own corner
+        marker = self.find_specific_marker("A")
+        self.faceMarker(marker)
+        self.moveToCube()
+        # Now on top of cube A, with all cubes collected
+        # TODO: move home, optionally based on wall markers
 
     def init_logger(self):
         """
