@@ -257,13 +257,14 @@ class Test(Robot):
         """
         Find a marker, then face it and move over it.
         """
-        self.log.debug("start of test route")
+        self.log.debug("route_test: starting")
         marker = self.find_markers()[0]
-        self.log.debug("found marker, facing it")
+        self.log.debug("route_test: found marker, facing it")
         self.faceMarker(marker)
-        self.log.debug("moving to cube")
+        self.log.debug("route_test: moving to cube")
         self.moveToCube()
-        self.log.debug("finished test route")
+        self.log.debug("route_test: on top of cube")
+        self.log.debug("route_test: finished")
 
     @route(9)
     def route_nine(self):
