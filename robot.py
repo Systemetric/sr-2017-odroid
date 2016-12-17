@@ -154,7 +154,7 @@ class Test(Robot):
                 marker = self.find_markers()[0]
                 self.log.debug("moveToCube: not correctly aligned")
                 self.log.debug("moveToCube: we're %s degrees off", marker.centre.polar.rot_y)  # The angle the marker is from the robot
-                self.turn(marker.centre.polar.rot_y)
+                self.wheels.turn(marker.centre.polar.rot_y)
             self.log.debug("moveToCube: moving the rest of the way to the cube (%s); this should be about 1 metre", marker.dist)
             self.wheels.forwards(marker.dist)
         self.log.debug("moveToCube: done moving to cube")
