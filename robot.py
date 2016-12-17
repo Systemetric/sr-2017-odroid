@@ -160,6 +160,7 @@ class Test(Robot):
             self.log.debug("moveToCube: moving the rest of the way to the cube (%s); this should be about 1 metre", marker.dist)
             self.wheels.forwards(marker.dist + cube_size)
         self.log.debug("moveToCube: done moving to cube")
+        while True: time.sleep(10)
 
     def find_markers(self, minimum=1, max_loop=10, delta_angle=20):
         """
