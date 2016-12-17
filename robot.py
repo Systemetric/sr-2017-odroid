@@ -101,7 +101,7 @@ class Test(Robot):
             turnOne = marker.centre.polar.rot_y  # Turns the robot to face the marker
             self.wheels.turn(turnOne)
 
-    def moveToCube(self, minimum_check_distance=0.9):
+    def moveToCube_dc(self, minimum_check_distance=0.9):
         """
         Given that robot is facing cube,
         Move towards cube in a straight line,
@@ -118,15 +118,46 @@ class Test(Robot):
             self.log.debug("Marker distance: %s", marker.dist)
             self.log.debug("Marker size: %s", marker.info.size)
             if marker.dist < minimum_check_distance:  # If robot is close to the cube, just drive over it
+                self.log.debug("moveToCube_dc: Driving straight towards cube")
                 self.wheels.forwards(distanceFromCube + 1)
                 break
             self.wheels.forwards(distanceFromCube - (distanceFromCube / 3))
-            while abs(marker.centre.polar.rot_y) > 5.0:  # If the robot is not facing the marker
+            while abs(marker.centre.polar.rot_y) > 5.0:  # If the robot is not facing the marker (over 5 degrees off)
                 marker = self.find_markers()[0]
                 self.log.debug('Not correctly aligned')
                 self.log.debug('marker.centre.polar.rot_y = %s', marker.centre.polar.rot_y)  # The angle the marker is from the robot
                 turnOne = marker.centre.polar.rot_y  # Turns the robot to face the marker
                 # self.turn(turnOne)
+
+    def moveToCube(self, check_at=1, max_safe_distance=1.5):
+        """
+        Given that robot is facing cube,
+        Move towards cube in a straight line,
+
+        check_at is the distance from the cube to check whether we're still driving towards the cube
+        max_safe_distance is the maximum distance from the cube before check_at comes into effect
+        check_at must be less that max_safe_distance
+        """
+        marker = self.find_markers()[0]
+        distance_to_cube = marker.dist
+        self.log.debug("moveToCube: cube is %s metres away", distance_to_cube)
+        if distance_to_cube < max_safe_distance:
+            self.log.debug("moveToCube: moving straight to cube, since distance (%s) is under max safe distance (%s)", distance_to_cube, max_safe_distance)
+            self.wheels.forwards(distance_to_cube)
+        else:
+            # We need to check where we are once we're check_at distance from the cube
+            distance_to_move = distance_to_cube - check_at
+            self.log.debug("moveToCube: cube is %s metres away, moving %s metres then checking", distance_to_cube, distance_to_move)
+            self.wheels.forwards(distance_to_move)
+            marker = self.find_markers()[0]
+            while abs(marker.centre.polar.rot_y) > 5.0:  # If the robot is over 5 degrees off:
+                marker = self.find_markers()[0]
+                self.log.debug("moveToCube: not correctly aligned")
+                self.log.debug("moveToCube: we're %s degrees off", marker.centre.polar.rot_y)  # The angle the marker is from the robot
+                self.turn(marker.centre.polar.rot_y)
+            self.log.debug("moveToCube: moving the rest of the way to the cube (%s); this should be about 1 metre", marker.dist)
+            self.wheels.forwards(marker.dist)
+        self.log.debug("moveToCube: done moving to cube")
 
     def find_markers(self, minimum=1, max_loop=10, delta_angle=20):
         """
