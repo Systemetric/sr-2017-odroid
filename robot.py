@@ -189,16 +189,15 @@ class Test(Robot):
         If fail, log an error but return `markers` anyway
         """
 
-        self.log.info("Searching for markers...")
         # Scan 0.
-        self.log.debug("Searching for markers... (direction = 0)")
+        self.log.debug("find_markers: searching for markers... (direction = 0)")
         markers = self.lookForMarkers(max_loop=max_loop)
         if len(markers) >= minimum:
             # If found correct number of markers, stop and return them
             return markers
         else:
             # If the robot cannot see a marker
-            self.log.debug("Searching for markers... (direction = %s)", -delta_angle)
+            self.log.debug("find_markers: searching for markers... (direction = %s)", -delta_angle)
             self.wheels.turn(-delta_angle)
             markers = self.lookForMarkers(max_loop=max_loop)
             if len(markers) >= minimum:
@@ -207,19 +206,19 @@ class Test(Robot):
             else:
                 self.wheels.turn(delta_angle * 2)
                 i = delta_angle
-            while i <= 360:
-                # Continue scanning in a circle - probably not in a simple arc
-                self.log.debug("Searching for markers... (direction = %s)", i)
-                markers = self.lookForMarkers(max_loop=max_loop)
-                self.wheels.turn(delta_angle)
-                if len(markers) >= minimum:
-                    i = 361
-                    return markers
-                else:
-                    i += delta_angle
+                while i <= 360:
+                    # Continue scanning in a circle - probably not in a simple arc
+                    self.log.debug("find_markers: searching for markers... (direction = %s)", i)
+                    markers = self.lookForMarkers(max_loop=max_loop)
+                    self.wheels.turn(delta_angle)
+                    if len(markers) >= minimum:
+                        i = 361
+                        return markers
+                    else:
+                        i += delta_angle
         # Current direction is ~360 (no change)
         if markers == 0:
-            self.log.error("Marker(s) (minimum %s) not found with %s loops per direction", minimum, max_loop)
+            self.log.error("find_markers: markers (minimum %s) not found with %s loops per direction", minimum, max_loop)
         return markers
 
     def lookForMarkers(self, max_loop=float("inf"), sleep_time=0.5):
@@ -227,12 +226,12 @@ class Test(Robot):
         Look for markers.
         if none found within max_loop, return []
         """
-        self.log.info("Looking for markers...")
+        self.log.info("lookForMarkers: looking for markers...")
         time.sleep(sleep_time)  # Rest so camera can focus
         markers = self.see()
         i = 0
         while i <= max_loop and len(markers) == 0:
-            self.log.debug("Cannot see a marker")
+            self.log.debug("lookForMarkers: cannot see a marker")
             i += 1
             markers = self.see()
         return markers
@@ -251,6 +250,10 @@ class Test(Robot):
         self.faceMarker(marker)          # Make sure robot is facing marker/cube: A1
         self.moveToCube(marker)          # Move towards cube/marker: A1
         self.wheels.forwards(3.5)        # Move HOME
+
+    def find_specific_marker(self, marker_type):
+        self.log.debug("find_specific_marker: finding marker of type %s", marker_type)
+        self.log.warn("find_specific_marker: not yet implemented")
 
     @route(0)
     def route_test(self):
@@ -276,16 +279,16 @@ class Test(Robot):
         """
         self.wheels.forwards(3.5)  # Move halfway down the arena
         self.wheels.turn(-90)  # Turn left to face into the arena
-        marker = self.find_specific_marker("B")
+        marker = self.find_specific_marker(MARKER_TOKEN_B)
         self.faceMarker(marker)
         self.moveToCube()
         # Now on top of cube B
-        marker = self.find_specific_marker("C")
+        marker = self.find_specific_marker(MARKER_TOKEN_C)
         self.faceMarker(marker)  # We *should* be facing there already
         self.moveToCube()
         # Now on top of cube C
         self.wheels.turn(-135)  # Now facing cube A/our own corner
-        marker = self.find_specific_marker("A")
+        marker = self.find_specific_marker(MARKER_TOKEN_A)
         self.faceMarker(marker)
         self.moveToCube()
         # Now on top of cube A, with all cubes collected
