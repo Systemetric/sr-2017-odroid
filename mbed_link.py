@@ -32,15 +32,15 @@ class StepperMotors():
 
     def forwards(self, amount):
         """
-        Go forwards `amount` cm.
+        Go forwards `amount` m.
         """
-        self.send_command("f", int(amount))
+        self.send_command("f", int(amount*100))
 
     def backwards(self, amount):
         """
-        Go backwards `amount` cm.
+        Go backwards `amount` m.
         """
-        self.send_command("b", int(amount))
+        self.send_command("b", int(amount*100))
 
     def turn_left(self, amount):
         """
