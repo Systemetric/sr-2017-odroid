@@ -251,9 +251,27 @@ class Test(Robot):
         self.moveToCube(marker)          # Move towards cube/marker: A1
         self.wheels.forwards(3.5)        # Move HOME
 
-    def find_specific_marker(self, marker_type):
+    def find_specific_markers(self, marker_type, delta_angle=20):
+        """
+        Searches for markers in a similar way to find_markers().
+        """
         self.log.debug("find_specific_marker: finding marker of type %s", marker_type)
         self.log.warn("find_specific_marker: not yet implemented")
+        # The maximum number of times to check for a marker from one angle.
+        max_loop = 5
+        # Get a list of markers that are of the requested type.
+        markers = filter(lambda m: m.info.marker_type == marker_type, self.lookForMarkers(max_loop=max_loop))
+        if len(markers) == 0:
+            # Turn slightly left in case we're facing just right of the marker.
+            self.wheels.turn(-delta_angle)
+            i = 0
+            # Search for markers in a full circle
+            while i <= 360 and len(markers) == 0:
+                markers = filter(lambda m: m.info.marker_type == marker_type, self.lookForMarkers(max_loop=max_loop))
+                if len(markers) == 0:
+                    self.wheels.turn(delta_angle)
+                    i += delta_angle
+        return markers
 
     @route(0)
     def route_test(self):
@@ -279,16 +297,17 @@ class Test(Robot):
         """
         self.wheels.forwards(3.5)  # Move halfway down the arena
         self.wheels.turn(-90)  # Turn left to face into the arena
-        marker = self.find_specific_marker(MARKER_TOKEN_B)
+        # Get the closest marker of this type. TODO: refactor this into a function.
+        marker = sorted(self.find_specific_markers(MARKER_TOKEN_B), key=lambda m: m.dist)[0]
         self.faceMarker(marker)
         self.moveToCube()
         # Now on top of cube B
-        marker = self.find_specific_marker(MARKER_TOKEN_C)
+        marker = sorted(self.find_specific_markers(MARKER_TOKEN_C), key=lambda m: m.dist)[0]
         self.faceMarker(marker)  # We *should* be facing there already
         self.moveToCube()
         # Now on top of cube C
         self.wheels.turn(-135)  # Now facing cube A/our own corner
-        marker = self.find_specific_marker(MARKER_TOKEN_A)
+        marker = sorted(self.find_specific_markers(MARKER_TOKEN_A), key=lambda m: m.dist)[0]
         self.faceMarker(marker)
         self.moveToCube()
         # Now on top of cube A, with all cubes collected
