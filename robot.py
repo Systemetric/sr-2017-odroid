@@ -167,11 +167,11 @@ class Test(Robot):
             self.log.debug("moveToCube: cube is %s metres away, moving %s metres then checking", distance_to_cube, distance_to_move)
             self.wheels.forwards(distance_to_move)
             marker = self.find_markers()[0]
-            while abs(marker.centre.polar.rot_y) > 5.0:  # If the robot is over 5 degrees off:
-                marker = self.find_markers()[0]
+            while abs(marker.centre.polar.rot_y) > 1.0:  # If the robot is over 1 degrees off:
                 self.log.debug("moveToCube: not correctly aligned")
                 self.log.debug("moveToCube: we're %s degrees off, correcting...", marker.centre.polar.rot_y)  # The angle the marker is from the robot
                 self.wheels.turn(marker.centre.polar.rot_y)
+                marker = self.find_markers()[0]
             self.log.debug("moveToCube: moving the rest of the way to the cube (%s + cube_size (0.255)); this should be about 1.255 metres", marker.dist)
             self.wheels.forwards(marker.dist + cube_size)
         self.log.debug("moveToCube: done moving to cube")
