@@ -264,7 +264,7 @@ class Test(Robot):
         self.log.debug("found marker, facing it")
         self.faceMarker(marker)
         self.log.debug("moving to cube")
-        self.moveToCube(marker)
+        self.moveToCube()
         self.log.debug("finished test route")
 
     @route(9)
