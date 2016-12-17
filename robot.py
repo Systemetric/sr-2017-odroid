@@ -5,10 +5,24 @@ import time
 import math
 import serial
 import logging
+import functools
 from mbed_link import StepperMotors
 
 
 class MarkerNotFoundError(Exception): pass
+
+
+routes = {}
+# http://thecodeship.com/patterns/guide-to-python-function-decorators/
+# Usage:
+#     @route(9)
+#     def route_nine():
+#         ...
+def route(name):
+    def wrap(fn):
+        routes[name] = fn
+        return fn
+    return wrap
 
 
 class Test(Robot):
@@ -18,6 +32,7 @@ class Test(Robot):
 
     def __init__(self):
         self.init_logger()
+        self.strategy = 0
         # Please use `log.debug`, `log.info`, `log.warning` or `log.error` instead of `print`
 
         self.log.info('Start TobyDragon init')
@@ -25,19 +40,22 @@ class Test(Robot):
         time.sleep(15)  # Wait for people to get out of the way
         self.log.info('Robot initialised')
         self.wheels = StepperMotors(self.log)
-        while True:
-            self.log.info("Start goto cube.")
-            marker = self.find_markers()[0]
-            self.log.debug('marker.centre.polar.rot_y = %s', marker.centre.polar.rot_y)  # The angle the marker is from the robot
-            self.log.debug('marker.orientation.rot_y = %s', marker.orientation.rot_y)  # The rotation of the marker
-            self.faceMarker(marker)
-            time.sleep(2)
-            self.turnParallelToMarker()
-            time.sleep(2)
-            self.turnPerpendicularToFaceMarker()
-            time.sleep(2)
-            self.moveToCube()
-            time.sleep(2)
+
+        routes[self.strategy]()
+
+        # while True:
+        #     self.log.info("Start goto cube.")
+        #     marker = self.find_markers()[0]
+        #     self.log.debug('marker.centre.polar.rot_y = %s', marker.centre.polar.rot_y)  # The angle the marker is from the robot
+        #     self.log.debug('marker.orientation.rot_y = %s', marker.orientation.rot_y)  # The rotation of the marker
+        #     self.faceMarker(marker)
+        #     time.sleep(2)
+        #     self.turnParallelToMarker()
+        #     time.sleep(2)
+        #     self.turnPerpendicularToFaceMarker()
+        #     time.sleep(2)
+        #     self.moveToCube()
+        #     time.sleep(2)
 
     def faceMarker(self, marker):
         """
@@ -235,6 +253,16 @@ class Test(Robot):
         self.faceMarker(marker)          # Make sure robot is facing marker/cube: A1
         self.moveToCube(marker)          # Move towards cube/marker: A1
         self.wheels.forwards(3.5)        # Move HOME
+
+    @route(0)
+    def route_test(self):
+        self.log.debug("start of test route")
+        marker = self.find_markers()[0]
+        self.log.debug("found marker, facing it")
+        self.faceMarker(marker)
+        self.log.debug("moving to cube")
+        self.moveToCube(marker)
+        self.log.debug("finished test route")
 
     def init_logger(self):
         """
