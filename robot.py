@@ -322,7 +322,8 @@ class Test(Robot):
         self.log.setLevel(logging.DEBUG)
         console_handler = logging.StreamHandler()
         console_handler.setLevel(logging.DEBUG)
-        formatter = logging.Formatter('%(name)s - %(levelname)s - %(message)s')
+        # Example: "filename:42 - do_stuff() - INFO: stuff happened"
+        formatter = logging.Formatter('%(module)s:%(lineno)d - %(funcName)s() - %(levelname)s: %(message)s')
         console_handler.setFormatter(formatter)
         self.log.addHandler(console_handler)
 
