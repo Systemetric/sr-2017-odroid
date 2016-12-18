@@ -135,7 +135,7 @@ class Test(Robot):
             self.log.debug("Marker distance: %s", marker.dist)
             self.log.debug("Marker size: %s", marker.info.size)
             if marker.dist < minimum_check_distance:  # If robot is close to the cube, just drive over it
-                self.log.debug("moveToCube_dc: Driving straight towards cube")
+                self.log.debug("Driving straight towards cube")
                 self.wheels.forwards(distanceFromCube + 1)
                 break
             self.wheels.forwards(distanceFromCube - (distanceFromCube / 3))
@@ -157,24 +157,24 @@ class Test(Robot):
         cube_size = 0.255
         marker = self.find_markers()[0]
         distance_to_cube = marker.dist
-        self.log.debug("moveToCube: cube is %s metres away", distance_to_cube)
+        self.log.debug("Cube is %s metres away", distance_to_cube)
         if distance_to_cube < max_safe_distance:
-            self.log.debug("moveToCube: moving straight to cube, since distance (%s) is under max safe distance (%s)", distance_to_cube, max_safe_distance)
+            self.log.debug("Moving straight to cube, since distance (%s) is under max safe distance (%s)", distance_to_cube, max_safe_distance)
             self.wheels.forwards(distance_to_cube + cube_size)
         else:
             # We need to check where we are once we're check_at distance from the cube
             distance_to_move = distance_to_cube - check_at
-            self.log.debug("moveToCube: cube is %s metres away, moving %s metres then checking", distance_to_cube, distance_to_move)
+            self.log.debug("Cube is %s metres away, moving %s metres then checking", distance_to_cube, distance_to_move)
             self.wheels.forwards(distance_to_move)
             marker = self.find_markers()[0]
             while abs(marker.centre.polar.rot_y) > 1.0:  # If the robot is over 1 degrees off:
-                self.log.debug("moveToCube: not correctly aligned")
-                self.log.debug("moveToCube: we're %s degrees off, correcting...", marker.centre.polar.rot_y)  # The angle the marker is from the robot
+                self.log.debug("Not correctly aligned")
+                self.log.debug("We're %s degrees off, correcting...", marker.centre.polar.rot_y)  # The angle the marker is from the robot
                 self.wheels.turn(marker.centre.polar.rot_y)
                 marker = self.find_markers()[0]
-            self.log.debug("moveToCube: moving the rest of the way to the cube (%s + cube_size (0.255)); this should be about 1.255 metres", marker.dist)
+            self.log.debug("Moving the rest of the way to the cube (%s + cube_size (0.255)); this should be about 1.255 metres", marker.dist)
             self.wheels.forwards(marker.dist + cube_size)
-        self.log.debug("moveToCube: done moving to cube")
+        self.log.debug("Done moving to cube")
 
     def find_markers(self, minimum=1, max_loop=10, delta_angle=20):
         """
@@ -190,14 +190,14 @@ class Test(Robot):
         """
 
         # Scan 0.
-        self.log.debug("find_markers: searching for markers... (direction = 0)")
+        self.log.debug("Searching for markers... (direction = 0)")
         markers = self.lookForMarkers(max_loop=max_loop)
         if len(markers) >= minimum:
             # If found correct number of markers, stop and return them
             return markers
         else:
             # If the robot cannot see a marker
-            self.log.debug("find_markers: searching for markers... (direction = %s)", -delta_angle)
+            self.log.debug("Searching for markers... (direction = %s)", -delta_angle)
             self.wheels.turn(-delta_angle)
             markers = self.lookForMarkers(max_loop=max_loop)
             if len(markers) >= minimum:
@@ -208,7 +208,7 @@ class Test(Robot):
                 i = delta_angle
                 while i <= 360:
                     # Continue scanning in a circle - probably not in a simple arc
-                    self.log.debug("find_markers: searching for markers... (direction = %s)", i)
+                    self.log.debug("Searching for markers... (direction = %s)", i)
                     markers = self.lookForMarkers(max_loop=max_loop)
                     self.wheels.turn(delta_angle)
                     if len(markers) >= minimum:
@@ -218,7 +218,7 @@ class Test(Robot):
                         i += delta_angle
         # Current direction is ~360 (no change)
         if markers == 0:
-            self.log.error("find_markers: markers (minimum %s) not found with %s loops per direction", minimum, max_loop)
+            self.log.error("Markers (minimum %s) not found with %s loops per direction", minimum, max_loop)
         return markers
 
     def lookForMarkers(self, max_loop=float("inf"), sleep_time=0.5):
@@ -226,12 +226,12 @@ class Test(Robot):
         Look for markers.
         if none found within max_loop, return []
         """
-        self.log.info("lookForMarkers: looking for markers...")
+        self.log.info("Looking for markers...")
         time.sleep(sleep_time)  # Rest so camera can focus
         markers = self.see()
         i = 0
         while i <= max_loop and len(markers) == 0:
-            self.log.debug("lookForMarkers: cannot see a marker")
+            self.log.debug("Cannot see a marker")
             i += 1
             markers = self.see()
         return markers
@@ -255,8 +255,8 @@ class Test(Robot):
         """
         Searches for markers in a similar way to find_markers().
         """
-        self.log.debug("find_specific_marker: finding marker of type %s", marker_type)
-        self.log.warn("find_specific_marker: not yet implemented")
+        self.log.debug("Finding marker of type %s", marker_type)
+        self.log.warn("Not yet implemented")
         # The maximum number of times to check for a marker from one angle.
         max_loop = 5
         # Get a list of markers that are of the requested type.
@@ -278,15 +278,15 @@ class Test(Robot):
         """
         Move onto marker A.
         """
-        self.log.debug("route_test: starting")
-        self.log.debug("route_test: facing marker")
+        self.log.debug("Starting route")
+        self.log.debug("Facing marker")
         self.wheels.turn(45)  # Turn ~45 degrees to face the marker
         marker = self.find_markers()[0]
         self.faceMarker(marker)  # Perform corrections to face the marker
-        self.log.debug("route_test: moving to cube")
+        self.log.debug("Moving to cube")
         self.moveToCube()
-        self.log.debug("route_test: on top of cube")
-        self.log.debug("route_test: finished")
+        self.log.debug("On top of cube")
+        self.log.debug("Finished route")
 
     @route(9)
     def route_nine(self):
