@@ -7,22 +7,10 @@ import serial
 import logging
 import functools
 from mbed_link import StepperMotors
+import strategies
 
 
 class MarkerNotFoundError(Exception): pass
-
-
-routes = {}
-# http://thecodeship.com/patterns/guide-to-python-function-decorators/
-# Usage:
-#     @route(9)
-#     def route_nine():
-#         ...
-def route(name):
-    def wrap(fn):
-        routes[name] = fn
-        return fn
-    return wrap
 
 
 class Test(Robot):
@@ -40,7 +28,7 @@ class Test(Robot):
         self.log.info('Robot initialised')
         self.wheels = StepperMotors(self.log)
 
-        routes[self.strategy](self)
+        strategies.strategies[self.strategy](self)
 
         # while True:
         #     self.log.info("Start goto cube.")
@@ -272,47 +260,6 @@ class Test(Robot):
                     self.wheels.turn(delta_angle)
                     i += delta_angle
         return markers
-
-    @route(0)
-    def route_test(self):
-        """
-        Move onto marker A.
-        """
-        self.log.debug("Starting route")
-        self.log.debug("Facing marker")
-        self.wheels.turn(45)  # Turn ~45 degrees to face the marker
-        marker = self.find_markers()[0]
-        self.faceMarker(marker)  # Perform corrections to face the marker
-        self.log.debug("Moving to cube")
-        self.moveToCube()
-        self.log.debug("On top of cube")
-        self.log.debug("Finished route")
-
-    @route(9)
-    def route_nine(self):
-        """
-        Collect cube B, cube C, cube A and return home, in a triangle shape.
-        
-        This is the anticlockwise version of route 9, where the robot first goes
-        along the arena wall to its right, then turns left to collect cubes.
-        """
-        self.wheels.forwards(3.5)  # Move halfway down the arena
-        self.wheels.turn(-90)  # Turn left to face into the arena
-        # Get the closest marker of this type. TODO: refactor this into a function.
-        marker = sorted(self.find_specific_markers(MARKER_TOKEN_B), key=lambda m: m.dist)[0]
-        self.faceMarker(marker)
-        self.moveToCube()
-        # Now on top of cube B
-        marker = sorted(self.find_specific_markers(MARKER_TOKEN_C), key=lambda m: m.dist)[0]
-        self.faceMarker(marker)  # We *should* be facing there already
-        self.moveToCube()
-        # Now on top of cube C
-        self.wheels.turn(-135)  # Now facing cube A/our own corner
-        marker = sorted(self.find_specific_markers(MARKER_TOKEN_A), key=lambda m: m.dist)[0]
-        self.faceMarker(marker)
-        self.moveToCube()
-        # Now on top of cube A, with all cubes collected
-        # TODO: move home, optionally based on wall markers
 
     def init_logger(self):
         """
