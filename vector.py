@@ -1,5 +1,7 @@
 from sr.robot import *
 
+import collections
+
 
 # All angles should be in radians.
 Vector = collections.namedtuple("Vector", ["distance", "angle"])
