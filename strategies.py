@@ -2,7 +2,9 @@
 
 
 from sr.robot import *
+
 import functools
+import time
 
 from vector import Vector, marker2vector
 
@@ -47,7 +49,7 @@ def route_test_vector(robot):
         marker = robot.lookForMarkers(max_loop=3)[0]
         vec = marker2vector(marker)
         robot.log.debug("found marker with vector %s", vec)
-        sleep(2)
+        time.sleep(2)
 
 @strategy(9)
 def route_nine(robot):
