@@ -4,6 +4,7 @@
 from sr.robot import *
 import functools
 
+from vector import Vector, marker2vector
 
 strategies = {}  # type: Dict[Callable]
 
@@ -25,7 +26,7 @@ def strategy(name):
     return wrap
 
 
-@strategy(0)
+@strategy("test")
 def route_test(robot):
     """
     Move onto marker A.
@@ -39,6 +40,14 @@ def route_test(robot):
     robot.moveToCube()
     robot.log.debug("On top of cube")
     robot.log.debug("Finished route")
+
+@strategy("print vectors")
+def route_test_vector(robot):
+    while True:
+        marker = robot.lookForMarkers(max_loop=3)[0]
+        vec = marker2vector(marker)
+        robot.log.debug("found marker with vector %s", vec)
+        sleep(2)
 
 @strategy(9)
 def route_nine(robot):
