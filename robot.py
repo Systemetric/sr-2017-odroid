@@ -88,6 +88,7 @@ class Test(Robot):
         or <http://imgur.com/kchEXdP> for a graphical description of how this
         works.
         """
+        beta = math.radians(beta)
         d = vec.distance
         alpha = vec.angle
         r = cube_width / 2
