@@ -1,13 +1,24 @@
 # Just a quick note, can people who work on this code add comments, so when other people get to it they know what is going on. Thank you.
 
 from sr.robot import *
+
+import collections
 import time
 import math
+from math import sin, cos, asin, pi, sqrt
 import serial
 import logging
 import functools
 from mbed_link import StepperMotors
+
 import strategies
+
+
+# All angles should be in radians.
+Vector = collections.namedtuple("Vector", ["distance", "angle"])
+# The distance from the centre of rotation to the webcam.
+cube_width = 0.245  # +/- 0.010
+webcam_offset = 0.245  # The robot is ~2 cubes long.
 
 
 class MarkerNotFoundError(Exception): pass
@@ -43,6 +54,20 @@ class Test(Robot):
         #     time.sleep(2)
         #     self.moveToCube()
         #     time.sleep(2)
+    
+    def correct_for_webcam_placement(self, vec):
+        # type: (Vector) -> Vector
+        """
+        See <https://hillsroadrobotics.slack.com/files/anowlcalledjosh/F3GHUJF8D/office_lens_20161219-122405.jpg>
+        or <http://imgur.com/kchEXdP>
+        """
+        d = vec.distance
+        alpha = vec.angle
+        r = webcam_offset
+
+        m = sqrt(d**2 + r**2 - 2 * d * r * cos(pi - alpha))
+        gamma = asin(d * sin(pi - alpha) / m)
+        return Vector(distance=m, angle=gamma)
 
     def faceMarker(self, marker):
         """
