@@ -30,7 +30,7 @@ class Test(Robot):
 
     def __init__(self):
         self.init_logger()
-        self.strategy = 0
+        self.strategy = "print vectors"
         # Please use `log.debug`, `log.info`, `log.warning` or `log.error` instead of `print`
 
         self.log.info('Start TobyDragon init')
