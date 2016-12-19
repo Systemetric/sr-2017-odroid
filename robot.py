@@ -266,7 +266,7 @@ class Test(Robot):
         Look for markers.
         if none found within max_loop, return []
         """
-        self.log.info("Looking for markers with %s attempts...", max_loops)
+        self.log.info("Looking for markers with %s attempts...", max_loop)
         time.sleep(sleep_time)  # Rest so camera can focus
         markers = self.see()
         i = 0
