@@ -52,7 +52,7 @@ def route_test_vector(robot):
         for marker in markers:
             vec = marker2vector(marker)
             robot.log.debug("found marker with vector %s", vec)
-            robot.log.debug("vector to centre of marker: %s", robot.correct_for_cube_marker_placement(vec, marker.orientation.rot_y))
+            robot.log.debug("vector to centre of cube: %s", robot.correct_for_cube_marker_placement(vec, marker.orientation.rot_y))
             time.sleep(2)
 
 @strategy(9)
