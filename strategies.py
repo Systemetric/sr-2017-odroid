@@ -46,10 +46,14 @@ def route_test(robot):
 @strategy("print vectors")
 def route_test_vector(robot):
     while True:
-        marker = robot.lookForMarkers(max_loop=3)[0]
-        vec = marker2vector(marker)
-        robot.log.debug("found marker with vector %s", vec)
-        time.sleep(2)
+        robot.log.debug("finding markers...")
+        markers = robot.lookForMarkers(max_loop=3)
+        robot.log.debug("found %s markers", len(markers))
+        for marker in markers:
+            vec = marker2vector(marker)
+            robot.log.debug("found marker with vector %s", vec)
+            robot.log.debug("vector to centre of marker: %s", robot.correct_for_cube_marker_placement(vec, marker.orientation.rot_y))
+            time.sleep(2)
 
 @strategy(9)
 def route_nine(robot):
