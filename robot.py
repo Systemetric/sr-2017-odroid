@@ -54,7 +54,7 @@ class Test(Robot):
         #     time.sleep(2)
         #     self.moveToCube()
         #     time.sleep(2)
-    
+
     def correct_for_webcam_placement(self, vec):
         # type: (Vector) -> Vector
         """
