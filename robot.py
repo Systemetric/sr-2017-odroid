@@ -12,10 +12,9 @@ import functools
 from mbed_link import StepperMotors
 
 import strategies
+from vector import Vector
 
 
-# All angles should be in radians.
-Vector = collections.namedtuple("Vector", ["distance", "angle"])
 # The distance from the centre of rotation to the webcam.
 cube_width = 0.245  # +/- 0.010
 webcam_offset = 0.245  # The robot is ~2 cubes long.
