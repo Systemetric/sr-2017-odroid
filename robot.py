@@ -31,7 +31,7 @@ class Test(Robot):
 
     def __init__(self):
         self.init_logger()
-        self.strategy = "test"
+        self.strategy = "b c a"
         # Please use `log.debug`, `log.info`, `log.warning` or `log.error` instead of `print`
 
         self.log.info('Start TobyDragon init')
@@ -244,7 +244,7 @@ class Test(Robot):
         from the cube. "The right way" is defined as within angle_tolerance of
         the angle we should be facing.
         """
-    
+
     def find_closest_marker(self, marker_type):
         # type: (...) -> Marker
         """
@@ -252,6 +252,7 @@ class Test(Robot):
         
         If no markers can be found, an IndexError will be raised.
         """
+        self.log.info("Finding closest marker of type %s", marker_type)
         markers = [m for m in self.find_markers() if m.info.marker_type == marker_type]
         return sorted(markers, key=attrgetter("dist"))[0]
 
