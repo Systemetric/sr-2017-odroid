@@ -66,18 +66,18 @@ class StepperMotors():
         """
         Send the `command` (character) to the mbed with 1 byte of data (int)
         """
-        self.log.debug("Starting mbed command {}({})".format(command, data))
+        self.log.debug("Starting mbed command %s(%s)", command, data)
         try:
             self.mbed.write(command)
             self.mbed.write(chr(data))
         except serial.SerialTimeoutException:
-            self.log.error("Timeout sending {} character to mbed with data {}. Not retrying.".format(command, data))
+            self.log.error("Timeout sending mbed command %s(%s). Not retrying.", command, data)
             return "Error"
         while not self.mbed.inWaiting():
             pass
         response = self.mbed.read(1)
         if response != "d":
-            self.log.error("Mbed sent us a bad response. May or may not have done `{}`".format(command))
+            self.log.error("mbed sent a bad response %s to command %s(%s)", response, comand, data)
             return "Error"
         self.mbed.flushInput()
-        self.log.debug("Sucessfully completed {}({})".format(command, data))
+        self.log.debug("Sucessfully completed command %s(%s)", command, data)
