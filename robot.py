@@ -219,13 +219,19 @@ class Test(Robot):
             self.log.debug("Cube is %s metres away, moving %s metres then checking", distance_to_cube, distance_to_move)
             self.wheels.forwards(distance_to_move)
             marker = self.find_markers()[0]
-            while abs(marker.centre.polar.rot_y) > 1.0:  # If the robot is over 1 degrees off:
+            vec = marker2vector(marker)
+            vec = robot.correct_for_cube_marker_placement(vec, marker.orientation.rot_y)
+            vec = robot.correct_for_webcam_horizontal_placement(vec)
+            while abs(degrees(vec.angle)) > 1.0:  # If the robot is over 1 degrees off:
                 self.log.debug("Not correctly aligned")
-                self.log.debug("We're %s degrees off, correcting...", marker.centre.polar.rot_y)  # The angle the marker is from the robot
-                self.wheels.turn(marker.centre.polar.rot_y)
+                self.log.debug("We're %s degrees off, correcting...", degrees(vec.angle))  # The angle the marker is from the robot
+                self.wheels.turn(degrees(vec.angle))
                 marker = self.find_markers()[0]
-            self.log.debug("Moving the rest of the way to the cube (%s + cube_size (0.255)); this should be about 1.255 metres", marker.dist)
-            self.wheels.forwards(marker.dist + cube_size)
+                vec = marker2vector(marker)
+                vec = robot.correct_for_cube_marker_placement(vec, marker.orientation.rot_y)
+                vec = robot.correct_for_webcam_horizontal_placement(vec)
+            self.log.debug("Moving the rest of the way to the cube (%s + cube_size (0.255)); this should be about 1.255 metres", vec.distance)
+            self.wheels.forwards(vec.distance + cube_size)
         self.log.debug("Done moving to cube")
 
     def move_to_cube(self, marker, check_at=1.0, max_safe_distance=1.5, angle_tolerance=1.0):
