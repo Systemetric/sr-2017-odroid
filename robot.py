@@ -5,7 +5,7 @@ from sr.robot import *
 import collections
 import time
 import math
-from math import sin, cos, asin, pi, sqrt
+from math import sin, cos, asin, pi, sqrt, radians
 import serial
 import logging
 import functools
@@ -88,7 +88,7 @@ class Test(Robot):
         or <http://imgur.com/kchEXdP> for a graphical description of how this
         works.
         """
-        beta = math.radians(beta)
+        beta = radians(beta)
         d = vec.distance
         alpha = vec.angle
         r = cube_width / 2
