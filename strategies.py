@@ -29,6 +29,40 @@ def strategy(name):
     return wrap
 
 
+@strategy("b c a")
+def route_b_c_a(robot):
+    robot.log.debug("Moving 3.25 metres to next to B")
+    robot.wheels.move(3.25)
+    robot.wheels.turn(-90)
+    marker = [m for m in robot.find_markers() if m.info.marker_type == MARKER_TOKEN_B][0]
+    vec = marker2vector(marker)
+    vec = robot.correct_for_cube_marker_placement(vec, marker.orientation.rot_y)
+    vec = robot.correct_for_webcam_horizontal_placement(vec)
+    robot.log.debug("turning to B cube")
+    robot.wheels.turn(vec.angle)
+    robot.log.debug("moving to B cube")
+    robot.wheels.move(vec.distance)
+    marker = [m for m in robot.find_markers() if m.info.marker_type == MARKER_TOKEN_C][0]
+    vec = marker2vector(marker)
+    vec = robot.correct_for_cube_marker_placement(vec, marker.orientation.rot_y)
+    vec = robot.correct_for_webcam_horizontal_placement(vec)
+    robot.log.debug("turning to C cube")
+    robot.wheels.turn(vec.angle)
+    robot.log.debug("moving to C cube")
+    robot.wheels.move(vec.distance)
+    robot.log.debug("turning to roughly A cube")
+    robot.wheels.turn(-135)
+    marker = [m for m in robot.find_markers() if m.info.marker_type == MARKER_TOKEN_A][0]
+    vec = marker2vector(marker)
+    vec = robot.correct_for_cube_marker_placement(vec, marker.orientation.rot_y)
+    vec = robot.correct_for_webcam_horizontal_placement(vec)
+    robot.log.debug("turning to A cube")
+    robot.wheels.turn(vec.angle)
+    robot.log.debug("moving to A cube")
+    robot.wheels.move(vec.distance)
+    robot.log.debug("moving home, give or take")
+    robot.wheels.move(3)
+
 @strategy("test")
 def route_test(robot):
     """
@@ -50,6 +84,7 @@ def route_test(robot):
     robot.wheels.move(0.1)  # Travel past the cube
     robot.log.debug("Finished route")
 
+
 @strategy("print vectors")
 def route_test_vector(robot):
     while True:
@@ -61,6 +96,7 @@ def route_test_vector(robot):
             robot.log.debug("found marker with vector %s", vec)
             robot.log.debug("vector to centre of cube: %s", robot.correct_for_cube_marker_placement(vec, marker.orientation.rot_y))
         time.sleep(5)
+
 
 @strategy(9)
 def route_nine(robot):
