@@ -47,6 +47,7 @@ def route_test(robot):
     robot.log.debug("Moving to cube")
     robot.moveToCube()
     robot.log.debug("On top of cube")
+    robot.wheels.move(0.1)  # Travel past the cube
     robot.log.debug("Finished route")
 
 @strategy("print vectors")
