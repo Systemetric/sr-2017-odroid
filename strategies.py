@@ -37,7 +37,11 @@ def route_test(robot):
     robot.log.debug("Facing marker")
     robot.wheels.turn(45)  # Turn ~45 degrees to face the marker
     marker = robot.find_markers()[0]
-    robot.faceMarker(marker)  # Perform corrections to face the marker
+    vec = marker2vector(marker)
+    vec = robot.correct_for_cube_marker_placement(vec, marker.orientation.rot_y)
+    vec = robot.correct_for_webcam_horizontal_placement(vec)
+    robot.wheels.turn(vec.angle)
+    #robot.faceMarker(marker)  # Perform corrections to face the marker
     robot.log.debug("Moving to cube")
     robot.moveToCube()
     robot.log.debug("On top of cube")
