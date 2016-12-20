@@ -24,7 +24,9 @@ class StepperMotors():
         Turn amount degrees right (clockwise)
         This function is clever and will turn the right direction
         """
+        self.log.debug("Told to turn %s degrees", amount)
         amount %= 360
+        self.log.debug("turn mod 360 is %s", amount)
         if amount > 180:
             self.turn_left(360 - amount)
         else:
@@ -47,6 +49,7 @@ class StepperMotors():
         Turn left `amount` degrees.
         This function is not clever and will turn more than 180 degrees if asked.
         """
+        self.log.debug("Turning left %s degrees", amount)
         self.send_command("l", int(amount))
         self.lastTurn = "Left"
 
@@ -55,6 +58,7 @@ class StepperMotors():
         Turn right `amount` degrees.
         This function is not clever and will turn more than 180 degrees if asked.
         """
+        self.log.debug("Turning right %s degrees", amount)
         self.send_command("r", int(amount))
         self.lastTurn = "Right"
 
