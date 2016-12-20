@@ -78,6 +78,6 @@ class StepperMotors():
         response = self.mbed.read(1)
         if response != "d":
             self.log.error("mbed sent a bad response %s to command %s(%s)", response, command, data)
-            return "Error"
+            #return "Error"
         self.mbed.flushInput()
         self.log.debug("Sucessfully completed command %s(%s)", command, data)
