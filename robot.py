@@ -5,14 +5,15 @@ from sr.robot import *
 import collections
 import time
 import math
-from math import sin, cos, asin, pi, sqrt, radians
+from math import sin, cos, asin, pi, sqrt, radians, degrees
 import serial
 import logging
 import functools
-from mbed_link import StepperMotors
+from operator import attrgetter
 
+from mbed_link import StepperMotors
 import strategies
-from vector import Vector
+from vector import Vector, marker2vector
 
 
 # The distance from the centre of rotation to the webcam.
@@ -112,6 +113,17 @@ class Test(Robot):
             self.log.debug('marker.centre.polar.rot_y = %s', marker.centre.polar.rot_y)  # The angle the marker is from the robot
             turnOne = marker.centre.polar.rot_y  # Turns the robot to face the marker
             self.wheels.turn(turnOne)
+
+    def face_cube(self, marker):
+        # type: (Marker) -> None
+        """
+        Given a cube marker, face the centre of the cube.
+        """
+        self.log.info("Facing marker...")
+        vec = marker2vector(marker)
+        vec = self.correct_for_cube_marker_placement(vec, marker.orientation.rot_y)
+        self.log.debug("Turning %s degrees (%s radians)", degrees(vec.angle), vec.angle)
+        self.wheels.turn(degrees(vec.angle))
 
     def turnParallelToMarker(self):
         """
@@ -215,6 +227,27 @@ class Test(Robot):
             self.log.debug("Moving the rest of the way to the cube (%s + cube_size (0.255)); this should be about 1.255 metres", marker.dist)
             self.wheels.forwards(marker.dist + cube_size)
         self.log.debug("Done moving to cube")
+
+    def move_to_cube(self, marker, check_at=1.0, max_safe_distance=1.5, angle_tolerance=1.0):
+        # type: (Marker, float, float, float) -> None
+        """
+        Given a cube marker, face and move to the cube.
+
+        At check_at metres away from the cube, stop and check if we're still
+        facing the right way, unless we started less than max_safe_distance away
+        from the cube. "The right way" is defined as within angle_tolerance of
+        the angle we should be facing.
+        """
+    
+    def find_closest_marker(self, marker_type):
+        # type: (...) -> Marker
+        """
+        Find and return the closest marker of a given marker type.
+        
+        If no markers can be found, an IndexError will be raised.
+        """
+        markers = [m for m in self.find_markers() if m.info.marker_type == marker_type]
+        return sorted(markers, key=attrgetter("dist"))[0]
 
     def find_markers(self, minimum=1, max_loop=10, delta_angle=20):
         """
