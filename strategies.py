@@ -53,7 +53,7 @@ def route_test_vector(robot):
             vec = marker2vector(marker)
             robot.log.debug("found marker with vector %s", vec)
             robot.log.debug("vector to centre of cube: %s", robot.correct_for_cube_marker_placement(vec, marker.orientation.rot_y))
-            time.sleep(2)
+        time.sleep(5)
 
 @strategy(9)
 def route_nine(robot):
