@@ -231,7 +231,7 @@ class Test(Robot):
                 vec = self.correct_for_cube_marker_placement(vec, marker.orientation.rot_y)
                 vec = self.correct_for_webcam_horizontal_placement(vec)
             self.log.debug("Moving the rest of the way to the cube (%s + cube_size (0.255)); this should be about 1.255 metres", vec.distance)
-            self.wheels.forwards(vec.distance + cube_size)
+            self.wheels.forwards(vec.distance)
         self.log.debug("Done moving to cube")
 
     def move_to_cube(self, marker, check_at=1.0, max_safe_distance=1.5, angle_tolerance=1.0):
