@@ -71,6 +71,12 @@ def turn_10_times(robot):
         robot.wheels.turn(180)
 
 
+@strategy("test turn once")
+def turn_once(robot):
+    robot.wheels.turn(180)
+    robot.wheels.turn(180)
+
+
 @strategy("test cube marker placement correction")
 def route_test_cube_marker_placement_correction(robot):
     while True:
