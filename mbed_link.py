@@ -36,7 +36,13 @@ class StepperMotors():
         """
         Go forwards `amount` m.
         """
-        self.send_command("f", int(amount*100))
+        if amount <= 2.55:
+            self.send_command("f", int(amount * 100))
+        else:
+            amount, remainder = divmod(amount * 100, 10)
+            self.send_command("F", int(amount))
+            if remainder >= 2:
+                self.send_command("f", int(remainder))
 
     def backwards(self, amount):
         """
