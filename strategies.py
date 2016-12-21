@@ -64,6 +64,19 @@ def route_b_c_a(robot):
     robot.log.debug("moving home, give or take")
     robot.wheels.move(2)
 
+
+@strategy("test cube marker placement correction")
+def route_test_cube_marker_placement_correction(robot):
+    while True:
+        print "----------"
+        markers = robot.find_markers()
+        for marker in markers:
+            vec = marker2vector(marker)
+            print "original vector: %r" % vec
+            print "      corrected: %r" % robot.correct_for_cube_marker_placement(vec, marker.orientation.rot_y)
+        time.sleep(5)
+
+
 @strategy("test")
 def route_test(robot):
     """
