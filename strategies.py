@@ -69,7 +69,7 @@ def route_b_c_a(robot):
 def route_test_cube_marker_placement_correction(robot):
     while True:
         print "----------"
-        markers = robot.find_markers()
+        markers = robot.lookForMarkers()
         for marker in markers:
             vec = marker2vector(marker)
             vec = robot.correct_for_webcam_rotational_placement(vec)
@@ -94,14 +94,14 @@ def route_test_all_corrections(robot):
 
 @strategy("test moving")
 def route_test_moving(robot):
-    markers = robot.find_markers()
+    markers = robot.lookForMarkers()
     for marker in markers:
         vec = marker2vector(marker)
         print "original vector:", vec
         print "      corrected:", robot.correct_for_cube_marker_placement(vec, marker.orientation.rot_y)
     robot.wheels.move(2.5)
     robot.wheels.move(1)
-    markers = robot.find_markers()
+    markers = robot.lookForMarkers()
     while True:
         for marker in markers:
             vec = marker2vector(marker)
