@@ -82,7 +82,7 @@ def route_test_cube_marker_placement_correction(robot):
 def route_test_all_corrections(robot):
     while True:
         print "----------"
-        markers = robot.find_markers()
+        markers = robot.lookForMarkers()
         for marker in markers:
             vec = marker2vector(marker)
             print "original vector:", vec
