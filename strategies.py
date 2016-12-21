@@ -32,8 +32,7 @@ def strategy(name):
 @strategy("b c a")
 def route_b_c_a(robot):
     robot.log.debug("Moving 3.25 metres to next to B")
-    robot.wheels.move(1)
-    robot.wheels.move(2.25)
+    robot.wheels.move(3.25)
     robot.wheels.turn(-90)
     marker = [m for m in robot.find_markers() if m.info.marker_type == MARKER_TOKEN_B][0]
     vec = marker2vector(marker)
@@ -59,10 +58,8 @@ def route_b_c_a(robot):
     vec = robot.correct_for_webcam_horizontal_placement(vec)
     robot.log.debug("turning to A cube")
     robot.wheels.turn(degrees(vec.angle))
-    robot.log.debug("moving to A cube")
-    robot.wheels.move(vec.distance)
-    robot.log.debug("moving home, give or take")
-    robot.wheels.move(2)
+    robot.log.debug("moving to A cube and then home")
+    robot.wheels.move(vec.distance + 2)
 
 
 @strategy("test move 4 metres")
