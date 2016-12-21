@@ -91,6 +91,23 @@ def route_test_all_corrections(robot):
         time.sleep(5)
 
 
+@strategy("test moving")
+def route_test_moving(robot):
+    markers = robot.find_markers()
+    for marker in markers:
+        vec = marker2vector(marker)
+        print "original vector:", vec
+        print "      corrected:", robot.correct_for_cube_marker_placement(vec, marker.orientation.rot_y)
+    robot.wheels.move(2.5)
+    robot.wheels.move(1)
+    markers = robot.find_markers()
+    while True:
+        for marker in markers:
+            vec = marker2vector(marker)
+            print "original vector:", vec
+            print "      corrected:", robot.correct_for_cube_marker_placement(vec, marker.orientation.rot_y)
+
+
 @strategy("test")
 def route_test(robot):
     """
