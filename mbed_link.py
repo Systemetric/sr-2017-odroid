@@ -43,6 +43,8 @@ class StepperMotors():
             self.send_command("F", int(amount))
             if remainder >= 2:
                 self.send_command("f", int(remainder))
+            else:
+                self.log.warn("Discarding extra distance of %s cm", remainder)
 
     def backwards(self, amount):
         """
