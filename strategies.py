@@ -107,6 +107,7 @@ def route_test_moving(robot):
             vec = marker2vector(marker)
             print "original vector:", vec
             print "      corrected:", robot.correct_for_cube_marker_placement(vec, marker.orientation.rot_y)
+        time.sleep(3)
 
 
 @strategy("test")
