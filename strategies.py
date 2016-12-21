@@ -65,6 +65,12 @@ def route_b_c_a(robot):
     robot.wheels.move(2)
 
 
+@strategy("test move 4 metres")
+def move_4_metres(robot):
+    robot.wheels.move(2)
+    robot.wheels.move(2)
+
+
 @strategy("test turn 10 times")
 def turn_10_times(robot):
     for i in xrange(20):
