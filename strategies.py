@@ -65,6 +65,12 @@ def route_b_c_a(robot):
     robot.wheels.move(2)
 
 
+@strategy("test turn 10 times")
+def turn_10_times(robot):
+    for i in xrange(20):
+        robot.wheels.turn(180)
+
+
 @strategy("test cube marker placement correction")
 def route_test_cube_marker_placement_correction(robot):
     while True:
