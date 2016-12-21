@@ -75,6 +75,13 @@ class Test(Robot):
         gamma = asin(d * sin(pi - alpha) / m)
         return Vector(distance=m, angle=gamma)
 
+    def correct_for_webcam_rotational_placement(self, vec):
+        # type: (Vector) -> Vector
+        """
+        Compensate for the crookedness of the camera.
+        """
+        return Vector(distance=vec.distance, angle=vec.angle - 0.053)
+
     def correct_for_cube_marker_placement(self, vec, beta):
         # type: (Vector, float) -> Vector
         """
