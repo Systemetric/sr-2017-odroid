@@ -72,8 +72,8 @@ def route_test_cube_marker_placement_correction(robot):
         markers = robot.find_markers()
         for marker in markers:
             vec = marker2vector(marker)
-            print "original vector: %s" % vec
-            print "      corrected: %s" % robot.correct_for_cube_marker_placement(vec, marker.orientation.rot_y)
+            print "original vector:", vec
+            print "      corrected:", robot.correct_for_cube_marker_placement(vec, marker.orientation.rot_y)
         time.sleep(5)
 
 
@@ -84,10 +84,10 @@ def route_test_all_corrections(robot):
         markers = robot.find_markers()
         for marker in markers:
             vec = marker2vector(marker)
-            print "original vector: %s" % vec
+            print "original vector:", vec
             vec = robot.correct_for_cube_marker_placement(vec, marker.orientation.rot_y)
             vec = robot.correct_for_webcam_horizontal_placement(vec)
-            print "      corrected: %s" % vec
+            print "      corrected:", vec
         time.sleep(5)
 
 
