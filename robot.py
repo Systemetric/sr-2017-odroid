@@ -31,7 +31,7 @@ class Test(Robot):
 
     def __init__(self):
         self.init_logger()
-        self.strategy = "b c a"
+        self.strategy = "test cube marker placement correction"
         # Please use `log.debug`, `log.info`, `log.warning` or `log.error` instead of `print`
 
         self.log.info('Start TobyDragon init')
