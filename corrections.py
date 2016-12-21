@@ -3,6 +3,11 @@ from math import sin, cos, asin, pi, sqrt, radians
 from vector import Vector
 
 
+cube_width = 0.245  # +/- 0.010
+# The distance from the centre of rotation to the webcam.
+webcam_horizontal_offset = 0.245  # The robot is ~2 cubes long.
+
+
 def correct_for_webcam_horizontal_placement(self, vec):
     # type: (Vector) -> Vector
     """
@@ -18,7 +23,7 @@ def correct_for_webcam_horizontal_placement(self, vec):
     """
     d = vec.distance
     alpha = vec.angle
-    r = webcam_offset
+    r = webcam_horizontal_offset
     m = sqrt(d**2 + r**2 - 2 * d * r * cos(pi - alpha))
     gamma = asin(d * sin(pi - alpha) / m)
     return Vector(distance=m, angle=gamma)
