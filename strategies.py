@@ -72,7 +72,7 @@ def route_test_cube_marker_placement_correction(robot):
         markers = robot.find_markers()
         for marker in markers:
             vec = marker2vector(marker)
-            vec = correct_for_webcam_rotational_placement(vec)
+            vec = robot.correct_for_webcam_rotational_placement(vec)
             print "original vector:", vec
             print "      corrected:", robot.correct_for_cube_marker_placement(vec, marker.orientation.rot_y)
         time.sleep(5)
