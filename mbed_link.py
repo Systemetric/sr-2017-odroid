@@ -1,5 +1,4 @@
 import serial
-import time
 
 
 class StepperMotors():
@@ -82,4 +81,3 @@ class StepperMotors():
             #return "Error"
         self.mbed.flushInput()
         self.log.debug("Sucessfully completed command %s(%s)", command, data)
-        time.sleep(5)
