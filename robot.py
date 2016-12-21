@@ -76,7 +76,7 @@ class Test(Robot):
         return Vector(distance=m, angle=gamma)
 
     def correct_for_cube_marker_placement(self, vec, beta):
-        # type: (Vector) -> Vector
+        # type: (Vector, float) -> Vector
         """
         Correct for the fact that cube markers are on the edge of the cube, so
         the centre of the marker isn't the same as the centre of the cube.
