@@ -5,7 +5,7 @@ from sr.robot import *
 import collections
 import time
 import math
-from math import sin, cos, asin, pi, sqrt, radians, degrees
+from math import sin, cos, asin, pi, sqrt, radians, degrees, atan2
 import serial
 import logging
 import functools
@@ -257,6 +257,33 @@ class Test(Robot):
                     self.wheels.turn(delta_angle)
                     i += delta_angle
         return markers
+
+    @staticmethod
+    def get_wall_marker_coords(marker_id):
+        direction, wall = divmod(marker_id, 7)
+        decrement, swap = divmod(direction, 2)
+        if decrement:
+            wall = 6-wall
+        wall += 1
+        rtn = [wall, 8 * (7 <= marker_id <= 20)]
+        if swap:
+            rtn = rtn[::-1]
+        return rtn
+    
+    def get_team_corner_coords(self):
+        return [[0, 0], [8, 0], [8, 8], [0, 8]][self.zone]
+
+    def get_vec_to_corner(self, marker_id):
+        marker_pos = self.get_wall_marker_coords(marker_id)
+        corner_pos = self.get_team_corner_coords()
+        deltas = marker_pos[0]-corner_pos[0], marker_pos[1]-corner_pos[1]
+        distance = sqrt(deltas[0]**2 + deltas[1]**2)
+        angle = atan2(deltas[1], deltas[0])
+        angle += pi - (1+(marker_id // 7))*(pi/2)
+        angle %= 2*pi
+        angle -= pi
+        return Vector(distance=distance, angle=angle)
+
 
     def init_logger(self):
         """
