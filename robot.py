@@ -31,7 +31,7 @@ class Test(Robot):
 
     def __init__(self):
         self.init_logger()
-        self.strategy = "test move 4 metres"
+        self.strategy = "test turn 10 times"
         # Please use `log.debug`, `log.info`, `log.warning` or `log.error` instead of `print`
 
         self.log.info('Start TobyDragon init')
