@@ -3,14 +3,14 @@
 
 from sr.robot import *
 
-import functools
+from collections import Callable, Hashable
 from math import degrees
 import time
 
 import corrections
 from vector import Vector, marker2vector
 
-strategies = {}  # type: Dict[Callable]
+strategies = {}
 
 
 def strategy(name):

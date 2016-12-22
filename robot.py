@@ -2,13 +2,9 @@
 
 from sr.robot import *
 
-import collections
 import time
-import math
 from math import sin, cos, asin, pi, sqrt, radians, degrees, atan2
-import serial
 import logging
-import functools
 from operator import attrgetter
 
 from mbed_link import StepperMotors
