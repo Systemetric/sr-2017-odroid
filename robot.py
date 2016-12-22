@@ -13,6 +13,7 @@ from operator import attrgetter
 
 from mbed_link import StepperMotors
 import strategies
+import corrections
 from vector import Vector, marker2vector
 
 
@@ -96,6 +97,7 @@ class Test(Robot):
         return Vector(distance=m, angle=gamma + alpha)
 
     def faceMarker(self, marker):
+        # type: (Marker) -> None
         """
         Given a marker, point towards it.
         """
@@ -113,15 +115,17 @@ class Test(Robot):
             self.wheels.turn(turnOne)
 
     def face_cube(self, marker):
-        # type: (Marker) -> None
+        # type: (Marker) -> float
         """
         Given a cube marker, face the centre of the cube.
+        Returns the distance required to travel on top of that cube
         """
         self.log.info("Facing marker...")
         vec = marker2vector(marker)
         vec = self.correct_for_cube_marker_placement(vec, marker.orientation.rot_y)
         self.log.debug("Turning %s degrees (%s radians)", degrees(vec.angle), vec.angle)
         self.wheels.turn(degrees(vec.angle))
+        return vec.distance + corrections.cube_width
 
     def moveToCube(self, check_at=1, max_safe_distance=1.5):
         """
