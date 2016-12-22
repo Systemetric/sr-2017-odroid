@@ -173,7 +173,7 @@ class Test(Robot):
         If no markers can be found, an IndexError will be raised.
         """
         self.log.info("Finding closest marker of type %s", marker_type)
-        markers = [m for m in self.find_markers() if m.info.marker_type == marker_type]
+        markers = [m for m in self.find_markers(filter_func=lambda marker: marker.info.marker_type == marker_type)]
         return sorted(markers, key=attrgetter("dist"))[0]
 
     def find_markers(self, minimum=1, max_loop=10, delta_angle=20, filter_func=lambda markers: markers):
