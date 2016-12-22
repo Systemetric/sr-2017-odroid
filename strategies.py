@@ -62,6 +62,20 @@ def route_b_c_a(robot):
     robot.wheels.move(vec.distance + 2)
 
 
+@strategy("a c b preinit")
+def point_to_b_preinit(robot):
+    marker = robot.find_closest_marker(MARKER_TOKEN_A)
+    distance = robot.face_marker(marker)
+    return distance
+
+
+@strategy("a c b")
+def route_a_c_b(robot, initial_distance):
+    robot.wheels.move(initial_distance)
+    marker = robot.find_closest_marker(MARKER_TOKEN_B)
+    
+
+
 @strategy("test move 4 metres")
 def move_4_metres(robot):
     robot.wheels.move(2)
