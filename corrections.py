@@ -7,6 +7,7 @@ cube_width = 0.245  # +/- 0.010
 # The distance from the centre of rotation to the webcam.
 webcam_horizontal_offset = 0.245  # The robot is ~2 cubes long.
 
+
 def correct_all_cube(vec, beta):
     vec = correct_for_webcam_rotational_placement(vec)
     vec = correct_for_cube_marker_placement(vec, beta)
