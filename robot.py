@@ -177,7 +177,29 @@ class Test(Robot):
         vec = marker2vector(marker)
         vec = corrections.correct_all_cube(vec, marker.orientation.rot_y)
         if vec.dist <= max_safe_distance:
-            
+            self.log.debug("Moving straight to cube, since distance (%s) is under max safe distance (%s)", distance_to_cube, max_safe_distance)
+            self.wheels.forwards(distance_to_cube + corrections.cube_width)
+        else:
+            # We need to check where we are once we're check_at distance from the cube
+            distance_to_move = vec.dist - check_at
+            self.log.debug("Cube is %s metres away, moving %s metres then checking", vec.dist, distance_to_move)
+            self.wheels.forwards(distance_to_move)
+            while True:  # If the robot is over 1 degrees off:
+                markers = self.find_markers(filter_func = lambda m: m.info.code == marker.info.code)
+                if not markers:
+                    return False
+                marker = markers[0]
+                vec = marker2vector(marker)
+                vec = corrections.correct_all_cube(vec, marker.orientation.rot_y)
+                if abs(degrees(vec.angle)) <= angle_tolerance:
+                    break
+                self.log.debug("Not correctly aligned")
+                self.log.debug("We're %s degrees off, correcting...", degrees(vec.angle))  # The angle the marker is from the robot
+                self.wheels.turn(degrees(vec.angle))
+            self.log.debug("Moving the rest of the way to the cube (%s + cube_size (0.255)); this should be about 1.255 metres", vec.distance)
+            self.wheels.forwards(vec.distance)
+        self.log.debug("Done moving to cube")
+        return True
 
     def find_closest_marker(self, marker_type):
         # type: (...) -> Marker
