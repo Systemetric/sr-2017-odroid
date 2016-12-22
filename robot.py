@@ -41,11 +41,12 @@ class Test(Robot):
         self.init()
         self.wheels = StepperMotors(self.log)
         self.log.info('Robot initialised')
+        args = []
         if self.pre_init_strategy:
-            strategies.strategies[self.pre_init_strategy](self)
+            args = strategies.strategies[self.pre_init_strategy](self)
         self.wait_start()
         self.log.info('Start signal recieved')
-        strategies.strategies[self.strategy](self)
+        strategies.strategies[self.strategy](self, *args)
 
     def correct_for_webcam_horizontal_placement(self, vec):
         # type: (Vector) -> Vector
