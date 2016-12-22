@@ -66,25 +66,26 @@ def route_b_c_a(robot):
 @strategy("a c b preinit")
 def point_to_b_preinit(robot):
     marker = robot.find_closest_marker(MARKER_TOKEN_A)
+    robot.log.info("Facing towards A cube")
     distance = robot.face_cube(marker)
     return distance
 
 
 @strategy("a c b")
 def route_a_c_b(robot, initial_distance):
-    robot.log.debug("Moving to A cube")
+    robot.log.info("Moving to A cube")
     robot.wheels.move(initial_distance)
     marker = robot.find_closest_marker(MARKER_TOKEN_C)
-    robot.log.debug("Moving to C cube")
+    robot.log.info("Moving to C cube")
     robot.move_to_cube(marker)
     robot.wheels.turn(-135)
-    robot.log.debug("Finding B cube")
+    robot.log.info("Finding B cube")
     markers = robot.find_specific_markers(MARKER_TOKEN_B, delta_angle=90)
     while not markers:
         robot.log.error("Could not find ANY B cubes!")
         markers = robot.find_specific_markers(MARKER_TOKEN_B, delta_angle=90)
     marker = markers[0]
-    robot.log.debug("Moving to B cube")
+    robot.log.info("Moving to B cube")
     robot.move_to_cube(marker)
     robot.log.error("NOT IMPLEMENTED - GO HOME")
 
