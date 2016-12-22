@@ -176,7 +176,7 @@ class Test(Robot):
         markers = [m for m in self.find_markers() if m.info.marker_type == marker_type]
         return sorted(markers, key=attrgetter("dist"))[0]
 
-    def find_markers(self, minimum=1, max_loop=10, delta_angle=20):
+    def find_markers(self, minimum=1, max_loop=10, delta_angle=20, filter_func=lambda markers: markers):
         """
         Find at least minimum markers.
         Try max_loop attempts for each direction.
@@ -191,7 +191,7 @@ class Test(Robot):
 
         # Scan 0.
         self.log.debug("Searching for markers... (direction = 0)")
-        markers = self.lookForMarkers(max_loop=max_loop)
+        markers = filter(filter_func, self.lookForMarkers(max_loop=max_loop))
         if len(markers) >= minimum:
             # If found correct number of markers, stop and return them
             return markers
@@ -199,9 +199,8 @@ class Test(Robot):
             # If the robot cannot see a marker
             self.log.debug("Searching for markers... (direction = %s)", -delta_angle)
             self.wheels.turn(-delta_angle)
-            markers = self.lookForMarkers(max_loop=max_loop)
+            markers = filter(filter_func, self.lookForMarkers(max_loop=max_loop))
             if len(markers) >= minimum:
-                i = 361
                 return markers
             else:
                 self.wheels.turn(delta_angle * 2)
@@ -209,16 +208,13 @@ class Test(Robot):
                 while i <= 360:
                     # Continue scanning in a circle - probably not in a simple arc
                     self.log.debug("Searching for markers... (direction = %s)", i)
-                    markers = self.lookForMarkers(max_loop=max_loop)
+                    markers = filter(filter_func, self.lookForMarkers(max_loop=max_loop))
                     self.wheels.turn(delta_angle)
                     if len(markers) >= minimum:
-                        i = 361
                         return markers
-                    else:
-                        i += delta_angle
+                    i += delta_angle
         # Current direction is ~360 (no change)
-        if markers == 0:
-            self.log.error("Markers (minimum %s) not found with %s loops per direction", minimum, max_loop)
+        self.log.error("Markers (minimum %s) not found with %s loops per direction", minimum, max_loop)
         return markers
 
     def lookForMarkers(self, max_loop=float("inf"), sleep_time=0.5):
