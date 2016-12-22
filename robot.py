@@ -31,14 +31,19 @@ class Test(Robot):
 
     def __init__(self):
         self.init_logger()
+        self.pre_init_strategy = None
         self.strategy = "b c a"
         # Please use `log.debug`, `log.info`, `log.warning` or `log.error` instead of `print`
 
         self.log.info('Start TobyDragon init')
-        super(Test, self).__init__()
-        self.log.info('Robot initialised')
+        super(Test, self).__init__(init=False)
+        self.init()
         self.wheels = StepperMotors(self.log)
-
+        self.log.info('Robot initialised')
+        if self.pre_init_strategy:
+            strategies.strategies[self.pre_init_strategy](self)
+        self.wait_start()
+        self.log.info('Start signal recieved')
         strategies.strategies[self.strategy](self)
 
     def correct_for_webcam_horizontal_placement(self, vec):
