@@ -77,7 +77,7 @@ def route_a_c_b(robot, initial_distance):
     robot.wheels.move(initial_distance)
     marker = robot.find_closest_marker(MARKER_TOKEN_C)
     robot.log.info("Moving to C cube")
-    robot.move_to_cube(marker)
+    robot.move_to_cube(marker, max_safe_distance=3)
     robot.wheels.turn(-135)
     robot.log.info("Finding B cube")
     markers = robot.find_specific_markers(MARKER_TOKEN_B, delta_angle=90)
