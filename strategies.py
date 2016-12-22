@@ -7,6 +7,7 @@ import functools
 from math import degrees
 import time
 
+import corrections
 from vector import Vector, marker2vector
 
 strategies = {}  # type: Dict[Callable]
@@ -65,15 +66,30 @@ def route_b_c_a(robot):
 @strategy("a c b preinit")
 def point_to_b_preinit(robot):
     marker = robot.find_closest_marker(MARKER_TOKEN_A)
-    distance = robot.face_marker(marker)
+    distance = robot.face_cube(marker)
     return distance
 
 
 @strategy("a c b")
 def route_a_c_b(robot, initial_distance):
+    robot.log.debug("Moving to A cube")
     robot.wheels.move(initial_distance)
-    marker = robot.find_closest_marker(MARKER_TOKEN_B)
-    
+    marker = robot.find_closest_marker(MARKER_TOKEN_C)
+    robot.log.debug("Moving to C cube")
+    robot.move_to_cube(marker)
+    robot.wheels.turn(-135)
+    robot.log.debug("Finding B cube")
+    markers = robot.find_specific_markers(MARKER_TOKEN_B, delta_angle=90)
+    while not markers:
+        robot.log.error("Could not find ANY B cubes!")
+        markers = robot.find_specific_markers(MARKER_TOKEN_B, delta_angle=90)
+    marker = markers[0]
+    vec = marker2vector(marker)
+    vec = corrections.correct_all_cube(vec, marker.orientation.rot_y)
+    robot.log.debug("Moving to B cube")
+    robot.wheels.turn(degrees(vec.angle))
+    robot.wheels.move(vec.distance)
+    robot.log.error("NOT IMPLEMENTED - GO HOME")
 
 
 @strategy("test move 4 metres")
