@@ -84,11 +84,8 @@ def route_a_c_b(robot, initial_distance):
         robot.log.error("Could not find ANY B cubes!")
         markers = robot.find_specific_markers(MARKER_TOKEN_B, delta_angle=90)
     marker = markers[0]
-    vec = marker2vector(marker)
-    vec = corrections.correct_all_cube(vec, marker.orientation.rot_y)
     robot.log.debug("Moving to B cube")
-    robot.wheels.turn(degrees(vec.angle))
-    robot.wheels.move(vec.distance)
+    robot.move_to_cube(marker)
     robot.log.error("NOT IMPLEMENTED - GO HOME")
 
 
