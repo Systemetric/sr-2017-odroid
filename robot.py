@@ -48,55 +48,6 @@ class Test(Robot):
         self.log.info('Start signal recieved')
         strategies.strategies[self.strategy](self, *args)
 
-    def correct_for_webcam_horizontal_placement(self, vec):
-        # type: (Vector) -> Vector
-        """
-        Correct for the fact that the webcam is not located at the robot's
-        centre of rotation.
-
-        Takes a vector from the point of view of the webcam, modifies it to be
-        from the point of view of the robot's centre of rotation and returns it.
-
-        See <https://hillsroadrobotics.slack.com/files/anowlcalledjosh/F3GHUJF8D/office_lens_20161219-122405.jpg>
-        or <http://imgur.com/kchEXdP> for a graphical description of how this
-        works.
-        """
-        d = vec.distance
-        alpha = vec.angle
-        r = webcam_offset
-        m = sqrt(d**2 + r**2 - 2 * d * r * cos(pi - alpha))
-        gamma = asin(d * sin(pi - alpha) / m)
-        return Vector(distance=m, angle=gamma)
-
-    def correct_for_webcam_rotational_placement(self, vec):
-        # type: (Vector) -> Vector
-        """
-        Compensate for the crookedness of the camera.
-        """
-        return Vector(distance=vec.distance, angle=vec.angle - 0.053)
-
-    def correct_for_cube_marker_placement(self, vec, beta):
-        # type: (Vector, float) -> Vector
-        """
-        Correct for the fact that cube markers are on the edge of the cube, so
-        the centre of the marker isn't the same as the centre of the cube.
-
-        This function requires the angle beta to be passed to it, since it can't
-        be inferred from a vector of d and alpha. It should usually be set to
-        marker.orientation.rot_y.
-
-        See <https://hillsroadrobotics.slack.com/files/anowlcalledjosh/F3GHUJF8D/office_lens_20161219-122405.jpg>
-        or <http://imgur.com/kchEXdP> for a graphical description of how this
-        works.
-        """
-        beta = radians(beta)
-        d = vec.distance
-        alpha = vec.angle
-        r = cube_width / 2
-        m = sqrt(d**2 + r**2 - 2 * d * r * cos(pi - beta))
-        gamma = asin(r * sin(pi - beta) / m)
-        return Vector(distance=m, angle=gamma + alpha)
-
     def faceMarker(self, marker):
         # type: (Marker) -> None
         """
@@ -150,16 +101,16 @@ class Test(Robot):
             self.wheels.forwards(distance_to_move)
             marker = self.find_markers()[0]
             vec = marker2vector(marker)
-            vec = self.correct_for_cube_marker_placement(vec, marker.orientation.rot_y)
-            vec = self.correct_for_webcam_horizontal_placement(vec)
+            vec = corrections.correct_for_cube_marker_placement(vec, marker.orientation.rot_y)
+            vec = corrections.correct_for_webcam_horizontal_placement(vec)
             while abs(degrees(vec.angle)) > 1.0:  # If the robot is over 1 degrees off:
                 self.log.debug("Not correctly aligned")
                 self.log.debug("We're %s degrees off, correcting...", degrees(vec.angle))  # The angle the marker is from the robot
                 self.wheels.turn(degrees(vec.angle))
                 marker = self.find_markers()[0]
                 vec = marker2vector(marker)
-                vec = self.correct_for_cube_marker_placement(vec, marker.orientation.rot_y)
-                vec = self.correct_for_webcam_horizontal_placement(vec)
+                vec = corrections.correct_for_cube_marker_placement(vec, marker.orientation.rot_y)
+                vec = corrections.correct_for_webcam_horizontal_placement(vec)
             self.log.debug("Moving the rest of the way to the cube (%s + cube_size (0.255)); this should be about 1.255 metres", vec.distance)
             self.wheels.forwards(vec.distance)
         self.log.debug("Done moving to cube")
