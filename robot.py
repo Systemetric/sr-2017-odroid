@@ -174,6 +174,10 @@ class Test(Robot):
         from the cube. "The right way" is defined as within angle_tolerance of
         the angle we should be facing.
         """
+        vec = marker2vector(marker)
+        vec = corrections.correct_all_cube(vec, marker.orientation.rot_y)
+        if vec.dist <= max_safe_distance:
+            
 
     def find_closest_marker(self, marker_type):
         # type: (...) -> Marker
