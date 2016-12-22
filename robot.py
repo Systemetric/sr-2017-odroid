@@ -123,7 +123,7 @@ class Test(Robot):
         """
         self.log.info("Facing marker...")
         vec = marker2vector(marker)
-        vec = self.correct_all_cube(vec, marker.orientation.rot_y)
+        vec = corrections.correct_all_cube(vec, marker.orientation.rot_y)
         self.log.debug("Turning %s degrees (%s radians)", degrees(vec.angle), vec.angle)
         self.wheels.turn(degrees(vec.angle))
         return vec.distance + corrections.cube_width
