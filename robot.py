@@ -17,12 +17,7 @@ import corrections
 from vector import Vector, marker2vector
 
 
-# The distance from the centre of rotation to the webcam.
 cube_width = 0.245  # +/- 0.010
-webcam_offset = 0.245  # The robot is ~2 cubes long.
-
-
-class MarkerNotFoundError(Exception): pass
 
 
 class Test(Robot):
