@@ -262,7 +262,6 @@ class Test(Robot):
         angle -= pi
         return Vector(distance=distance, angle=angle)
 
-
     def init_logger(self):
         """
         Initialise logger.
