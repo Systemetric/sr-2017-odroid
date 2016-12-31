@@ -7,7 +7,6 @@ class StepperMotors():
         port = '/dev/ttyACM0'
         baudrate = 115200
         self.mbed = serial.Serial(port, baudrate=baudrate, timeout=timeout, writeTimeout=timeout)
-        self.lastTurn = ''
 
     def move(self, amount):
         """
@@ -59,7 +58,6 @@ class StepperMotors():
         """
         self.log.debug("Turning left %s degrees", amount)
         self.send_command("l", int(amount))
-        self.lastTurn = "Left"
 
     def turn_right(self, amount):
         """
@@ -68,7 +66,6 @@ class StepperMotors():
         """
         self.log.debug("Turning right %s degrees", amount)
         self.send_command("r", int(amount))
-        self.lastTurn = "Right"
 
     def send_command(self, command, data):
         """
