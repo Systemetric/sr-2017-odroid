@@ -4,7 +4,7 @@
 from sr.robot import *
 
 from collections import Callable, Hashable
-from math import degrees
+from math import degrees, radians
 import time
 
 import corrections
@@ -197,7 +197,8 @@ def test_marker_drive_home(robot):
                 arena_marker.info.code,
                 vec.distance,
                 degrees(vec.angle))
-    vec = robot.get_vec_to_corner(arena_marker.info.code)
+    #vec = robot.get_vec_to_corner(arena_marker.info.code)
+    vec = robot.get_vec_to_corner2(vec, radians(arena_marker.orientation.rot_y), arena_marker.info.offset)
     robot.wheels.turn(degrees(vec.angle))
     robot.wheels.move(vec.distance)
     
