@@ -32,6 +32,7 @@ class Test(Robot):
         self.init()
         self.wheels = StepperMotors(self.log)
         self.log.info('Robot initialised')
+        self.log.info("Battery(voltage = {}, current = {})".format(self.power.battery.voltage, self.power.battery.current))
         args = []
         if self.pre_init_strategy:
             args = strategies.strategies[self.pre_init_strategy](self)
