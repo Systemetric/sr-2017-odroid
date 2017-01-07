@@ -35,6 +35,7 @@ class Test(Robot):
         args = []
         if self.pre_init_strategy:
             args = strategies.strategies[self.pre_init_strategy](self)
+        # Wait until the start button is pressed
         self.wait_start()
         self.log.info('Start signal recieved')
         strategies.strategies[self.strategy](self, *args)
@@ -70,42 +71,6 @@ class Test(Robot):
         self.wheels.turn(degrees(vec.angle))
         return vec.distance + corrections.cube_width
 
-    def moveToCube(self, check_at=1, max_safe_distance=1.5):
-        """
-        Given that the robot is facing a cube, move to finish on top of the cube.
-
-        check_at is the distance from the cube to check whether we're still driving towards the cube
-        max_safe_distance is the maximum distance from the cube before check_at comes into effect
-        check_at must be less that max_safe_distance
-        """
-        cube_size = 0.255
-        marker = self.find_markers()[0]
-        distance_to_cube = marker.dist
-        self.log.debug("Cube is %s metres away", distance_to_cube)
-        if distance_to_cube < max_safe_distance:
-            self.log.debug("Moving straight to cube, since distance (%s) is under max safe distance (%s)", distance_to_cube, max_safe_distance)
-            self.wheels.forwards(distance_to_cube + cube_size)
-        else:
-            # We need to check where we are once we're check_at distance from the cube
-            distance_to_move = distance_to_cube - check_at
-            self.log.debug("Cube is %s metres away, moving %s metres then checking", distance_to_cube, distance_to_move)
-            self.wheels.forwards(distance_to_move)
-            marker = self.find_markers()[0]
-            vec = marker2vector(marker)
-            vec = corrections.correct_for_cube_marker_placement(vec, marker.orientation.rot_y)
-            vec = corrections.correct_for_webcam_horizontal_placement(vec)
-            while abs(degrees(vec.angle)) > 1.0:  # If the robot is over 1 degrees off:
-                self.log.debug("Not correctly aligned")
-                self.log.debug("We're %s degrees off, correcting...", degrees(vec.angle))  # The angle the marker is from the robot
-                self.wheels.turn(degrees(vec.angle))
-                marker = self.find_markers()[0]
-                vec = marker2vector(marker)
-                vec = corrections.correct_for_cube_marker_placement(vec, marker.orientation.rot_y)
-                vec = corrections.correct_for_webcam_horizontal_placement(vec)
-            self.log.debug("Moving the rest of the way to the cube (%s + cube_size (0.255)); this should be about 1.255 metres", vec.distance)
-            self.wheels.forwards(vec.distance)
-        self.log.debug("Done moving to cube")
-
     def move_to_cube(self, marker, check_at=1.0, max_safe_distance=1.5, angle_tolerance=1.0):
         # type: (Marker, float, float, float) -> None
         """
@@ -118,6 +83,7 @@ class Test(Robot):
         """
         vec = marker2vector(marker)
         vec = corrections.correct_all_cube(vec, marker.orientation.rot_y)
+        
         if vec.distance <= max_safe_distance:
             self.log.debug("Moving straight to cube, since distance (%s) is under max safe distance (%s)", vec.distance, max_safe_distance)
             self.wheels.forwards(vec.distance + corrections.cube_width)
@@ -142,7 +108,7 @@ class Test(Robot):
             self.wheels.forwards(vec.distance)
         self.log.debug("Done moving to cube")
         return True
-
+`
     def find_closest_marker(self, marker_type):
         # type: (...) -> Marker
         """
