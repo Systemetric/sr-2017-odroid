@@ -223,6 +223,22 @@ class Test(Robot):
         angle -= pi
         return Vector(distance=distance, angle=angle)
 
+    lookup_distances = {
+        0: 1,
+        1: 2,
+        
+        26: 2,
+        27: 1
+    }
+
+    def get_vec_to_corner2(self, vec, beta, marker_id):
+        d = vec.distance
+        alpha = vec.angle
+        l = self.lookup_distances[(marker_id - self.zone*7) % 28]
+        m = sqrt(d**2 + l**2 - 2*d*l*cos(beta))
+        gamma = asin(l*sin(beta)/m) - alpha
+        return Vector(distance=m, angle=gamma)
+
     def init_logger(self):
         """
         Initialise logger.
