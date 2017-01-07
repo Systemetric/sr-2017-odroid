@@ -192,8 +192,8 @@ def test_marker_id_types(robot):
 def test_marker_drive_home(robot):
     arena_marker = robot.find_closest_marker(MARKER_ARENA)
     vec = robot.get_vec_to_corner(arena_marker.info.code)
-    robot.wheels.move(vec.distance)
     robot.wheels.turn(degrees(vec.angle))
+    robot.wheels.move(vec.distance)
     
     
     
