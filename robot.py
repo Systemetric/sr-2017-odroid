@@ -71,7 +71,7 @@ class Test(Robot):
         self.wheels.turn(degrees(vec.angle))
         return vec.distance + corrections.cube_width
 
-    def move_to_cube(self, marker, check_at=1.0, max_safe_distance=1.5, angle_tolerance=1.0):
+    def move_to_cube(self, marker, check_at=1.0, max_safe_distance=2, angle_tolerance=1.0):
         # type: (Marker, float, float, float) -> None
         """
         Given a cube marker, face and move to the cube.
