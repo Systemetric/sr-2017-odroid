@@ -235,8 +235,8 @@ class Test(Robot):
         d = vec.distance
         alpha = vec.angle
         l = self.lookup_distances[(marker_id - self.zone*7) % 28]
-        m = sqrt(d**2 + l**2 - 2*d*l*cos(beta))
-        gamma = asin(l*sin(beta)/m) - alpha
+        m = sqrt(d**2 + l**2 - 2*d*l*cos(pi/2 - beta))
+        gamma = asin(l*sin(pi/2 - beta)/m) - alpha
         return Vector(distance=m, angle=gamma)
 
     def init_logger(self):
