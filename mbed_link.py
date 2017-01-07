@@ -81,8 +81,7 @@ class StepperMotors():
         while not self.mbed.inWaiting():
             pass
         response = self.mbed.read(1)
-        if response != "d":
-            self.log.error("mbed sent a bad response %s to command %s(%s)", response, command, data)
+        self.log.debug("mbed sent response %s", response, command, data)
             #return "Error"
         self.mbed.flushInput()
         self.log.debug("Sucessfully completed command %s(%s)", command, data)
