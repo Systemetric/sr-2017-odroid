@@ -57,7 +57,7 @@ class StepperMotors():
         This function is not clever and will turn more than 180 degrees if asked.
         """
         self.log.debug("Turning left %s degrees", amount)
-        self.send_command("l", int(amount))
+        self.send_command("l", int(round(amount)))
 
     def turn_right(self, amount):
         """
@@ -65,7 +65,7 @@ class StepperMotors():
         This function is not clever and will turn more than 180 degrees if asked.
         """
         self.log.debug("Turning right %s degrees", amount)
-        self.send_command("r", int(amount))
+        self.send_command("r", int(round(amount)))
 
     def send_command(self, command, data):
         """
