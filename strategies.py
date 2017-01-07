@@ -191,6 +191,12 @@ def test_marker_id_types(robot):
 @strategy("test_marker_drive_home")
 def test_marker_drive_home(robot):
     arena_marker = robot.find_closest_marker(MARKER_ARENA)
+    vec = marker2vector(marker)
+    robot.log.info("Marker(type=%s, id=%s, distance=%s, angle=%s)",
+                marker.info.marker_type,
+                marker.info.code,
+                vec.distance,
+                degrees(vec.angle))
     vec = robot.get_vec_to_corner(arena_marker.info.code)
     robot.wheels.turn(degrees(vec.angle))
     robot.wheels.move(vec.distance)
