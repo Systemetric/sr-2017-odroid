@@ -83,7 +83,7 @@ class Test(Robot):
         """
         distance = self.face_cube(marker)
         if distance <= max_safe_distance:
-            self.log.debug("Moving straight to cube, since distance (%s) is under max safe distance (%s)", vec.distance, max_safe_distance)
+            self.log.debug("Moving straight to cube, since distance (%s) is under max safe distance (%s)", distance, max_safe_distance)
             self.wheels.forwards(distance)
         else:
             # We need to check where we are once we're check_at distance from the cube
