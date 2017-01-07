@@ -180,7 +180,7 @@ def test_marker_id_types(robot):
     while True:
         markers = robot.lookForMarkers()
         for marker in markers:
-            robot.log.info("Marker(type={}, id={})", str(marker.info.marker_type), str(marker.info.code))
+            robot.log.info("Marker(type=%s, id=%s)", str(marker.info.marker_type), str(marker.info.code))
     
     
     
