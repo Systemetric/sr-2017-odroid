@@ -32,8 +32,8 @@ def strategy(name):
 
 @strategy("b c a")
 def route_b_c_a(robot):
-    robot.log.debug("Moving 3.25 metres to next to B")
-    robot.wheels.move(3.25)
+    robot.log.debug("Moving 3.5 metres to next to B")
+    robot.wheels.move(3.5)
     robot.wheels.turn(-90)
     marker = [m for m in robot.find_markers() if m.info.marker_type == MARKER_TOKEN_B][0]
     vec = marker2vector(marker)
@@ -45,8 +45,7 @@ def route_b_c_a(robot):
     robot.wheels.move(vec.distance)
     marker = [m for m in robot.find_markers() if m.info.marker_type == MARKER_TOKEN_C][0]
     vec = marker2vector(marker)
-    vec = robot.correct_for_cube_marker_placement(vec, marker.orientation.rot_y)
-    vec = robot.correct_for_webcam_horizontal_placement(vec)
+    vec = corrections.correct_all_cube(vec, marker.orientation.rot_y)
     robot.log.debug("turning to C cube")
     robot.wheels.turn(degrees(vec.angle))
     robot.log.debug("moving to C cube")
@@ -55,8 +54,7 @@ def route_b_c_a(robot):
     robot.wheels.turn(-135)
     marker = [m for m in robot.find_markers() if m.info.marker_type == MARKER_TOKEN_A][0]
     vec = marker2vector(marker)
-    vec = robot.correct_for_cube_marker_placement(vec, marker.orientation.rot_y)
-    vec = robot.correct_for_webcam_horizontal_placement(vec)
+    vec = corrections.correct_all_cube(vec, marker.orientation.rot_y)
     robot.log.debug("turning to A cube")
     robot.wheels.turn(degrees(vec.angle))
     robot.log.debug("moving to A cube and then home")
