@@ -174,14 +174,7 @@ def route_test_vector(robot):
             robot.log.debug("vector to centre of cube: %s", robot.correct_for_cube_marker_placement(vec, marker.orientation.rot_y))
         time.sleep(5)
 
-@strategy("move_past_a")
-def route_move_past_a(robot):
-    
-    robot.log.info("Finding A cube")
-    marker = robot.find_closest_marker(MARKER_TOKEN_A)
-    robot.log.info("Moving to A cube")
-    robot.move_to_cube(marker, distance_after=2)
-    
+
 @strategy("test_marker_id_types")
 def test_marker_id_types(robot):
     while True:
