@@ -81,7 +81,9 @@ class Test(Robot):
         from the cube. "The right way" is defined as within angle_tolerance of
         the angle we should be facing.
         """
+        time.sleep(1)
         distance = self.face_cube(marker)
+        time.sleep(1)
         if distance <= max_safe_distance:
             self.log.debug("Moving straight to cube, since distance (%s) is under max safe distance (%s)", distance, max_safe_distance)
             self.wheels.forwards(distance)
