@@ -88,7 +88,7 @@ class Test(Robot):
         else:
             # We need to check where we are once we're check_at distance from the cube
             distance_to_move = distance - corrections.cube_width - check_at
-            self.log.debug("Cube is %s metres away, moving %s metres then checking", vec.distance, distance_to_move)
+            self.log.debug("Cube is %s metres away, moving %s metres then checking", distance, distance_to_move)
             self.wheels.forwards(distance_to_move)
             while True:  # If the robot is over 1 degrees off:
                 markers = self.find_markers(filter_func = lambda m: m.info.code == marker.info.code)
