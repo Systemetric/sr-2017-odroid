@@ -72,7 +72,7 @@ class Test(Robot):
         self.wheels.turn(degrees(vec.angle))
         return vec.distance + corrections.cube_width
 
-    def move_to_cube(self, marker, check_at=1.0, max_safe_distance=3, angle_tolerance=1.0):
+    def move_to_cube(self, marker, check_at=1.0, max_safe_distance=3, angle_tolerance=1.0, distance_after=0.0):
         # type: (Marker, float, float, float) -> None
         """
         Given a cube marker, face and move to the cube.
@@ -85,7 +85,7 @@ class Test(Robot):
         distance = self.face_cube(marker)
         if distance <= max_safe_distance:
             self.log.debug("Moving straight to cube, since distance (%s) is under max safe distance (%s)", distance, max_safe_distance)
-            self.wheels.forwards(distance)
+            self.wheels.forwards(distance+distance_after)
         else:
             # We need to check where we are once we're check_at distance from the cube
             distance_to_move = distance - corrections.cube_width - check_at
@@ -104,7 +104,7 @@ class Test(Robot):
                 self.log.debug("We're %s degrees off, correcting...", degrees(vec.angle))  # The angle the marker is from the robot
                 self.wheels.turn(degrees(vec.angle))
             self.log.debug("Moving the rest of the way to the cube (%s + cube_size (0.255)); this should be about 1.255 metres", vec.distance)
-            self.wheels.forwards(vec.distance)
+            self.wheels.forwards(vec.distance+distance_after)
         self.log.debug("Done moving to cube")
         return True
 
