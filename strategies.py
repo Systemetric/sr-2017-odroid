@@ -33,7 +33,7 @@ def strategy(name):
 @strategy("b c a")
 def route_b_c_a(robot):
     robot.log.debug("Moving 3.75 metres to next to B")
-    robot.wheels.move(3.75)
+    robot.wheels.move(3.25)
     robot.wheels.turn(-90)
     marker = robot.find_closest_marker(MARKER_TOKEN_B)
     robot.log.info("Moving to B cube")
