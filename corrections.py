@@ -13,7 +13,7 @@ camera_angular_offset = -0.053
 
 
 def correct_all_cube(vec, beta):
-    vec = correct_for_webcam_rotational_placement(vec)
+    #vec = correct_for_webcam_rotational_placement(vec)
     vec = correct_for_cube_marker_placement(vec, beta)
     vec = correct_for_webcam_horizontal_placement(vec)
     return vec
