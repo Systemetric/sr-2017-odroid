@@ -108,7 +108,7 @@ class Test(Robot):
             self.wheels.forwards(vec.distance)
         self.log.debug("Done moving to cube")
         return True
-`
+
     def find_closest_marker(self, marker_type):
         # type: (...) -> Marker
         """
