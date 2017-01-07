@@ -81,15 +81,13 @@ class Test(Robot):
         from the cube. "The right way" is defined as within angle_tolerance of
         the angle we should be facing.
         """
-        vec = marker2vector(marker)
-        vec = corrections.correct_all_cube(vec, marker.orientation.rot_y)
-        
-        if vec.distance <= max_safe_distance:
+        distance = self.face_cube(marker)
+        if distance <= max_safe_distance:
             self.log.debug("Moving straight to cube, since distance (%s) is under max safe distance (%s)", vec.distance, max_safe_distance)
-            self.wheels.forwards(vec.distance + corrections.cube_width)
+            self.wheels.forwards(distance)
         else:
             # We need to check where we are once we're check_at distance from the cube
-            distance_to_move = vec.distance - check_at
+            distance_to_move = distance - corrections.cube_width - check_at
             self.log.debug("Cube is %s metres away, moving %s metres then checking", vec.distance, distance_to_move)
             self.wheels.forwards(distance_to_move)
             while True:  # If the robot is over 1 degrees off:
