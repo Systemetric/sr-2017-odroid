@@ -199,5 +199,9 @@ def test_marker_drive_home(robot):
                 degrees(vec.angle))
     #vec = robot.get_vec_to_corner(arena_marker.info.code)
     vec = robot.get_vec_to_corner2(vec, radians(arena_marker.orientation.rot_y), arena_marker.info.offset)
+    robot.log.info("Corner: %r", vec)
     robot.wheels.turn(degrees(vec.angle))
-    robot.wheels.move(vec.distance)
+    if vec.distance - 0.5 <= 0:
+        robot.log.info("not moving, less than 0.5 metres to corner")
+    else:
+        robot.wheels.move(vec.distance - 0.5)
