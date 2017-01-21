@@ -201,6 +201,3 @@ def test_marker_drive_home(robot):
     vec = robot.get_vec_to_corner2(vec, radians(arena_marker.orientation.rot_y), arena_marker.info.offset)
     robot.wheels.turn(degrees(vec.angle))
     robot.wheels.move(vec.distance)
-    
-    
-    
