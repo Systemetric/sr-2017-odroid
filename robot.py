@@ -27,18 +27,18 @@ class Test(Robot):
         self.strategy = "b c a"
         # Please use `log.debug`, `log.info`, `log.warning` or `log.error` instead of `print`
 
-        self.log.info('Start TobyDragon init')
+        self.log.info("Start TobyDragon init")
         super(Test, self).__init__(init=False)
         self.init()
         self.wheels = StepperMotors(self.log)
-        self.log.info('Robot initialised')
+        self.log.info("Robot initialised")
         self.log.info("Battery(voltage = {}, current = {})".format(self.power.battery.voltage, self.power.battery.current))
         args = []
         if self.pre_init_strategy:
             args = strategies.strategies[self.pre_init_strategy](self)
         # Wait until the start button is pressed
         self.wait_start()
-        self.log.info('Start signal recieved')
+        self.log.info("Start signal recieved")
         strategies.strategies[self.strategy](self, *args)
 
     def faceMarker(self, marker):
