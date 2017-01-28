@@ -8,6 +8,19 @@ class StepperMotors():
         baudrate = 115200
         self.mbed = serial.Serial(port, baudrate=baudrate, timeout=timeout, writeTimeout=timeout)
 
+    def get_switch_state(self):
+        try:
+            self.mbed.write("s")
+        except serial.SerialTimeoutException:
+            self.log.error("Timeout sending mbed command s")
+            return
+        while not self.mbed.inWaiting():
+            pass
+        response = self.mbed.read(1)
+        self.log.debug("mbed sent response %s", response)
+        self.mbed.flushInput()
+        return response
+
     def move(self, amount):
         """
         Move the motors `abs(amount)`cm.
