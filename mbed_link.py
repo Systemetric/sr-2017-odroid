@@ -16,7 +16,7 @@ class StepperMotors():
             return
         while not self.mbed.inWaiting():
             pass
-        response = self.mbed.read(1)
+        response = ord(self.mbed.read(1))
         self.log.debug("mbed sent response %s", response)
         self.mbed.flushInput()
         return response
