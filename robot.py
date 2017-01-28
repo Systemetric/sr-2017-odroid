@@ -26,6 +26,8 @@ class Test(Robot):
         self.pre_init_strategy = None
         self.strategy = "b c a"
         # Please use `log.debug`, `log.info`, `log.warning` or `log.error` instead of `print`
+        switch_state = self.wheels.get_switch_state()
+        self.log.info("DIP switch is %s", switch_state)
 
         self.log.info("Start TobyDragon init")
         super(Test, self).__init__(init=False)
