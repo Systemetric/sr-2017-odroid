@@ -24,7 +24,7 @@ class Test(Robot):
     def __init__(self):
         self.init_logger()
         self.pre_init_strategy = None
-        self.strategy = "b c a"
+        self.strategy = "none"
         # Please use `log.debug`, `log.info`, `log.warning` or `log.error` instead of `print`
         switch_state = self.wheels.get_switch_state()
         self.log.info("DIP switch is %s", switch_state)
