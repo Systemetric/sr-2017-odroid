@@ -118,6 +118,17 @@ class Test(Robot):
         self.log.info("Finding closest marker of type %s", marker_type)
         markers = [m for m in self.find_markers(filter_func=lambda marker: marker.info.marker_type == marker_type)]
         return sorted(markers, key=attrgetter("dist"))[0]
+    
+    def find_marker_approx_position(self, marker_type, dist, dist_tolerance = 0.25):
+        """
+        Find and return a list of markers at an approximate location.
+
+        The list may be empty, in which case no markers could be seen at that distance.
+        """
+        self.log.info("Finding marker of type %s approximately %s metres away, give or take %s metres", marker_type, dist, dist_tolerance)
+        markers = [m for m in self.lookForMarkers(max_loop=5) if m.info.marker_type == marker_type and dist - dist_tolerance <= m.dist <= dist + dist_tolerance]
+        self.log.info("Found %s markers matching criteria", len(markers))
+        return markers
 
     def find_markers(self, minimum=1, max_loop=10, delta_angle=20, filter_func=lambda markers: markers):
         """
