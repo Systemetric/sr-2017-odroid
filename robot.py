@@ -39,8 +39,9 @@ class Test(Robot):
         # Wait until the start button is pressed
         switch_state = self.wheels.get_switch_state()
         self.log.info("DIP switch is %s", switch_state)
+        self.log.info("Waiting for start signal...")
         self.wait_start()
-        self.log.info("Start signal recieved")
+        self.log.info("Start signal recieved!")
         strategies.strategies[self.strategy](self, *args)
 
     def faceMarker(self, marker):
