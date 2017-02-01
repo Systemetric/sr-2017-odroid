@@ -62,7 +62,7 @@ def point_to_b_preinit(robot):
     marker = robot.find_closest_marker(MARKER_TOKEN_A)
     robot.log.info("Facing towards A cube")
     distance = robot.face_cube(marker)
-    return distance
+    return [distance]
 
 
 @strategy("a c b")
