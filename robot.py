@@ -50,16 +50,16 @@ class Test(Robot):
         """
         Given a marker, point towards it.
         """
-        self.log.info('Turning to face marker')
-        self.log.debug('marker.centre.polar.rot_y = %s', marker.centre.polar.rot_y)  # The angle the marker is from the robot
-        self.log.debug('marker.orientation.rot_y = %s', marker.orientation.rot_y)  # The rotation of the marker
+        self.log.info("Turning to face marker")
+        self.log.debug("marker.centre.polar.rot_y = %s", marker.centre.polar.rot_y)  # The angle the marker is from the robot
+        self.log.debug("marker.orientation.rot_y = %s", marker.orientation.rot_y)  # The rotation of the marker
         turnOne = marker.centre.polar.rot_y  # Turns the robot to face the marker
         self.wheels.turn(turnOne)
         marker = self.find_markers()[0]
         while abs(marker.centre.polar.rot_y) > 5.0:  # If the robot is not facing the marker
             marker = self.find_markers(delta_angle=10)[0]
-            self.log.debug('Not correctly aligned')
-            self.log.debug('marker.centre.polar.rot_y = %s', marker.centre.polar.rot_y)  # The angle the marker is from the robot
+            self.log.debug("Not correctly aligned")
+            self.log.debug("marker.centre.polar.rot_y = %s", marker.centre.polar.rot_y)  # The angle the marker is from the robot
             turnOne = marker.centre.polar.rot_y  # Turns the robot to face the marker
             self.wheels.turn(turnOne)
 
@@ -273,7 +273,7 @@ class Test(Robot):
         console_handler = logging.StreamHandler()
         console_handler.setLevel(logging.DEBUG)
         # Example: "filename:42 - do_stuff() - INFO: stuff happened"
-        formatter = logging.Formatter('%(module)s:%(lineno)d - %(funcName)s() - %(levelname)s: %(message)s')
+        formatter = logging.Formatter("%(module)s:%(lineno)d - %(funcName)s() - %(levelname)s: %(message)s")
         console_handler.setFormatter(formatter)
         self.log.addHandler(console_handler)
 

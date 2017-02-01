@@ -4,7 +4,7 @@ import serial
 class IOBoard():
     def __init__(self, log, timeout=None):
         self.log = log
-        port = '/dev/ttyACM0'
+        port = "/dev/ttyACM0"
         baudrate = 115200
         self.mbed = serial.Serial(port, baudrate=baudrate, timeout=timeout, writeTimeout=timeout)
 

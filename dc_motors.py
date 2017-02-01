@@ -54,11 +54,11 @@ class DCMotors():
         If passed negative, turn clockwise
         """
         if degrees < 0:
-            self.lastTurn = 'Left'
+            self.lastTurn = "Left"
             power = -power
             degrees = abs(degrees)
         else:
-            self.lastTurn = 'Right'
+            self.lastTurn = "Right"
         if degrees < 25:
             power = power / 2
             sleep_360 = sleep_360 * 2
