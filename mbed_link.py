@@ -6,19 +6,19 @@ class IOBoard(object):
         self.log = log
         port = "/dev/ttyACM0"
         baudrate = 115200
-        self.mbed = serial.Serial(port, baudrate=baudrate, timeout=timeout, writeTimeout=timeout)
+        self.conn = serial.Serial(port, baudrate=baudrate, timeout=timeout, writeTimeout=timeout)
 
     def get_switch_state(self):
         try:
-            self.mbed.write("s")
+            self.conn.write("s")
         except serial.SerialTimeoutException:
             self.log.error("Timeout sending mbed command s")
             return
-        while not self.mbed.inWaiting():
+        while not self.conn.inWaiting():
             pass
-        response = ord(self.mbed.read(1))
+        response = ord(self.conn.read(1))
         self.log.debug("mbed sent response %s", response)
-        self.mbed.flushInput()
+        self.conn.flushInput()
         return response
 
     def move(self, amount):
@@ -86,15 +86,15 @@ class IOBoard(object):
         """
         self.log.debug("Starting mbed command %s(%s)", command, data)
         try:
-            self.mbed.write(command)
-            self.mbed.write(chr(data))
+            self.conn.write(command)
+            self.conn.write(chr(data))
         except serial.SerialTimeoutException:
             self.log.error("Timeout sending mbed command %s(%s). Not retrying.", command, data)
             return "Error"
-        while not self.mbed.inWaiting():
+        while not self.conn.inWaiting():
             pass
-        response = self.mbed.read(1)
+        response = self.conn.read(1)
         self.log.debug("mbed sent response %s", response)
             #return "Error"
-        self.mbed.flushInput()
+        self.conn.flushInput()
         self.log.debug("Sucessfully completed command %s(%s)", command, data)
