@@ -3,7 +3,7 @@
 from sr.robot import *
 
 import time
-from math import sin, cos, asin, pi, sqrt, radians, degrees, atan2
+from math import sin, cos, asin, pi, sqrt, degrees, atan2
 import logging
 from operator import attrgetter
 

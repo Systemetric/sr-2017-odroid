@@ -7,8 +7,7 @@ from collections import Callable, Hashable
 from math import degrees, radians
 import time
 
-import corrections
-from vector import Vector, marker2vector
+from vector import marker2vector
 
 strategies = {}
 
