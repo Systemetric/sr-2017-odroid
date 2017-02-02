@@ -1,7 +1,7 @@
 import serial
 
 
-class IOBoard():
+class IOBoard(object):
     def __init__(self, log, timeout=None):
         self.log = log
         port = "/dev/ttyACM0"
