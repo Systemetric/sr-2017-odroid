@@ -197,14 +197,12 @@ def test_marker_id_types(robot):
 @strategy("test_marker_drive_home")
 def test_marker_drive_home(robot):
     arena_marker = robot.find_closest_marker(MARKER_ARENA)
-    vec = marker2vector(arena_marker)
     robot.log.info("Marker(type=%s, id=%s, distance=%s, angle=%s)",
                 arena_marker.info.marker_type,
                 arena_marker.info.code,
-                vec.distance,
-                degrees(vec.angle))
-    #vec = robot.get_vec_to_corner(arena_marker.info.code)
-    vec = robot.get_vec_to_corner2(vec, radians(arena_marker.orientation.rot_y), arena_marker.info.offset)
+                arena_marker.dist,
+                arena_marker.rot_y)
+    vec = robot.get_vec_to_corner3(arena_marker)
     robot.log.info("Corner: %r", vec)
     robot.wheels.turn(degrees(vec.angle))
     if vec.distance - 0.5 <= 0:
