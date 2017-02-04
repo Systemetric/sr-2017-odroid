@@ -3,7 +3,7 @@
 from sr.robot import *
 
 import time
-from math import sin, cos, asin, pi, sqrt, degrees, atan2
+from math import sin, cos, asin, pi, sqrt, radians, degrees, atan2
 import logging
 from operator import attrgetter
 
@@ -263,6 +263,23 @@ class Test(Robot):
         m = sqrt(d**2 + l**2 - 2*d*l*cos(pi/2 - beta))
         gamma = asin(l*sin(pi/2 - beta)/m) - alpha
         return Vector(distance=m, angle=gamma)
+
+    def get_vec_to_corner3(self, marker):
+        """
+        Given a marker, get the vector to the corner to the left of it.
+
+        See <https://hillsroadrobotics.slack.com/files/anowlcalledjosh/F414B8RPX/office_lens_20170204-144813.jpg>
+        or <https://imgur.com/R9E8kpD> for an image showing how this works.
+        """
+        d = marker.dist
+        l = marker.info.offset % 7
+        alpha = radians(marker.rot_y)
+        beta = radians(marker.orientation.rot_y)
+        beta_prime = pi/2 - beta
+        n = sqrt(l**2 + d**2 - 2 * l * d * cos(beta_prime))
+        delta = asin(l * sin(beta_prime) / n)
+        gamma = delta + alpha
+        return Vector(distance=n, angle=gamma)
 
     def init_logger(self):
         """
