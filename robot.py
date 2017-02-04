@@ -220,7 +220,7 @@ class Test(Robot):
         or <https://imgur.com/R9E8kpD> for an image showing how this works.
         """
         d = marker.dist
-        l = marker.info.offset % 7
+        l = marker.info.offset % 7 + 1
         alpha = radians(marker.rot_y)
         beta = radians(marker.orientation.rot_y)
         beta_prime = pi/2 - beta
