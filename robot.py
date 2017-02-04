@@ -224,8 +224,10 @@ class Test(Robot):
         alpha = radians(marker.rot_y)
         beta = radians(marker.orientation.rot_y)
         beta_prime = pi/2 - beta
+        self.log.debug("d=%s, l=%s, alpha=%s, beta=%s (rad)", d, l, alpha, beta)
         n = sqrt(l**2 + d**2 - 2 * l * d * cos(beta_prime))
         delta = asin(l * sin(beta_prime) / n)
+        self.log.debug("delta=%s", delta)
         gamma = delta - alpha
         return Vector(distance=n, angle=gamma)
 
