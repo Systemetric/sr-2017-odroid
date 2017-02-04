@@ -212,59 +212,7 @@ class Test(Robot):
                     i += delta_angle
         return markers
 
-    @staticmethod
-    def get_wall_marker_coords(marker_id):
-        direction, wall = divmod(marker_id, 7)
-        decrement, swap = divmod(direction, 2)
-        if decrement:
-            wall = 6-wall
-        wall += 1
-        rtn = [wall, 8 * (7 <= marker_id <= 20)]
-        if swap:
-            rtn = rtn[::-1]
-        return rtn
-    
-    def get_team_corner_coords(self):
-        return [[0, 0], [8, 0], [8, 8], [0, 8]][self.zone]
-
-    def get_vec_to_corner(self, marker_id):
-        marker_pos = self.get_wall_marker_coords(marker_id)
-        corner_pos = self.get_team_corner_coords()
-        deltas = marker_pos[0]-corner_pos[0], marker_pos[1]-corner_pos[1]
-        distance = sqrt(deltas[0]**2 + deltas[1]**2)
-        angle = atan2(deltas[1], deltas[0])
-        angle += pi - (1+(marker_id // 7))*(pi/2)
-        angle %= 2*pi
-        angle -= pi
-        return Vector(distance=distance, angle=angle)
-
-    lookup_distances = {
-        0: 1,
-        1: 2,
-        2: 3,
-        3: 4,
-        4: 5,
-        5: 6,
-        6: 7,
-        # TODO: Pythagoras
-        21: 7,
-        22: 6,
-        23: 5,
-        24: 4,
-        25: 3,
-        26: 2,
-        27: 1
-    }
-
-    def get_vec_to_corner2(self, vec, beta, marker_id):
-        d = vec.distance
-        alpha = vec.angle
-        l = self.lookup_distances[(marker_id - self.zone*7) % 28]
-        m = sqrt(d**2 + l**2 - 2*d*l*cos(pi/2 - beta))
-        gamma = asin(l*sin(pi/2 - beta)/m) - alpha
-        return Vector(distance=m, angle=gamma)
-
-    def get_vec_to_corner3(self, marker):
+    def get_vec_to_corner(self, marker):
         """
         Given a marker, get the vector to the corner to the left of it.
 

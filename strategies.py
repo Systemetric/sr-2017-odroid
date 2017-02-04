@@ -202,7 +202,7 @@ def test_marker_drive_home(robot):
                 arena_marker.info.code,
                 arena_marker.dist,
                 arena_marker.rot_y)
-    vec = robot.get_vec_to_corner3(arena_marker)
+    vec = robot.get_vec_to_corner(arena_marker)
     robot.log.info("Corner: %r", vec)
     robot.wheels.turn(degrees(vec.angle))
     if vec.distance - 0.5 <= 0:
