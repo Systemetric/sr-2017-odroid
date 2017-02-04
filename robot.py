@@ -226,7 +226,7 @@ class Test(Robot):
         beta_prime = pi/2 - beta
         n = sqrt(l**2 + d**2 - 2 * l * d * cos(beta_prime))
         delta = asin(l * sin(beta_prime) / n)
-        gamma = delta + alpha
+        gamma = delta - alpha
         return Vector(distance=n, angle=gamma)
 
     def init_logger(self):
