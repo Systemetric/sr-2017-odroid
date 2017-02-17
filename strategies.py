@@ -7,6 +7,7 @@ from collections import Callable, Hashable
 from math import degrees, radians
 import time
 
+import corrections
 from vector import marker2vector
 
 strategies = {}
@@ -113,6 +114,7 @@ def test_webcam_rotational_placement_correction_calibration(robot):
     for marker in markers:
         print "marker type = %s" % (marker.info.marker_type)
         print "marker.rot_y = %s" % (marker.rot_y)
+        print "correted marker.rot_y = %s" % (corrections.correct_for_webcam_rotational_placement(marker2vector(marker)).angle)
 
 
 @strategy("test cube marker placement correction")
