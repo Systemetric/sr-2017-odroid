@@ -29,7 +29,7 @@ class IOBoard(object):
         if amount > 0:
             self.forwards(amount)
         else:
-            self.backwards(amount)
+            self.backwards(abs(amount))
 
     def turn(self, amount):
         """
