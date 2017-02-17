@@ -24,7 +24,7 @@ class Test(Robot):
     def __init__(self):
         self.init_logger()
         self.pre_init_strategy = None
-        self.strategy = "test turn 10 times"
+        self.strategy = "test webcam rotational placement correction calibration"
         # Please use `log.debug`, `log.info`, `log.warning` or `log.error` instead of `print`
 
         self.log.info("Start TobyDragon init")
