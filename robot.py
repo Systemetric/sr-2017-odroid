@@ -114,6 +114,36 @@ class Test(Robot):
         self.log.debug("Done moving to cube")
         return True
 
+    def see_markers(self, predicate=None, attempts=3):
+        # type: (Callable[[Marker], bool], int) -> List[Marker]
+        """
+        Return a list of visible markers that satisfy the given predicate.
+
+        The predicate will be called on each marker, and should return a
+        boolean showing whether the marker should be included in the returned
+        list. It defaults to None, meaning that all visible markers will be
+        returned. Strictly speaking, any falsy markers will be discarded, but
+        since markers are instances of collections.namedtuple(), they are
+        always truthy.
+
+        If no markers are visible, multiple attempts to see a marker will be
+        made, in case of a transient fault with the camera. The number of
+        attempts can be changed by altering the attempts parameter, which must
+        be greater than zero.
+        """
+        self.log.info("Looking for markers (%s attempts)...", attempts)
+        assert attempts > 0
+        for i in xrange(attempts):
+            markers = filter(predicate, self.see())
+            if markers:
+                self.log.info("Found %s markers (attempt %s), returning.", len(markers), i + 1)
+                break
+            else:
+                self.log.debug("No markers found (attempt %s), retrying...", i + 1)
+        else:
+            self.log.warn("No markers found after %s attempts!", attempts)
+        return markers
+
     def find_closest_marker(self, marker_type):
         # type: (...) -> Marker
         """
