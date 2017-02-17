@@ -142,7 +142,9 @@ class Test(Robot):
 
         # Scan 0.
         self.log.debug("Searching for markers... (direction = 0)")
-        markers = filter(filter_func, self.lookForMarkers(max_loop=max_loop))
+        markers = self.lookForMarkers(max_loop=max_loop)
+        print markers
+        markers = filter(filter_func, markers)
         if len(markers) >= minimum:
             # If found correct number of markers, stop and return them
             return markers
