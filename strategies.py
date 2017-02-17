@@ -54,7 +54,7 @@ def route_b_c_a(robot):
     robot.log.info("Finding A cube")
     marker = robot.find_closest_marker(MARKER_TOKEN_A)
     robot.log.info("Moving to A cube")
-    robot.move_to_cube(marker, distance_after=1)
+    robot.move_to_cube(marker, distance_after=2.5)
 
 
 @strategy("a c b preinit")
