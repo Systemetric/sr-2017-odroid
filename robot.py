@@ -134,7 +134,7 @@ class Test(Robot):
         self.log.info("Found %s markers matching criteria", len(markers))
         return markers
 
-    def find_markers(self, minimum=1, max_loop=10, delta_angle=20, filter_func=lambda markers: markers):
+    def find_markers(self, minimum=1, max_loop=10, delta_angle=20, filter_func=lambda marker: True):
         """
         Find at least minimum markers.
         Try max_loop attempts for each direction.
