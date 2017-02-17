@@ -13,9 +13,6 @@ import corrections
 from vector import Vector, marker2vector
 
 
-cube_width = 0.245  # +/- 0.010
-
-
 class Test(Robot):
     """
     A path-finding robot.
