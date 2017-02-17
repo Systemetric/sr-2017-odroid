@@ -7,6 +7,11 @@ from math import sin, cos, asin, pi, sqrt, radians, degrees, atan2
 import logging
 from operator import attrgetter
 
+try:
+    from typing import Callable, List
+except ImportError:
+    pass
+
 from mbed_link import IOBoard
 import strategies
 import corrections
