@@ -138,13 +138,6 @@ class Test(Robot):
         """
         Find at least minimum markers.
         Try max_loop attempts for each direction.
-
-        Scans at 0. (relative)
-        If fail, scan -20.
-        If fail, scan +40.
-        If fail, while not scanned 360,
-            scan +20
-        If fail, log an error but return `markers` anyway
         """
 
         # Scan 0.
