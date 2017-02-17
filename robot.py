@@ -228,7 +228,7 @@ class Test(Robot):
         n = sqrt(l**2 + d**2 - 2 * l * d * cos(beta_prime))
         delta = asin(l * sin(beta_prime) / n)
         self.log.debug("delta=%s", delta)
-        gamma = alpha - delta
+        gamma = delta - alpha
         return Vector(distance=n, angle=gamma)
 
     def init_logger(self):
