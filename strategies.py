@@ -35,6 +35,7 @@ def route_b_c_a(robot):
     robot.log.debug("Moving 3.75 metres to next to B")
     robot.wheels.move(3.25)
     robot.wheels.turn(-90)
+    time.sleep(0.2)
     markers = robot.find_marker_approx_position(MARKER_TOKEN_B, 1.5)
     if markers == []:
         # TODO(jdh): do something sane when cubes are missing
@@ -45,12 +46,14 @@ def route_b_c_a(robot):
         marker = markers[0]
     robot.log.info("Moving to B cube")
     robot.move_to_cube(marker)
+    time.sleep(0.2)
     robot.log.info("Finding C cube")
     marker = robot.find_closest_marker(MARKER_TOKEN_C)
     robot.log.info("Moving to C cube")
     robot.move_to_cube(marker)
     robot.log.debug("turning to roughly A cube")
     robot.wheels.turn(-135)
+    time.sleep(0.2)
     robot.log.info("Finding A cube")
     marker = robot.find_closest_marker(MARKER_TOKEN_A)
     robot.log.info("Moving to A cube")
