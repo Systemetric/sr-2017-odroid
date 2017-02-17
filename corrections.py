@@ -10,7 +10,7 @@ cube_width = 0.245  # +/- 0.010
 webcam_horizontal_offset = 0.19  # 2017 robot
 # The angle (in radians) that the camera is angled from the normal by.
 # A positive number means the camera is looking to the right.
-camera_angular_offset = -0.053
+camera_angular_offset = -0.716796576977
 
 
 def correct_all_cube(vec, beta):
