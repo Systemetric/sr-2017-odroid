@@ -89,6 +89,11 @@ def move_4_metres(robot):
     robot.wheels.move(2)
 
 
+@strategy("test move forward")
+def test_move(robot):
+    robot.wheels.move(0.5)
+
+
 @strategy("test turn 10 times")
 def turn_10_times(robot):
     for i in xrange(20):
