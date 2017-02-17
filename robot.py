@@ -154,23 +154,21 @@ class Test(Robot):
             # If found correct number of markers, stop and return them
             return markers
         else:
-            # If the robot cannot see a marker
-            self.log.debug("Searching for markers... (direction = %s)", -delta_angle)
-            self.wheels.turn(-delta_angle)
-            markers = filter(filter_func, self.lookForMarkers(max_loop=max_loop))
-            if len(markers) >= minimum:
-                return markers
-            else:
-                self.wheels.turn(delta_angle * 2)
-                i = delta_angle
-                while i <= 360:
-                    # Continue scanning in a circle - probably not in a simple arc
-                    self.log.debug("Searching for markers... (direction = %s)", i)
-                    markers = filter(filter_func, self.lookForMarkers(max_loop=max_loop))
-                    self.wheels.turn(delta_angle)
-                    if len(markers) >= minimum:
-                        return markers
-                    i += delta_angle
+            angle = delta_angle
+            while angle <= 180:
+                # If the robot cannot see a marker
+                self.log.debug("Searching for markers... (direction = %s)", delta_angle)
+                self.wheels.turn(angle)
+                markers = filter(filter_func, self.lookForMarkers(max_loop=max_loop))
+                if len(markers) >= minimum:
+                    return markers
+                self.wheels.turn(-angle * 2)
+                markers = filter(filter_func, self.lookForMarkers(max_loop=max_loop))
+                if len(markers) >= minimum:
+                    return markers
+                self.wheels.turn(angle)
+                angle += delta_angle
+            self.log.error("Couldn't find the requested marker!")
         # Current direction is ~360 (no change)
         self.log.error("Markers (minimum %s) not found with %s loops per direction", minimum, max_loop)
         return markers
