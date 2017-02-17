@@ -6,7 +6,8 @@ from vector import Vector
 # The width/length/height of a cube.
 cube_width = 0.245  # +/- 0.010
 # The distance from the centre of rotation to the camera.
-webcam_horizontal_offset = 0.245  # The robot is ~2 cubes long.
+# webcam_horizontal_offset = 0.245  # Prototype
+webcam_horizontal_offset = 0.19  # 2017 robot
 # The angle (in radians) that the camera is angled from the normal by.
 # A positive number means the camera is looking to the right.
 camera_angular_offset = -0.053
