@@ -1,5 +1,3 @@
-# Just a quick note, can people who work on this code add comments, so when other people get to it they know what is going on. Thank you.
-
 from sr.robot import *
 
 import time
