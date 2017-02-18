@@ -16,7 +16,7 @@ import corrections
 from vector import Vector, marker2vector
 
 
-class Test(Robot):
+class CompanionCube(Robot):
     """
     A path-finding robot.
     """
@@ -28,7 +28,7 @@ class Test(Robot):
         # Please use `log.debug`, `log.info`, `log.warning` or `log.error` instead of `print`
 
         self.log.info("Start TobyDragon init")
-        super(Test, self).__init__(init=False)
+        super(CompanionCube, self).__init__(init=False)
         self.init()
         self.wheels = IOBoard(self.log)
         self.log.info("Robot initialised")
@@ -270,4 +270,4 @@ class Test(Robot):
 
 
 if __name__ == "__main__":
-    Test()
+    CompanionCube()
