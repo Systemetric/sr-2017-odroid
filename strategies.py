@@ -167,28 +167,6 @@ def route_test_moving(robot):
         time.sleep(3)
 
 
-@strategy("test")
-def route_test(robot):
-    """
-    Move onto marker A.
-    """
-    robot.log.debug("Starting route")
-    robot.log.debug("Facing marker")
-    robot.wheels.turn(45)  # Turn ~45 degrees to face the marker
-    marker = robot.find_markers()[0]
-    vec = marker2vector(marker)
-    vec = robot.correct_for_cube_marker_placement(vec, marker.orientation.rot_y)
-    vec = robot.correct_for_webcam_horizontal_placement(vec)
-    robot.log.debug("Fine-tuning turn by %s degrees", degrees(vec.angle))
-    robot.wheels.turn(degrees(vec.angle))
-    #robot.faceMarker(marker)  # Perform corrections to face the marker
-    robot.log.debug("Moving to cube")
-    robot.moveToCube()
-    robot.log.debug("On top of cube")
-    robot.wheels.move(0.1)  # Travel past the cube
-    robot.log.debug("Finished route")
-
-
 @strategy("print vectors")
 def route_test_vector(robot):
     while True:
@@ -200,19 +178,6 @@ def route_test_vector(robot):
             robot.log.debug("found marker with vector %s", vec)
             robot.log.debug("vector to centre of cube: %s", robot.correct_for_cube_marker_placement(vec, marker.orientation.rot_y))
         time.sleep(5)
-
-
-@strategy("test_marker_id_types")
-def test_marker_id_types(robot):
-    while True:
-        markers = robot.lookForMarkers()
-        for marker in markers:
-            vec = marker2vector(marker)
-            robot.log.info("Marker(type=%s, id=%s, distance=%s, angle=%s)",
-                marker.info.marker_type,
-                marker.info.code,
-                vec.distance,
-                degrees(vec.angle))
 
 
 @strategy("test_marker_drive_home")
