@@ -32,7 +32,7 @@ class CompanionCube(Robot):
         self.init()
         self.wheels = IOBoard(self.log)
         self.log.info("Robot initialised")
-        self.log.info("Battery(voltage = {}, current = {})".format(self.power.battery.voltage, self.power.battery.current))
+        self.log.info("Battery(voltage = %s, current = %s)", self.power.battery.voltage, self.power.battery.current)
         args = []
         self.wait_start()
         if self.pre_init_strategy:
