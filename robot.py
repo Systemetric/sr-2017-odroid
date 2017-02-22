@@ -1,7 +1,7 @@
 from sr.robot import *
 
 import time
-from math import sin, cos, asin, pi, sqrt, radians, degrees, atan2
+from math import sqrt
 import logging
 from operator import attrgetter
 
@@ -13,6 +13,7 @@ except ImportError:
 from mbed_link import IOBoard
 import strategies
 import corrections
+from trig import sind, cosd, asind
 from vector import Vector, marker2vector
 
 
@@ -72,8 +73,8 @@ class CompanionCube(Robot):
         self.log.info("Facing marker...")
         vec = marker2vector(marker)
         vec = corrections.correct_all_cube(vec, marker.orientation.rot_y)
-        self.log.debug("Turning %s degrees (%s radians)", degrees(vec.angle), vec.angle)
-        self.wheels.turn(degrees(vec.angle))
+        self.log.debug("Turning %s degrees", vec.angle)
+        self.wheels.turn(vec.angle)
         return vec.distance + corrections.cube_width
 
     def move_to_cube(self, marker, check_at=1.0, max_safe_distance=3, angle_tolerance=1.0, distance_after=0.0):
@@ -102,11 +103,11 @@ class CompanionCube(Robot):
                 marker = markers[0]
                 vec = marker2vector(marker)
                 vec = corrections.correct_all_cube(vec, marker.orientation.rot_y)
-                if abs(degrees(vec.angle)) <= angle_tolerance:
+                if abs(vec.angle) <= angle_tolerance:
                     break
                 self.log.debug("Not correctly aligned")
-                self.log.debug("We're %s degrees off, correcting...", degrees(vec.angle))  # The angle the marker is from the robot
-                self.wheels.turn(degrees(vec.angle))
+                self.log.debug("We're %s degrees off, correcting...", vec.angle)  # The angle the marker is from the robot
+                self.wheels.turn(vec.angle)
             self.log.debug("Moving the rest of the way to the cube (%s + cube_size (0.255)); this should be about 1.255 metres", vec.distance)
             self.wheels.forwards(vec.distance+distance_after)
         self.log.debug("Done moving to cube")
@@ -245,12 +246,12 @@ class CompanionCube(Robot):
         """
         d = marker.dist
         l = marker.info.offset % 7 + 1
-        alpha = radians(marker.rot_y)
-        beta = radians(marker.orientation.rot_y)
-        beta_prime = pi/2 - beta
-        self.log.debug("d=%s, l=%s, alpha=%s, beta=%s (rad)", d, l, alpha, beta)
-        n = sqrt(l**2 + d**2 - 2 * l * d * cos(beta_prime))
-        delta = asin(l * sin(beta_prime) / n)
+        alpha = marker.rot_y
+        beta = marker.orientation.rot_y
+        beta_prime = 90 - beta
+        self.log.debug("d=%s, l=%s, alpha=%s, beta=%s", d, l, alpha, beta)
+        n = sqrt(l**2 + d**2 - 2 * l * d * cosd(beta_prime))
+        delta = asind(l * sind(beta_prime) / n)
         self.log.debug("delta=%s", delta)
         gamma = alpha - delta
         return Vector(distance=n, angle=gamma)

@@ -4,7 +4,6 @@
 from sr.robot import *
 
 from collections import Callable, Hashable
-from math import degrees, radians
 import time
 
 import corrections
@@ -118,8 +117,8 @@ def test_webcam_rotational_placement_correction_calibration(robot):
     markers = robot.lookForMarkers()
     for marker in markers:
         print "marker type = %s" % (marker.info.marker_type)
-        print "marker.rot_y = %s (deg)" % (marker.rot_y)
-        print "corrected marker.rot_y = %s (deg)" % (degrees(corrections.correct_for_webcam_rotational_placement(marker2vector(marker)).angle))
+        print "marker.rot_y = %s" % (marker.rot_y)
+        print "corrected marker.rot_y = %s" % (corrections.correct_for_webcam_rotational_placement(marker2vector(marker)).angle)
 
 
 @strategy("test cube marker placement correction")
@@ -183,12 +182,12 @@ def route_test_vector(robot):
 @strategy("test_marker_drive_home")
 def test_marker_drive_home(robot):
     arena_marker = robot.find_closest_marker(MARKER_ARENA)
-    robot.log.info("Marker(type=%s, id=%s, distance=%s, angle=%s (deg))",
+    robot.log.info("Marker(type=%s, id=%s, distance=%s, angle=%s)",
                 arena_marker.info.marker_type,
                 arena_marker.info.code,
                 arena_marker.dist,
                 arena_marker.rot_y)
     vec = robot.get_vec_to_corner(arena_marker)
     robot.log.info("Corner: %r", vec)
-    robot.wheels.turn(degrees(vec.angle))
+    robot.wheels.turn(vec.angle)
     robot.wheels.move(vec.distance)
