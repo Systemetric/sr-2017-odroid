@@ -277,11 +277,11 @@ class CompanionCube(Robot):
                     self.log.info("'C' marker is out of position, orientation is %s", m.orientation.rot_x)
                         
     def check_cube_position(self, marker, expectedPosition):
-        self.log.info("Can see markers with %s", marker.info.maker_type)
+        self.log.info("Can see markers with %s", marker.info.marker_type)
         if marker.orientation.rot_x <= expectedPosition - 5 or marker.orientation.rot_x >= expectedPosition + 5:
-            self.log.info("First %s marker is out of position, orientation is %s", marker.info.maker_type, marker.orientation.rot_x)
+            self.log.info("First %s marker is out of position, orientation is %s", marker.info.marker_type, marker.orientation.rot_x)
             if marker.orientation.rot_x <= (expectedPosition * 2) - 5 or marker.orientation.rot_x >= (expectedPosition * 2) + 5:
-                self.log.info("Second %s marker is out of position, orientation is %s", marker.info.maker_type, marker.orientation.rot_x)
+                self.log.info("Second %s marker is out of position, orientation is %s", marker.info.marker_type, marker.orientation.rot_x)
         
         
     def init_logger(self):
