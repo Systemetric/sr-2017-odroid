@@ -90,7 +90,7 @@ def route_a_c_b(robot, initial_distance):
 
 @strategy("print all cubes in sight")
 def test_marker_print(robot):
-    markers = robot.lookForMarkers(max_loop=10)
+    markers = robot.see_markers()
     robot.log.info(markers)
 
 
