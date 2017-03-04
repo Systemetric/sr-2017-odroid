@@ -25,7 +25,7 @@ class CompanionCube(Robot):
     def __init__(self):
         self.init_logger()
         self.pre_init_strategy = None
-        self.strategy = "b c a"
+        self.strategy = "print all cubes in sight"
         # Please use `log.debug`, `log.info`, `log.warning` or `log.error` instead of `print`
 
         self.log.info("Start TobyDragon init")
