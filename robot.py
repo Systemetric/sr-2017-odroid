@@ -274,14 +274,14 @@ class CompanionCube(Robot):
             if m.info.marker_type=='token-c':
                 self.log.info("Can see markers with marker type of 'C'")
                 if m.orientation.rot_y != 0:
-                    self.log.info("'C' marker is out of position, orientation is %s", m.orientation.rot_x)
+                    self.log.info("'C' marker is out of position, orientation is %s", m.orientation.rot_y)
                         
     def check_cube_position(self, marker, expectedPosition):
         self.log.info("Can see markers with %s", marker.info.marker_type)
-        if marker.orientation.rot_x <= expectedPosition - 5 or marker.orientation.rot_x >= expectedPosition + 5:
+        if marker.orientation.rot_y <= expectedPosition - 5 or marker.orientation.rot_y >= expectedPosition + 5:
             self.log.info("First %s marker is out of position, orientation is %s", marker.info.marker_type, marker.orientation.rot_x)
-            if marker.orientation.rot_x <= (expectedPosition * 2) - 5 or marker.orientation.rot_x >= (expectedPosition * 2) + 5:
-                self.log.info("Second %s marker is out of position, orientation is %s", marker.info.marker_type, marker.orientation.rot_x)
+            if marker.orientation.rot_y <= (expectedPosition * 2) - 5 or marker.orientation.rot_y >= (expectedPosition * 2) + 5:
+                self.log.info("Second %s marker is out of position, orientation is %s", marker.info.marker_type, marker.orientation.rot_y)
         
         
     def init_logger(self):
