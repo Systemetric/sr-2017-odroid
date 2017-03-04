@@ -56,7 +56,7 @@ def route_b_c_a(robot):
     marker = robot.find_closest_marker(MARKER_TOKEN_C)
     robot.log.info("Moving to C cube")
     robot.move_to_cube(marker)
-    if hasB = False:
+    if hasB == False:
         robot.log.debug("turning to roughly B cube")
         robot.wheels.turn(-90)
         markers = robot.find_marker_approx_position(MARKER_TOKEN_B, 1.5)
