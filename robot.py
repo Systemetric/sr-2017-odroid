@@ -25,7 +25,7 @@ class CompanionCube(Robot):
     def __init__(self):
         self.init_logger()
         self.pre_init_strategy = None
-        self.strategy = "print all cubes in sight"
+        self.strategy = "align cubes"
         # Please use `log.debug`, `log.info`, `log.warning` or `log.error` instead of `print`
 
         self.log.info("Start TobyDragon init")
@@ -259,7 +259,31 @@ class CompanionCube(Robot):
         self.log.debug("delta=%s", delta)
         gamma = alpha - delta
         return Vector(distance=n, angle=gamma)
-
+        
+    def align_with_cubes(self):
+        """
+        Looks to see what cubes are ahead of the robot and checks if they are in the expected position
+        """
+        self.log.info("Looking for markers to align with")
+        markers = self.see_markers()
+        for m in markers:
+            if m.marker_type=='token-a':
+                self.check_cube_position(m, 10)
+            if m.marker_type=='token-b':
+                self.check_cube_position(m, 18) 
+            if m.marker_type=='token-c':
+                self.log.info("Can see markers with marker type of 'C'")
+                if m.orientation.rot_y != 0:
+                    self.log.info("'C' marker is out of position, orientation is %s", m.orientation.rot_x)
+                        
+    def check_cube_position(self, marker, expectedPosition):
+        self.log.info("Can see markers with %s", marker.maker_type)
+        if marker.orientation.rot_x <= expectedPosition - 5 or marker.orientation.rot_x >= expectedPosition + 5:
+            self.log.info("First %s marker is out of position, orientation is %s", marker.maker_type, marker.orientation.rot_x)
+            if marker.orientation.rot_x <= (expectedPosition * 2) - 5 or marker.orientation.rot_x >= (expectedPosition * 2) + 5:
+                self.log.info("Second %s marker is out of position, orientation is %s", marker.maker_type, marker.orientation.rot_x)
+        
+        
     def init_logger(self):
         """
         Initialise logger.
