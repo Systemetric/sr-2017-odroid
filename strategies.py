@@ -44,6 +44,7 @@ def route_b_c_a(robot):
     # robot.log.debug("Found %s B cubes, moving to the 0th one", len(markers))
     # marker = markers[0]
     # FIXME
+    robot.align_with_cubes()
     marker = robot.find_markers(filter_func=lambda m: m.info.marker_type == MARKER_TOKEN_B and 1.5 - 0.5 <= m.dist <= 1.5 + 0.5)[0]
     robot.log.info("Moving to B cube, route change = %s",  robot.routeChange)
     robot.move_to_cube(marker)
