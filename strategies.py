@@ -88,10 +88,16 @@ def route_a_c_b(robot, initial_distance):
     robot.log.error("NOT IMPLEMENTED - GO HOME")
 
 
+@strategy("align cubes")
+def test_align_markers(robot):
+    robot.align_with_cubes()
+
+
 @strategy("print all cubes in sight")
 def test_marker_print(robot):
     markers = robot.see_markers()
     robot.log.info(markers)
+    
 
 
 @strategy("test move 4 metres")
