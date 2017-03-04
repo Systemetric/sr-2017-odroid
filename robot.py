@@ -277,12 +277,19 @@ class CompanionCube(Robot):
                     self.log.info("'C' marker is out of position, orientation is %s", m.orientation.rot_y)
                         
     def check_cube_position(self, marker, expectedPosition):
-        self.log.info("Can see markers with %s, number %s", marker.info.marker_type, marker.info.code)
-        if marker.orientation.rot_y <= expectedPosition - 5 or marker.orientation.rot_y >= expectedPosition + 5:
-            self.log.info("First %s marker is out of position, orientation is %s", marker.info.marker_type, marker.orientation.rot_x)
-            if marker.orientation.rot_y <= (expectedPosition * 2) - 5 or marker.orientation.rot_y >= (expectedPosition * 2) + 5:
-                self.log.info("Second %s marker is out of position, orientation is %s", marker.info.marker_type, marker.orientation.rot_y)
-        
+        if marker.orientation.rot_y < 0 :
+            self.log.info("Can see markers with %s, number %s", marker.info.marker_type, marker.info.code)
+            if marker.orientation.rot_y <= expectedPosition - 5 or marker.orientation.rot_y >= expectedPosition + 5:
+                self.log.info("First %s marker is out of position, orientation is %s", marker.info.marker_type, marker.orientation.rot_x)
+                if marker.orientation.rot_y <= (expectedPosition * 2) - 5 or marker.orientation.rot_y >= (expectedPosition * 2) + 5:
+                    self.log.info("Second %s marker is out of position, orientation is %s", marker.info.marker_type, marker.orientation.rot_y)
+        else:
+            expectedPosition = -(expectedPosition)
+            self.log.info("Can see markers with %s, number %s", marker.info.marker_type, marker.info.code)
+            if marker.orientation.rot_y <= expectedPosition - 5 or marker.orientation.rot_y >= expectedPosition + 5:
+                self.log.info("First %s marker is out of position, orientation is %s", marker.info.marker_type, marker.orientation.rot_x)
+                if marker.orientation.rot_y <= (expectedPosition * 2) - 5 or marker.orientation.rot_y >= (expectedPosition * 2) + 5:
+                    self.log.info("Second %s marker is out of position, orientation is %s", marker.info.marker_type, marker.orientation.rot_y)
         
     def init_logger(self):
         """
