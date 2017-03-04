@@ -6,9 +6,9 @@ import logging
 from operator import attrgetter
 
 try:
-    from typing import Callable, List
-except ImportError:
-    pass
+    #from typing import Callable, List
+#except ImportError:
+   # pass
 
 from mbed_link import IOBoard
 import strategies
@@ -178,7 +178,7 @@ class CompanionCube(Robot):
         markers = filter(filter_func, markers)
         if len(markers) >= minimum:
             # If found correct number of markers, stop and return them
-            return markers, false
+            return markers, False
         else:
             angle = delta_angle
             while angle <= 180:
@@ -187,17 +187,17 @@ class CompanionCube(Robot):
                 self.wheels.turn(angle)
                 markers = filter(filter_func, self.lookForMarkers(max_loop=max_loop))
                 if len(markers) >= minimum:
-                    return markers, true
+                    return markers, True
                 self.wheels.turn(-angle * 2)
                 markers = filter(filter_func, self.lookForMarkers(max_loop=max_loop))
                 if len(markers) >= minimum:
-                    return markers, true
+                    return markers, True
                 self.wheels.turn(angle)
                 angle += delta_angle
             self.log.error("Couldn't find the requested marker!")
         # Current direction is ~360 (no change)
         self.log.error("Markers (minimum %s) not found with %s loops per direction", minimum, max_loop)
-        return markers, true 
+        return markers, True 
 
     def lookForMarkers(self, max_loop=float("inf"), sleep_time=0.5):
         """
