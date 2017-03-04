@@ -66,8 +66,7 @@ def route_b_c_a(robot):
             marker = robot.find_closest_marker(MARKER_TOKEN_A)
             robot.log.info("Moving to A cube")
             robot.move_to_cube(marker)
-            robot.log.debug("turning to face home")
-            robot.wheels.turn(45)
+            robot.log.debug("going home")
             robot.wheels.move(2)
         else:
             robot.log.debug("Found %s B cubes, moving to the 0th one", len(markers))
