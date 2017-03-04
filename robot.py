@@ -5,10 +5,10 @@ from math import sqrt
 import logging
 from operator import attrgetter
 
-try:
-    from typing import Callable, List  # pylint: disable=import-error
-except ImportError:
-    pass
+#try:
+    #from typing import Callable, List  # pylint: disable=import-error
+#except ImportError:
+    #pass
 
 from mbed_link import IOBoard
 import strategies
