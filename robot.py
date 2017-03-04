@@ -5,7 +5,7 @@ from math import sqrt
 import logging
 from operator import attrgetter
 
-try:
+#try:
     #from typing import Callable, List
 #except ImportError:
    # pass
