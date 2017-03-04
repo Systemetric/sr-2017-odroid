@@ -40,10 +40,7 @@ def route_b_c_a(robot):
         # TODO(jdh): do something sane when cubes are missing
         robot.log.warn("Can't see B cube! Stopping strategy.")
         position_markers = robot.align_with_cubes()
-        if position_markers[2] != False:
-            #Can see C marker so carry on
-            return
-        else:
+        if position_markers[2] == False:
             robot.log.debug("Cannot see B or C cube")
     else:
         robot.log.debug("Found %s B cubes, moving to the 0th one", len(markers))
