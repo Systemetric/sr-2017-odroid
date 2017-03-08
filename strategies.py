@@ -57,7 +57,7 @@ def route_b_c_a(robot):
     #robot.move_to_cube(marker)
     if hasB == False:
         robot.log.info("Finding C cube")
-        Cmarkers = robot.find_marker_approx_position(MARKER_TOKEN_C, 3.25)
+        Cmarkers = robot.find_marker_approx_position(MARKER_TOKEN_C, 2.88)
         if Cmarkers == []:
             robot.log.warn("Can't see C cube!")
             position_markers = robot.check_cube_alignment()

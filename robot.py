@@ -155,7 +155,7 @@ class CompanionCube(Robot):
         markers = [m for m in self.find_markers(filter_func=lambda marker: marker.info.marker_type == marker_type)]
         return sorted(markers, key=attrgetter("dist"))[0]
 
-    def find_marker_approx_position(self, marker_type, dist, dist_tolerance = 0.30):
+    def find_marker_approx_position(self, marker_type, dist, dist_tolerance = 0.5):
         """
         Find and return a list of markers at an approximate location.
 
