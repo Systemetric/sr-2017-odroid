@@ -162,7 +162,16 @@ class CompanionCube(Robot):
         The list may be empty, in which case no markers could be seen at that distance.
         """
         self.log.info("Finding marker of type %s approximately %s metres away, give or take %s metres", marker_type, dist, dist_tolerance)
-        markers = [m for m in self.lookForMarkers(max_loop=5) if m.info.marker_type == marker_type and dist - dist_tolerance <= m.dist <= dist + dist_tolerance]
+        markers = []
+        for marker in self.lookForMarkers(max_loop=5):
+            if marker.info.marker_type == marker_type and dist - dist_tolerance <= marker.dist <= dist + dist_tolerance:
+                self.log.debug("Found a MATCHING %s marker %s metres away at %s degrees",
+                               marker.info.marker_type, marker.dist, marker.rot_y)
+                markers.append(marker)
+            else:
+                self.log.debug("Found a non-matching %s marker %s metres away at %s degrees",
+                               marker.info.marker_type, marker.dist, marker.rot_y)
+        # markers = [m for m in self.lookForMarkers(max_loop=5) if m.info.marker_type == marker_type and dist - dist_tolerance <= m.dist <= dist + dist_tolerance]
         self.log.info("Found %s markers matching criteria", len(markers))
         return markers
 
