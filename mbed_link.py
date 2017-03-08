@@ -1,4 +1,5 @@
 import serial
+import time
 
 
 class IOBoard(object):
@@ -85,6 +86,7 @@ class IOBoard(object):
         Send the `command` (character) to the mbed with 1 byte of data (int)
         """
         self.log.debug("Starting mbed command %s(%s)", command, data)
+        send_time = time.time()
         try:
             self.conn.write(command)
             self.conn.write(chr(data))
@@ -97,4 +99,4 @@ class IOBoard(object):
         self.log.debug("mbed sent response %s", response)
             #return "Error"
         self.conn.flushInput()
-        self.log.debug("Sucessfully completed command %s(%s)", command, data)
+        self.log.debug("Sucessfully completed command %s(%s) after %s seconds", command, data, time.time() - send_time)
