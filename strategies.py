@@ -54,7 +54,7 @@ def route_b_c_a(robot):
             robot.log.warn("Can't see C cube!")
             robot.log.debug("Cannot see a C, turning to roughly A cube")
             robot.wheels.turn(-45)
-            Amarkers = robot.find_marker_approx_position(MARKER_TOKEN_A, 1.5)
+            Amarkers = robot.find_marker_approx_position(MARKER_TOKEN_A, 2.0)
             if Amarkers:
                 robot.log.info("Moving to A cube (not from a corner)")
                 robot.wheels.turn(-45)
@@ -64,7 +64,7 @@ def route_b_c_a(robot):
                 if Amarkers:
                     marker = Amarkers[0]
                     robot.move_to_cube(marker)
-                    Bmarkers = robot.find_marker_approx_position(MARKER_TOKEN_B, 1.5)
+                    Bmarkers = robot.find_marker_approx_position(MARKER_TOKEN_B, 1.0)
                     if Bmarkers:
                         robot.log.debug("Found a B cube, going for it")
                         marker = Bmarkers[0]
