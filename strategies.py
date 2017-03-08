@@ -53,7 +53,7 @@ def route_b_c_a(robot):
     #robot.move_to_cube(marker)
     #robot.log.info("Finding C cube")
     #marker = robot.find_closest_marker(MARKER_TOKEN_C)
-   # robot.log.info("Moving to C cube")
+    #robot.log.info("Moving to C cube")
     #robot.move_to_cube(marker)
     if hasB == False:
         robot.log.info("Finding C cube")
