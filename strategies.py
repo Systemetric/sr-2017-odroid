@@ -57,7 +57,7 @@ def route_b_c_a(robot):
    # robot.log.info("Moving to C cube")
     #robot.move_to_cube(marker)
     if hasB == False:
-        route_c_b_a()#Change strategy
+        route_c_b_a(robot) #Change strategy
     else: 
         robot.log.debug("Has B so turning to roughly A cube")
         robot.wheels.turn(-135)
