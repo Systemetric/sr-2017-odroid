@@ -121,13 +121,25 @@ def route_b_c_a(robot):
             robot.log.warn("Can't see C cube!")
             robot.log.debug("Cannot see a C, turning to roughly A cube")
             robot.wheels.turn(-90)
-            marker = robot.find_marker_approx_position(MARKER_TOKEN_A, 1.0)
-            robot.log.info("Moving to A cube")
-            robot.move_to_cube(marker)
-            robot.log.debug("going home")
-            robot.wheels.turn(-45)
-            robot.wheels.move(2)
-            robot.log.info("Home?")
+            Amarkers = robot.find_marker_approx_position(MARKER_TOKEN_A, 1.0)
+            if Amarkers:
+                marker = Amarkers[0]
+                robot.log.info("Moving to A cube")
+                robot.move_to_cube(marker)
+                robot.log.debug("going home")
+                robot.wheels.turn(-45)
+                robot.wheels.move(2)
+                robot.log.info("Home?")
+            else:
+                # This is pretty soon after the round starts, so it's odd that our A cube is not
+                # visible.
+                robot.log.info("Can't see A cube, going home with just a B cube")
+                # TODO(jdh): check if arena markers behind A cube are visible. For now, assume that
+                # they are, so go home via the missing A cube.
+                robot.wheels.move(1.5)
+                robot.wheels.turn(-45)
+                robot.wheels.move(2)
+                robot.log.info("Home?")
         else:
             robot.log.debug("Found %s C cubes, moving to the 0th one", len(Cmarkers))
             marker = Cmarkers[0]
