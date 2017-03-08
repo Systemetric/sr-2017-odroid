@@ -258,8 +258,8 @@ class CompanionCube(Robot):
         self.log.debug("delta=%s", delta)
         gamma = alpha - delta
         return Vector(distance=n, angle=gamma)
-        
-    def align_with_cubes(self):
+
+    def check_cube_alignment(self):
         """
         Looks to see what cubes are ahead of the robot and checks if they are in the expected position
         """
@@ -269,31 +269,30 @@ class CompanionCube(Robot):
         self.log.info("Looking for markers to align with")
         markers = self.see_markers()
         for m in markers:
-            if m.info.marker_type=='token-a':
+            if m.info.marker_type == MARKER_TOKEN_A:
                 if m.rot_y <= 0:
-                    RA_marker = self.check_cube_position(m, -70)
+                    RA_marker = self.check_cube_angle(m, -70)
                 else:
-                    LA_marker = self.check_cube_position(m, 15)
-            if m.info.marker_type=='token-b':
-                self.check_cube_position(m, 18) 
-            if m.info.marker_type=='token-c':
+                    LA_marker = self.check_cube_angle(m, 15)
+            if m.info.marker_type == MARKER_TOKEN_B:
+                self.check_cube_angle(m, 18)
+            if m.info.marker_type == MARKER_TOKEN_C:
                 self.log.info("Can see markers with marker type of 'C'")
                 if m.rot_y <= -5 or m.rot_y >= 5:
                     self.log.info("'C' marker is out of position, orientation is %s", m.rot_y)
                     C_Marker = False
                 else:
                     C_Marker = True
-                    
         return [RA_marker, LA_marker, C_Marker]
-                        
-    def check_cube_position(self, marker, expectedPosition):
+
+    def check_cube_angle(self, marker, expectedPosition):
         self.log.info("Can see markers with %s, number %s", marker.info.marker_type, marker.info.code)
         if marker.rot_y <= expectedPosition - 5 or marker.rot_y >= expectedPosition + 5:
             self.log.info("%s marker is out of position, orientation is %s", marker.info.marker_type, marker.rot_y)
             return False
         else:
             return True
-        
+
     def init_logger(self):
         """
         Initialise logger.

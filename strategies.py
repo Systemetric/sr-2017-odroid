@@ -39,7 +39,7 @@ def route_b_c_a(robot):
     markers = robot.find_marker_approx_position(MARKER_TOKEN_B, 1.5)
     if markers == []:
         robot.log.warn("Can't see B cube!")
-        position_markers = robot.align_with_cubes()
+        position_markers = robot.check_cube_alignment()
         if position_markers[2] == False:
             robot.log.warn("Cannot see B or C cube, in the wrong place")
     else:
@@ -60,7 +60,7 @@ def route_b_c_a(robot):
         Cmarkers = robot.find_marker_approx_position(MARKER_TOKEN_C, 3.25)
         if Cmarkers == []:
             robot.log.warn("Can't see C cube!")
-            position_markers = robot.align_with_cubes()
+            position_markers = robot.check_cube_alignment()
             if position_markers[2] == False:
                 robot.log.warn("Cannot see B or C cube, in the wrong place")
             else:
@@ -106,7 +106,7 @@ def route_b_c_a(robot):
         Cmarkers = robot.find_marker_approx_position(MARKER_TOKEN_C, 3.25)
         if Cmarkers == []:
             robot.log.warn("Can't see C cube!")
-            position_markers = robot.align_with_cubes()
+            position_markers = robot.check_cube_alignment()
             if position_markers[2] == False:
                 robot.log.warn("Cannot see B or C cube, in the wrong place")
             else:
@@ -137,7 +137,7 @@ def route_c_b_a(robot):
     if Cmarkers == []:
         # TODO(jdh): do something sane when cubes are missing
         robot.log.warn("Can't see C cube!")
-        position_markers = robot.align_with_cubes()
+        position_markers = robot.check_cube_alignment()
         if position_markers[2] == False:
             robot.log.warn("Cannot see B or C cube, in the wrong place")
         else:
@@ -209,7 +209,7 @@ def route_a_c_b(robot, initial_distance):
 
 @strategy("align cubes")
 def test_align_markers(robot):
-    robot.align_with_cubes()
+    robot.check_cube_alignment()
 
 
 @strategy("print all cubes in sight")
