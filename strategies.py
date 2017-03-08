@@ -64,7 +64,7 @@ def route_b_c_a(robot):
             if position_markers[2] == False:
                 robot.log.warn("Cannot see B or C cube, in the wrong place")
             else:
-                #Change strategy
+                # Change strategy
                 robot.log.debug("Cannot see a C, turning to roughly A cube")
                 robot.wheels.turn(-45)
                 marker = robot.find_closest_marker(MARKER_TOKEN_A)
@@ -110,7 +110,7 @@ def route_b_c_a(robot):
             if position_markers[2] == False:
                 robot.log.warn("Cannot see B or C cube, in the wrong place")
             else:
-                #Change strategy
+                # Change strategy
                 robot.log.debug("Cannot see a C, turning to roughly A cube")
                 robot.wheels.turn(-45)
                 marker = robot.find_closest_marker(MARKER_TOKEN_A)
@@ -141,7 +141,7 @@ def route_c_b_a(robot):
         if position_markers[2] == False:
             robot.log.warn("Cannot see B or C cube, in the wrong place")
         else:
-            #Change strategy
+            # Change strategy
             robot.log.debug("Cannot see a C, turning to roughly A cube")
             robot.wheels.turn(-45)
             marker = robot.find_closest_marker(MARKER_TOKEN_A)
