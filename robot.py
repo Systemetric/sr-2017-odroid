@@ -165,12 +165,12 @@ class CompanionCube(Robot):
         markers = []
         for marker in self.lookForMarkers(max_loop=5):
             if marker.info.marker_type == marker_type and dist - dist_tolerance <= marker.dist <= dist + dist_tolerance:
-                self.log.debug("Found a MATCHING %s marker %s metres away at %s degrees",
-                               marker.info.marker_type, marker.dist, marker.rot_y)
+                self.log.debug("Found a MATCHING %s marker (id %s) %s metres away at %s degrees",
+                               marker.info.marker_type, marker.info.code, marker.dist, marker.rot_y)
                 markers.append(marker)
             else:
-                self.log.debug("Found a non-matching %s marker %s metres away at %s degrees",
-                               marker.info.marker_type, marker.dist, marker.rot_y)
+                self.log.debug("Found a non-matching %s marker (id %s) %s metres away at %s degrees",
+                               marker.info.marker_type, marker.info.code, marker.dist, marker.rot_y)
         # markers = [m for m in self.lookForMarkers(max_loop=5) if m.info.marker_type == marker_type and dist - dist_tolerance <= m.dist <= dist + dist_tolerance]
         self.log.info("Found %s markers matching criteria", len(markers))
         return markers
