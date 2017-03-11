@@ -48,7 +48,26 @@ def route_b_c_a(robot):
         hasB = True
         validMovement = robot.move_to_cube(marker)
         if validMovement == 'Crash':
+            robot.log.debug("Moving 1.0 metres backwards to get a better view of B because of a collision")
             robot.wheels.backwards(1.0)
+            hasB = False
+            robot.log.debug("Trying to find B again")
+            markers = robot.find_marker_approx_position(MARKER_TOKEN_B, 1.5)
+            if markers == []:
+                robot.log.warn("Can't see B cube!")
+                position_markers = robot.check_cube_alignment()
+                if position_markers[2] == False:
+                    robot.log.warn("Cannot see B or C cube, in the wrong place")
+            else:
+                robot.log.debug("Found %s B cubes, moving to the 0th one", len(markers))
+                marker = markers[0]
+                hasB = True
+                validMovement = robot.move_to_cube(marker)
+                if validMovement == 'Crash':
+                    robot.log.debug("Moving 0.2 metres backwards to unhook from a collision")
+                    robot.wheels.backwards(0.2)
+                    hasB = False
+                    
     if hasB == False:
         robot.log.info("Finding C cube")
         Cmarkers = robot.find_marker_approx_position(MARKER_TOKEN_C, 2.88)
