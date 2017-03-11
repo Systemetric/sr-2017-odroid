@@ -84,7 +84,7 @@ def route_b_c_a(robot):
                 robot.wheels.turn(-45)
                 robot.wheels.move(1.5)
                 robot.wheels.turn(90)
-                Amarkers = robot.cone_search_specific_marker(marker_id, dist=1.5, max_left=30, max_right=30)
+                Amarkers = robot.cone_search_specific_marker(marker_id, max_left=30, max_right=30)
                 if Amarkers:
                     marker = Amarkers[0]
                     robot.move_to_cube(marker)
