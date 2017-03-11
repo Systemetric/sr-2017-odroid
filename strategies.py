@@ -77,13 +77,14 @@ def route_b_c_a(robot):
             robot.wheels.turn(-45)
             Amarkers = robot.cone_search_approx_position(MARKER_TOKEN_A, dist=1.8, dist_tolerance = 0.7)
             if Amarkers:
-                robot.log.info("Having not found B nor C cube, turning to face A cube exactly")
+                marker_id = Amarkers[0].info.code
+                robot.log.info("Having not found B nor C cube, and found an A cube, turning to face A cube (%s) exactly", marker_id)
                 robot.face_cube(Amarkers[0])
                 robot.log.info("Moving to A cube (not from a corner)")
                 robot.wheels.turn(-45)
                 robot.wheels.move(1.5)
                 robot.wheels.turn(90)
-                Amarkers = robot.cone_search_approx_position(MARKER_TOKEN_A, dist=1.5, max_left=30, max_right=30)
+                Amarkers = robot.cone_search_specific_marker(marker_id, dist=1.5, max_left=30, max_right=30)
                 if Amarkers:
                     marker = Amarkers[0]
                     robot.move_to_cube(marker)
