@@ -192,10 +192,10 @@ class CompanionCube(Robot):
             self.wheels.turn(angle)
             markers = self.find_marker_approx_position(marker_type, dist, dist_tolerance)
             if markers:
-                self.log.info("Finished cone search and found %s markers of type %s", len(markers), marker_type)
+                self.log.info("Finished marker type cone search and found %s markers of type %s", len(markers), marker_type)
                 return markers
             time.sleep(sleep_time)
-        self.log.info("Finished cone search with no markers found")
+        self.log.info("Finished marker type cone search with no markers found")
 
     def cone_search_specific_marker(self, marker_id, max_left=45, max_right=45, delta=15, sleep_time=0.5):
         """
@@ -207,10 +207,10 @@ class CompanionCube(Robot):
             self.wheels.turn(angle)
             markers = self.see_markers(predicate=lambda marker: marker.info.code == marker_id)
             if markers:
-                self.log.info("Finished cone search and found %s markers of type %s", len(markers), marker_id)
+                self.log.info("Finished specific marker cone search and found %s markers of id %s", len(markers), marker_id)
                 return markers
             time.sleep(sleep_time)
-        self.log.info("Finished cone search with no markers found")
+        self.log.info("Finished specific marker cone search with no markers found")
 
     def find_markers(self, minimum=1, max_loop=10, delta_angle=20, filter_func=lambda marker: True):
         """
