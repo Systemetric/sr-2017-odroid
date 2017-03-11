@@ -187,13 +187,26 @@ class CompanionCube(Robot):
         outside of the visual range of the camera
         """
         self.log.info("Doing a cone based search with extremities (%s, %s) and delta %s for markers of type %s approximately %s metres away, give or take %s metres", max_left, max_right, delta, marker_type, dist, dist_tolerance)
-        markers = self.find_marker_approx_position(marker_type, dist, dist_tolerance)
-        if markers:
-            return markers
-        angles = [-max_left]+[delta for i in range(0, max_left+max_right, delta)]
+        angles = [0, -max_left]+[delta for i in range(0, max_left+max_right, delta)]
         for angle in angles:
             self.wheels.turn(angle)
             markers = self.find_marker_approx_position(marker_type, dist, dist_tolerance)
+            if markers:
+                self.log.info("Finished cone search and found %s markers of type %s", len(markers), marker_type)
+                return markers
+            time.sleep(sleep_time)
+        self.log.info("Finished cone search with no markers found")
+
+    def cone_search_specific_marker(self, marker_id, max_left=45, max_right=45, delta=15, sleep_time=0.5):
+        """
+        Search for a specific marker at an appproximate distance with tolerances
+        outside of the visual range of the camera
+        """
+        self.log.info("Doing a cone based search with extremities (%s, %s) and delta %s for a marker (id %s) approximately %s metres away, give or take %s metres", max_left, max_right, delta, marker_type, dist, dist_tolerance)
+        angles = [0, -max_left]+[delta for i in range(0, max_left+max_right, delta)]
+        for angle in angles:
+            self.wheels.turn(angle)
+            markers = self.see_markers(predicate=lambda marker: marker.info.code == marker_id)
             if markers:
                 self.log.info("Finished cone search and found %s markers of type %s", len(markers), marker_type)
                 return markers
