@@ -77,6 +77,8 @@ def route_b_c_a(robot):
             robot.wheels.turn(-45)
             Amarkers = robot.find_marker_approx_position(MARKER_TOKEN_A, 2.0)
             if Amarkers:
+                robot.log.info("Turning to face A cube exactly")
+                robot.face_cube(Amarkers[0])
                 robot.log.info("Moving to A cube (not from a corner)")
                 robot.wheels.turn(-45)
                 robot.wheels.move(1.5)
