@@ -57,6 +57,7 @@ class IOBoard(object):
         else:
             amount, remainder = divmod(amount * 100, 10)
             movement = self.send_command("F", int(amount))
+            self.log.info('Movement = [%s]',movement)
             if movement == 'Error': 
                 self.log.error("Failed to move forwards")
                 return 'Error' 
