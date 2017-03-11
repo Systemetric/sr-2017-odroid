@@ -75,7 +75,7 @@ def route_b_c_a(robot):
             robot.log.warn("Can't see C cube!")
             robot.log.debug("Cannot see a C, turning to roughly A cube")
             robot.wheels.turn(-45)
-            Amarkers = robot.cone_search_approx_position(MARKER_TOKEN_A, 2.0)
+            Amarkers = robot.cone_search_approx_position(MARKER_TOKEN_A, dist=1.8, dist_tolerance = 0.7)
             if Amarkers:
                 robot.log.info("Turning to face A cube exactly")
                 robot.face_cube(Amarkers[0])
