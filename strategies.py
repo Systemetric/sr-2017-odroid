@@ -170,8 +170,8 @@ def route_b_c_a(robot):
             robot.log.info("Moving to C cube")
             validMovement = robot.move_to_cube(marker)
             if validMovement == 'Crash':
-                robot.log.debug("Moving 1.0 metres backwards to get a better view of C because of a collision")
-                robot.wheels.backwards(1.0)
+                robot.log.debug("Moving 0.5 metres backwards to get a better view of C because of a collision")
+                robot.wheels.backwards(0.5)
                 robot.log.debug("Trying to find C again")
                 markers = robot.find_marker_approx_position(MARKER_TOKEN_C, 1.5)
                 if markers == []:
