@@ -41,9 +41,12 @@ class IOBoard(object):
         amount %= 360
         self.log.debug("turn mod 360 is %s", amount)
         if amount > 180:
-            self.turn_left(360 - amount)
+            movement = self.turn_left(360 - amount)
         else:
-            self.turn_right(amount)
+            movement = self.turn_right(amount)
+        if movement == 'Error':
+            self.log.error("Failed to turn")
+            return 'Error'
 
     def forwards(self, amount):
         """
@@ -53,7 +56,10 @@ class IOBoard(object):
             self.send_command("f", int(amount * 100))
         else:
             amount, remainder = divmod(amount * 100, 10)
-            self.send_command("F", int(amount))
+            movement = self.send_command("F", int(amount))
+            if movement == 'Error':
+                self.log.error("Failed to move forwards")
+                return 'Error'
             if remainder >= 2:
                 self.send_command("f", int(remainder))
             else:
@@ -63,7 +69,10 @@ class IOBoard(object):
         """
         Go backwards `amount` m.
         """
-        self.send_command("b", int(amount*100))
+        movement = self.send_command("b", int(amount*100))
+        if movement == 'Error':
+            self.log.error("Failed to move backwards")
+            return 'Error'
 
     def turn_left(self, amount):
         """
@@ -71,7 +80,10 @@ class IOBoard(object):
         This function is not clever and will turn more than 180 degrees if asked.
         """
         self.log.debug("Turning left %s degrees", amount)
-        self.send_command("l", int(round(amount)))
+        movement = self.send_command("l", int(round(amount)))
+        if movement == 'Error':
+            self.log.error("Failed to turn left")
+            return 'Error'
 
     def turn_right(self, amount):
         """
@@ -79,7 +91,10 @@ class IOBoard(object):
         This function is not clever and will turn more than 180 degrees if asked.
         """
         self.log.debug("Turning right %s degrees", amount)
-        self.send_command("r", int(round(amount)))
+        movement = self.send_command("r", int(round(amount)))
+        if movement == 'Error':
+            self.log.error("Failed to turn right")
+            return 'Error'
 
     def send_command(self, command, data):
         """
@@ -97,6 +112,8 @@ class IOBoard(object):
             pass
         response = self.conn.read(1)
         self.log.debug("mbed sent response %s", response)
-            #return "Error"
         self.conn.flushInput()
+        if response == 'e':
+            self.log.error("Failed to complete movement")
+            return "Error"
         self.log.debug("Sucessfully completed command %s(%s) after %s seconds", command, data, time.time() - send_time)
