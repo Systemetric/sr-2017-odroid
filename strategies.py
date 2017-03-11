@@ -97,7 +97,7 @@ def route_b_c_a(robot):
                         robot.wheels.turn(180)
                         robot.wheels.move(1.5)
                         robot.wheels.turn(45)
-                        robot.wheels.move(2)
+                        robot.wheels.move(3)
                         robot.log.info("Achieved getting home?")
                     else:
                         robot.log.debug("Having not found B nor C cube but getting A cube, second B not visible, going home")
