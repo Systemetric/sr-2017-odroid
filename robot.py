@@ -181,7 +181,7 @@ class CompanionCube(Robot):
         self.log.info("Found %s markers matching criteria", len(markers))
         return markers
 
-    def cone_search_approx_position(self, marker_type, dist, dist_tolerance = 0.5, max_left=45, max_right=45, delta=15):
+    def cone_search_approx_position(self, marker_type, dist, dist_tolerance = 0.5, max_left=45, max_right=45, delta=15, sleep_time=0.5):
         """
         Search for a specific marker type at an appproximate distance with tolerances
         outside of the visual range of the camera
@@ -190,12 +190,13 @@ class CompanionCube(Robot):
         markers = self.find_marker_approx_position(marker_type, dist, dist_tolerance)
         if markers:
             return markers
-        angles = [max_left]+[-delta for i in range(0, max_left+max_right, delta)]
+        angles = [-max_left]+[delta for i in range(0, max_left+max_right, delta)]
         for angle in angles:
             self.wheels.turn(angle)
             markers = self.find_marker_approx_position(marker_type, dist, dist_tolerance)
             if markers:
                 return markers
+            time.sleep(sleep_time)
         self.log.info("Finished cone search with no markers found")
 
     def find_markers(self, minimum=1, max_loop=10, delta_angle=20, filter_func=lambda marker: True):
