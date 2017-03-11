@@ -69,7 +69,7 @@ def route_b_c_a(robot):
                     hasB = False
                     
     if hasB == False:
-        robot.log.info("Finding C cube")
+        robot.log.info("Having not found the first B cube, finding C cube")
         Cmarkers = robot.find_marker_approx_position(MARKER_TOKEN_C, 2.88)
         if Cmarkers == []:
             robot.log.warn("Can't see C cube!")
@@ -77,7 +77,7 @@ def route_b_c_a(robot):
             robot.wheels.turn(-45)
             Amarkers = robot.cone_search_approx_position(MARKER_TOKEN_A, dist=1.8, dist_tolerance = 0.7)
             if Amarkers:
-                robot.log.info("Turning to face A cube exactly")
+                robot.log.info("Having not found B nor C cube, turning to face A cube exactly")
                 robot.face_cube(Amarkers[0])
                 robot.log.info("Moving to A cube (not from a corner)")
                 robot.wheels.turn(-45)
@@ -89,26 +89,26 @@ def route_b_c_a(robot):
                     robot.move_to_cube(marker)
                     Bmarkers = robot.cone_search_approx_position(MARKER_TOKEN_B, dist=1.0, max_left=30, max_right=30)
                     if Bmarkers:
-                        robot.log.debug("Found a B cube, going for it")
+                        robot.log.debug("Having not found B nor C cube but getting A cube, found a B cube, going for it")
                         marker = Bmarkers[0]
                         robot.move_to_cube(marker)
-                        robot.log.debug("Going home")
+                        robot.log.debug("Now going home")
                         robot.wheels.turn(180)
                         robot.wheels.move(1.5)
                         robot.wheels.turn(45)
                         robot.wheels.move(2)
-                        robot.log.info("Home?")
+                        robot.log.info("Achieved getting home?")
                     else:
-                        robot.log.debug("B not visible, going home")
+                        robot.log.debug("Having not found B nor C cube but getting A cube, second B not visible, going home")
                         robot.wheels.turn(-135)
                         robot.wheels.move(2)
                         robot.log.info("Home?")
                 else:
-                    robot.log.fatal("The A cube has moved when we weren't looking!")
+                    robot.log.fatal("Having not found B nor C cube, found an A cube but it has moved when we weren't looking!")
             else:
                 robot.log.fatal("Can't find any cubes at all where I expect them to be!")
         else:
-            robot.log.debug("Found %s C cubes, moving to the 0th one", len(Cmarkers))
+            robot.log.debug("Having not found a B cube, found %s C cubes, moving to the 0th one", len(Cmarkers))
             marker = Cmarkers[0]
             robot.log.info("Moving to C cube")
             robot.move_to_cube(marker)
