@@ -99,7 +99,7 @@ class CompanionCube(Robot):
             distance_to_move = distance - corrections.cube_width - check_at
             self.log.debug("Cube is %s metres away, moving %s metres then checking", distance, distance_to_move)
             validMovement = self.wheels.forwards(distance_to_move)
-            if validMovement == 'Error:
+            if validMovement == 'Error':
                 return 'Crash'
             while True:  # If the robot is over 1 degrees off:
                 markers = self.find_markers(filter_func = lambda m: m.info.code == marker.info.code)
@@ -115,7 +115,7 @@ class CompanionCube(Robot):
                 self.wheels.turn(vec.angle)
             self.log.debug("Moving the rest of the way to the cube (%s + cube_size (0.255)); this should be about 1.255 metres", vec.distance)
             validMovement = self.wheels.forwards(vec.distance+distance_after)
-            if validMovement == 'Error:
+            if validMovement == 'Error':
                 return 'Crash'
         self.log.debug("Done moving to cube")
         return 'Ok'
