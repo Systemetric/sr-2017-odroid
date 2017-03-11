@@ -195,6 +195,7 @@ class CompanionCube(Robot):
             self.wheels.turn(angle)
             markers = self.find_marker_approx_position(marker_type, dist, dist_tolerance)
             if markers:
+                self.log.info("Finished cone search and found %s markers of type %s", len(markers), marker_type)
                 return markers
             time.sleep(sleep_time)
         self.log.info("Finished cone search with no markers found")
