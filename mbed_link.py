@@ -53,16 +53,24 @@ class IOBoard(object):
         Go forwards `amount` m.
         """
         if amount <= 2.55:
-            self.send_command("f", int(amount * 100))
+            movement = self.send_command("f", int(amount * 100))
+            self.log.info('Movement = [%s]',movement)
+            if movement == 'Error': 
+                self.log.error("Failed to move forwards when distance is less than 2.55m")
+                return 'Error' 
         else:
             amount, remainder = divmod(amount * 100, 10)
             movement = self.send_command("F", int(amount))
             self.log.info('Movement = [%s]',movement)
             if movement == 'Error': 
-                self.log.error("Failed to move forwards")
+                self.log.error("Failed to move forwards in step one when distance is greater than 2.55m")
                 return 'Error' 
             if remainder >= 2:
                 self.send_command("f", int(remainder))
+                movement = self.log.info('Movement = [%s]',movement)
+                if movement == 'Error': 
+                    self.log.error("Failed to move forwards in step two  with remainder greater than 2")
+                    return 'Error' 
             else:
                 self.log.warn("Discarding extra distance of %s cm", remainder)
 
