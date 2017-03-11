@@ -57,9 +57,9 @@ class IOBoard(object):
         else:
             amount, remainder = divmod(amount * 100, 10)
             movement = self.send_command("F", int(amount))
-            if movement == 'Error':
+            if movement == 'Error': 
                 self.log.error("Failed to move forwards")
-                return 'Error'
+                return 'Error' 
             if remainder >= 2:
                 self.send_command("f", int(remainder))
             else:
@@ -107,7 +107,7 @@ class IOBoard(object):
             self.conn.write(chr(data))
         except serial.SerialTimeoutException:
             self.log.error("Timeout sending mbed command %s(%s). Not retrying.", command, data)
-            return "Error"
+            return 'Error'
         while not self.conn.inWaiting():
             pass
         response = self.conn.read(1)
@@ -115,5 +115,5 @@ class IOBoard(object):
         self.conn.flushInput()
         if response == 'e':
             self.log.error("Failed to complete movement")
-            return "Error"
+            return 'Error'
         self.log.debug("Sucessfully completed command %s(%s) after %s seconds", command, data, time.time() - send_time)
