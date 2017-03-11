@@ -46,7 +46,9 @@ def route_b_c_a(robot):
         robot.log.debug("Found %s B cubes, moving to the 0th one", len(markers))
         marker = markers[0]
         hasB = True
-        robot.move_to_cube(marker)
+        validMovement = robot.move_to_cube(marker)
+        if validMovement == 'Crash':
+            robot.wheels.backwards(1.0)
     if hasB == False:
         robot.log.info("Finding C cube")
         Cmarkers = robot.find_marker_approx_position(MARKER_TOKEN_C, 2.88)
