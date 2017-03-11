@@ -83,7 +83,7 @@ def route_b_c_a(robot):
                 robot.wheels.turn(-45)
                 robot.wheels.move(1.5)
                 robot.wheels.turn(90)
-                Amarkers = robot.find_marker_approx_position(MARKER_TOKEN_A, 1.5)
+                Amarkers = robot.cone_search_approx_position(MARKER_TOKEN_A, dist=1.5, max_left=30, max_right=30)
                 if Amarkers:
                     marker = Amarkers[0]
                     robot.move_to_cube(marker)
