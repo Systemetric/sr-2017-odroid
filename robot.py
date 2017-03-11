@@ -91,16 +91,20 @@ class CompanionCube(Robot):
         distance = self.face_cube(marker)
         if distance <= max_safe_distance:
             self.log.debug("Moving straight to cube, since distance (%s) is under max safe distance (%s)", distance, max_safe_distance)
-            self.wheels.forwards(distance+distance_after)
+            validMovement = self.wheels.forwards(distance+distance_after)
+            if validMovement == 'Error:
+                return 'Crash'
         else:
             # We need to check where we are once we're check_at distance from the cube
             distance_to_move = distance - corrections.cube_width - check_at
             self.log.debug("Cube is %s metres away, moving %s metres then checking", distance, distance_to_move)
-            self.wheels.forwards(distance_to_move)
+            validMovement = self.wheels.forwards(distance_to_move)
+            if validMovement == 'Error:
+                return 'Crash'
             while True:  # If the robot is over 1 degrees off:
                 markers = self.find_markers(filter_func = lambda m: m.info.code == marker.info.code)
                 if not markers:
-                    return False
+                    return 'Cant see'
                 marker = markers[0]
                 vec = marker2vector(marker)
                 vec = corrections.correct_all_cube(vec, marker.orientation.rot_y)
@@ -110,9 +114,11 @@ class CompanionCube(Robot):
                 self.log.debug("We're %s degrees off, correcting...", vec.angle)  # The angle the marker is from the robot
                 self.wheels.turn(vec.angle)
             self.log.debug("Moving the rest of the way to the cube (%s + cube_size (0.255)); this should be about 1.255 metres", vec.distance)
-            self.wheels.forwards(vec.distance+distance_after)
+            validMovement = self.wheels.forwards(vec.distance+distance_after)
+            if validMovement == 'Error:
+                return 'Crash'
         self.log.debug("Done moving to cube")
-        return True
+        return 'Ok'
 
     def see_markers(self, predicate=None, attempts=3):
         # type: (Callable[[Marker], bool], int) -> List[Marker]
