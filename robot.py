@@ -186,7 +186,7 @@ class CompanionCube(Robot):
         Search for a specific marker type at an appproximate distance with tolerances
         outside of the visual range of the camera
         """
-        self.log.info("Doing a cone based search with angles %s for markers of type %s approximately %s metres away, give or take %s metres", angle_tolerance, marker_type, dist, dist_tolerance)
+        self.log.info("Doing a cone based search with extremities (%s, %s) and delta %s for markers of type %s approximately %s metres away, give or take %s metres", max_left, max_right, delta, marker_type, dist, dist_tolerance)
         markers = self.find_marker_approx_position(marker_type, dist, dist_tolerance)
         if markers:
             return markers
