@@ -87,7 +87,7 @@ def route_b_c_a(robot):
                 if Amarkers:
                     marker = Amarkers[0]
                     robot.move_to_cube(marker)
-                    Bmarkers = robot.find_marker_approx_position(MARKER_TOKEN_B, 1.0)
+                    Bmarkers = robot.cone_search_approx_position(MARKER_TOKEN_B, dist=1.0, max_left=30, max_right=30)
                     if Bmarkers:
                         robot.log.debug("Found a B cube, going for it")
                         marker = Bmarkers[0]
