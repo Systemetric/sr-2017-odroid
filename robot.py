@@ -92,7 +92,7 @@ class CompanionCube(Robot):
         if distance <= max_safe_distance:
             self.log.debug("Moving straight to cube, since distance (%s) is under max safe distance (%s)", distance, max_safe_distance)
             validMovement = self.wheels.forwards(distance+distance_after)
-            if validMovement == 'Error:
+            if validMovement == 'Error':
                 return 'Crash'
         else:
             # We need to check where we are once we're check_at distance from the cube
