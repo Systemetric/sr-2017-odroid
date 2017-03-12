@@ -67,7 +67,7 @@ def route_b_c_a(robot):
                     robot.log.debug("Moving 0.2 metres backwards to unhook from a collision")
                     robot.wheels.backwards(0.2)
                     hasB = False
-                    
+
     if hasB == False:
         robot.log.info("Having not found the first B cube, finding C cube")
         Cmarkers = robot.find_marker_approx_position(MARKER_TOKEN_C, 2.88)
