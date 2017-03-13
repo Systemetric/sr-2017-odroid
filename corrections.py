@@ -1,3 +1,10 @@
+"""Corrections for the fact that the robot is not perfect.
+
+This file is part of the code for the Hills Road/Systemetric entry to
+the 2017 Student Robotics competition "Easy as ABC".
+"""
+
+
 from math import sqrt
 
 from trig import sind, cosd, asind

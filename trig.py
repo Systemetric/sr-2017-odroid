@@ -1,3 +1,10 @@
+"""Functions for doing trigonometry in degrees.
+
+This file is part of the code for the Hills Road/Systemetric entry to
+the 2017 Student Robotics competition "Easy as ABC".
+"""
+
+
 from math import sin, asin, cos, degrees, radians
 
 def sind(x):

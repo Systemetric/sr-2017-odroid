@@ -1,3 +1,10 @@
+"""Code for controlling DC motors.
+
+This file is part of the code for the Hills Road/Systemetric entry to
+the 2017 Student Robotics competition "Easy as ABC".
+"""
+
+
 import time
 
 

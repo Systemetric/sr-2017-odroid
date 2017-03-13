@@ -1,3 +1,10 @@
+"""A way to store the useful parts of a marker.
+
+This file is part of the code for the Hills Road/Systemetric entry to
+the 2017 Student Robotics competition "Easy as ABC".
+"""
+
+
 from sr.robot import *
 
 import collections

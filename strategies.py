@@ -1,4 +1,8 @@
-"""A collection of strategies the robot should use to collect cubes."""
+"""A collection of strategies the robot should use to collect cubes.
+
+This file is part of the code for the Hills Road/Systemetric entry to
+the 2017 Student Robotics competition "Easy as ABC".
+"""
 
 
 from sr.robot import *
