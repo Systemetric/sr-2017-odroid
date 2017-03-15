@@ -191,7 +191,7 @@ class CompanionCube(Robot):
         outside of the visual range of the camera
         """
         self.log.info("Doing a cone based search with extremities (%s, %s) and delta %s for markers of type %s approximately %s metres away, give or take %s metres", max_left, max_right, delta, marker_type, dist, dist_tolerance)
-        angles = [0, -max_left]+[delta for i in range(0, max_left+max_right, delta)]
+        angles = [0, -max_left] + ([delta]*(((max_left + max_right) // delta) + 1)) 
         for angle in angles:
             self.wheels.turn(angle)
             markers = self.find_marker_approx_position(marker_type, dist, dist_tolerance)
