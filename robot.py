@@ -56,7 +56,7 @@ class CompanionCube(Robot):
         """
         Given a marker, point towards it.
         """
-        self.log.info("Turning to face marker")
+        self.log.info("faceMarker is DEPRECATED. Turning to face marker")
         self.log.debug("marker.centre.polar.rot_y = %s", marker.centre.polar.rot_y)  # The angle the marker is from the robot
         self.log.debug("marker.orientation.rot_y = %s", marker.orientation.rot_y)  # The rotation of the marker
         turnOne = marker.centre.polar.rot_y  # Turns the robot to face the marker
