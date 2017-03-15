@@ -47,6 +47,7 @@ class CompanionCube(Robot):
         self.log.info("Battery(voltage = %s, current = %s)", self.power.battery.voltage, self.power.battery.current)
         switch_state = self.wheels.get_switch_state()
         self.log.info("DIP switch is %s", switch_state)
+        self.power.output[OUT_H1] = True  # Enable fan
         self.log.info("Waiting for start signal...")
         self.wait_start()
         self.log.info("Start signal recieved!")
