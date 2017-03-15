@@ -35,7 +35,7 @@ class CompanionCube(Robot):
         
         self.strategy = "b c a"
         args = []
-        kwargs = {"opposite_direction": True}
+        kwargs = {"opposite_direction": False}
         self.routeChange = False
 
         self.log.info("Start TobyDragon init")
@@ -125,7 +125,7 @@ class CompanionCube(Robot):
                 return 'Crash'
         self.log.debug("Done moving to cube")
         return 'Ok'
-
+    
     def see_markers(self, predicate=None, attempts=3):
         # type: (Callable[[Marker], bool], int) -> List[Marker]
         """
