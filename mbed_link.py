@@ -36,6 +36,8 @@ class IOBoard(object):
         """
         if amount > 0:
             self.forwards(amount)
+        elif amount == 0:
+            self.log.debug("Told to move by nothing. No command will be sent.")
         else:
             self.backwards(abs(amount))
 
@@ -49,6 +51,9 @@ class IOBoard(object):
         self.log.debug("turn mod 360 is %s", amount)
         if amount > 180:
             movement = self.turn_left(360 - amount)
+        elif amount == 0:            
+            self.log.debug("Told to turn by nothing. No command will be sent.")
+            return
         else:
             movement = self.turn_right(amount)
         if movement == 'Error':
