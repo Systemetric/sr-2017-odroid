@@ -202,11 +202,13 @@ def route_b_c_a(robot, opposite_direction=False):
                     robot.move_to_cube(marker)
                     robot.log.info("Got B, lost C and got A cube. TODO: Go home.")
             else:
-                robot.log.debug("Has B so turning to roughly A cube")
+                robot.log.debug("Has B and C so turning to roughly A cube")
                 robot.wheels.turn(-135 * turn_factor)
                 marker = robot.find_closest_marker(MARKER_TOKEN_A)
                 robot.log.info("Moving to A cube")
-                robot.move_to_cube(marker, distance_after=2.5)
+                robot.move_to_cube(marker)
+                robot.log.debug("Now at A cube")
+                robot.log.debug(robot.see())  # TODO(jdh): remove
                 robot.log.info("Home?")
 
 
