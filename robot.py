@@ -30,27 +30,24 @@ class CompanionCube(Robot):
     """
 
     def __init__(self):
-        self.init_logger()
-        self.pre_init_strategy = None
-        self.strategy = "b c a"
         # Please use `log.debug`, `log.info`, `log.warning` or `log.error` instead of `print`
+        self.init_logger()
+        
+        self.strategy = "b c a"
+        args = []
+        self.routeChange = False
 
         self.log.info("Start TobyDragon init")
         super(CompanionCube, self).__init__(init=False)
         self.init()
+        self.log.info("Initialising wheels")
         self.wheels = IOBoard(self.log)
         self.log.info("Robot initialised")
         self.log.info("Battery(voltage = %s, current = %s)", self.power.battery.voltage, self.power.battery.current)
-        args = []
-        self.routeChange = False
-        self.wait_start()
-        if self.pre_init_strategy:
-            args = strategies.strategies[self.pre_init_strategy](self)
-        # Wait until the start button is pressed
         switch_state = self.wheels.get_switch_state()
         self.log.info("DIP switch is %s", switch_state)
         self.log.info("Waiting for start signal...")
-        #self.wait_start()
+        self.wait_start()
         self.log.info("Start signal recieved!")
         strategies.strategies[self.strategy](self, *args)
 
