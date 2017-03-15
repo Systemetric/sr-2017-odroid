@@ -35,6 +35,7 @@ class CompanionCube(Robot):
         
         self.strategy = "b c a"
         args = []
+        kwargs = {"opposite_direction": True}
         self.routeChange = False
 
         self.log.info("Start TobyDragon init")
@@ -49,7 +50,7 @@ class CompanionCube(Robot):
         self.log.info("Waiting for start signal...")
         self.wait_start()
         self.log.info("Start signal recieved!")
-        strategies.strategies[self.strategy](self, *args)
+        strategies.strategies[self.strategy](self, *args, **kwargs)
 
     def faceMarker(self, marker):
         # type: (Marker) -> None
