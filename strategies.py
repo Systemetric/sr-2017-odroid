@@ -208,9 +208,11 @@ def route_b_c_a(robot, opposite_direction=False):
                 robot.log.info("Moving to A cube")
                 robot.move_to_cube(marker)
                 robot.log.debug("Now at A cube")
+                time.sleep(2)
                 robot.log.debug(robot.see())  # TODO(jdh): remove
                 robot.wheels.turn(10)
                 robot.log.debug("-------------------")
+                time.sleep(2)
                 robot.log.debug(robot.see())
                 robot.log.info("Home?")
 
