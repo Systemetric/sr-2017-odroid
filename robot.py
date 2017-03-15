@@ -206,7 +206,7 @@ class CompanionCube(Robot):
         Search for a specific marker outside of the visual range of the camera
         """
         self.log.info("Doing a cone based search with extremities (%s, %s) and delta %s for a marker (id %s)", max_left, max_right, delta, marker_id)
-        angles = [0, -max_left]+[delta for i in range(0, max_left+max_right, delta)]
+        angles = [0, -max_left] + ([delta]*(((max_left + max_right) // delta) + 1)) 
         for angle in angles:
             self.wheels.turn(angle)
             markers = self.see_markers(predicate=lambda marker: marker.info.code == marker_id)
