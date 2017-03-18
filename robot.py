@@ -174,7 +174,7 @@ class CompanionCube(Robot):
             self.wheels.move(3.5)  # sqrt(2 * 2.5^2) = 3.5355 metres
         else:
             self.log.warn("Can't see any useful arena markers, driving forwards and praying...")
-            self.wheels.move(2)
+            self.wheels.move(3.5)
 
     def see_markers(self, predicate=None, attempts=3):
         # type: (Callable[[Marker], bool], int) -> List[Marker]
