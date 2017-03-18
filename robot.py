@@ -252,6 +252,7 @@ class CompanionCube(Robot):
                 self.log.info("Finished marker type cone search and found %s markers of type %s", len(markers), marker_type)
                 return markers
             time.sleep(sleep_time)
+        self.wheels.turn(-max_right)  # close enough
         self.log.info("Finished marker type cone search with no markers found")
         return []
 
@@ -269,6 +270,7 @@ class CompanionCube(Robot):
                 self.log.info("Finished specific marker cone search and found %s markers of id %s", len(markers), marker_id)
                 return markers
             time.sleep(sleep_time)
+        self.wheels.turn(-max_right)  # close enough
         self.log.info("Finished specific marker cone search with no markers found")
         return []
 
