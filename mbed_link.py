@@ -37,18 +37,22 @@ class Mbed(object):
         self.conn.flushInput()
         return response
 
-    def move(self, amount):
+    def move(self, amount, ignore_crash=False):
         # type: (...) -> None
         """
         Move the motors `abs(amount)`cm.
         If negative, go backwards
         """
-        if amount > 0:
-            self.forwards(amount)
-        elif amount == 0:
-            self.log.debug("Told to move by nothing. No command will be sent.")
-        else:
-            self.backwards(abs(amount))
+        try:
+            if amount > 0:
+                self.forwards(amount)
+            elif amount == 0:
+                self.log.debug("Told to move by nothing. No command will be sent.")
+            else:
+                self.backwards(abs(amount))
+        except MovementInterruptedError:
+            if not ignore_crash:
+                raise
 
     def turn(self, amount):
         # type: (...) -> None
