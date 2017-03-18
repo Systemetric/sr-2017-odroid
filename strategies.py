@@ -52,7 +52,8 @@ def route_b_c_a(robot, opposite_direction=False):
         validMovement = robot.move_to_cube(marker)
         if validMovement == 'Crash':
             robot.log.debug("Moving 1.0 metres backwards to get a better view of B because of a collision")
-            robot.wheels.move(-1.0, ignore_crash=True)
+            time.sleep(1)
+            robot.move_continue(-1)
             hasB = False
             robot.log.debug("Trying to find B again")
             markers = robot.find_markers_approx_position(MARKER_TOKEN_B, 1.5)
