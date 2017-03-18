@@ -124,20 +124,29 @@ def route_b_c_a(robot, opposite_direction=False):
             if Bmarkers == []:
                 robot.log.debug("Cannot see a B, turning to roughly A cube")
                 robot.wheels.turn(-45 * turn_factor)
-                marker = robot.find_closest_marker(MARKER_TOKEN_A)
+                markers = robot.cone_search_approx_position(MARKER_TOKEN_A, 2.12, max_left=30, max_right=30)
             else:
                 robot.log.debug("Found %s B cubes, moving to the 0th one", len(Bmarkers))
                 marker = Bmarkers[0]
                 robot.move_to_cube(marker)
                 robot.log.debug("turning to roughly A cube")
                 robot.wheels.turn(-90 * turn_factor)
-                marker = robot.find_closest_marker(MARKER_TOKEN_A)
+                markers = robot.cone_search_approx_position(MARKER_TOKEN_A, 1.5, max_left=30, max_right=30)
             robot.log.info("Moving to A cube")
-            robot.move_to_cube(marker, crash_continue=True)
-            if Bmarkers == []:
-                robot.log.debug("Turning to face home")
-                robot.wheels.turn(45 * turn_factor)
-            robot.move_continue(3)
+            if markers:
+                marker = markers[0]
+                robot.move_to_cube(marker, crash_continue=True)
+                if Bmarkers == []:
+                    robot.log.debug("Turning to face home")
+                    robot.wheels.turn(45 * turn_factor)
+            else:
+                robot.log.info("Can't see A cube, moving to roughly where it should be.")
+                if Bmarkers == []:
+                    robot.wheels.move(2.12)  # Move from C cube
+                else:
+                    robot.wheels.move(1.5)  # Move from B cube
+                    robot.wheels.turn(45 * turn_factor)
+            robot.move_home_from_A()
             robot.log.info("Home?")
     else:
         if marker.info.marker_type != MARKER_TOKEN_B:
