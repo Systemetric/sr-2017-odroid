@@ -82,7 +82,7 @@ class CompanionCube(Robot):
         self.wheels.turn(vec.angle)
         return vec.distance + corrections.cube_width
 
-    def move_to_cube(self, marker, check_at=1.0, max_safe_distance=3, angle_tolerance=1.0, distance_after=0.0):
+    def move_to_cube(self, marker, crash_continue = False, check_at=1.0, max_safe_distance=3, angle_tolerance=1.0, distance_after=0.0):
         # type: (Marker, float, float, float) -> None
         """
         Given a cube marker, face and move to the cube.
@@ -93,10 +93,13 @@ class CompanionCube(Robot):
         the angle we should be facing.
         """
         distance = self.face_cube(marker)
+        move = self.wheels.move
+        if crash_continue:
+            move = self.move_continue
         if distance <= max_safe_distance:
             self.log.debug("Moving straight to cube, since distance (%s) is under max safe distance (%s)", distance, max_safe_distance)
             try:
-                self.wheels.move(distance+distance_after)
+                move(distance+distance_after)
             except MovementInterruptedError:
                 return 'Crash'
         else:
@@ -104,7 +107,7 @@ class CompanionCube(Robot):
             distance_to_move = distance - corrections.cube_width - check_at
             self.log.debug("Cube is %s metres away, moving %s metres then checking", distance, distance_to_move)
             try:
-                self.wheels.move(distance_to_move)
+                move(distance_to_move)
             except MovementInterruptedError:
                 return 'Crash'
             while True:  # If the robot is over 1 degrees off:
@@ -121,11 +124,27 @@ class CompanionCube(Robot):
                 self.wheels.turn(vec.angle)
             self.log.debug("Moving the rest of the way to the cube (%s + cube_size (0.255)); this should be about 1.255 metres", vec.distance)
             try:
-                self.wheels.move(vec.distance+distance_after)
+                move(vec.distance+distance_after)
             except MovementInterruptedError:
                 return 'Crash'
         self.log.debug("Done moving to cube")
         return 'Ok'
+
+    def move_continue(self, distance):
+        """
+        Attempt to continuously move a distance, retrying if required.
+        """
+        try:
+            self.wheels.move(distance)
+        except MovementInterruptedError:
+            while True:
+                self.log.debug("Failed to move %sm. Attempting to continue", distance)
+                try:
+                    self.wheels.retry()
+                except MovementInterruptedError:
+                    pass
+                else:
+                    return
 
     def move_home_from_A(self):
         # type: (...) -> None
