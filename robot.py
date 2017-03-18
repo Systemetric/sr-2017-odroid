@@ -139,6 +139,7 @@ class CompanionCube(Robot):
         except MovementInterruptedError:
             while True:
                 self.log.debug("Failed to move %sm. Attempting to continue", distance)
+                time.sleep(1)
                 try:
                     self.wheels.retry()
                 except MovementInterruptedError:
