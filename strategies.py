@@ -113,7 +113,7 @@ def route_b_c_a(robot, opposite_direction=False):
             else:
                 robot.log.fatal("Can't find any cubes at all where I expect them to be!")
         else:
-            robot.log.debug("Having found a B cube, found %s C cubes, moving to the 0th one", len(Cmarkers))
+            robot.log.debug("Having NOT found a B cube, found %s C cubes, moving to the 0th one", len(Cmarkers))
             marker = Cmarkers[0]
             robot.log.info("Moving to C cube")
             # TODO: Add collsions stuff here, raises exception on failure
