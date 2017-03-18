@@ -13,6 +13,7 @@ import logging
 from operator import attrgetter
 
 try:
+    # noinspection PyUnresolvedReferences
     from typing import Callable, List
 except ImportError:
     pass
@@ -82,7 +83,7 @@ class CompanionCube(Robot):
         self.wheels.turn(vec.angle)
         return vec.distance + corrections.cube_width
 
-    def move_to_cube(self, marker, crash_continue = False, check_at=1.0, max_safe_distance=3, angle_tolerance=1.0, distance_after=0.0):
+    def move_to_cube(self, marker, crash_continue=False, check_at=1.0, max_safe_distance=3, angle_tolerance=1.0, distance_after=0.0):
         # type: (Marker, float, float, float) -> None
         """
         Given a cube marker, face and move to the cube.
@@ -218,7 +219,7 @@ class CompanionCube(Robot):
         markers = [m for m in self.find_markers(filter_func=lambda marker: marker.info.marker_type == marker_type)]
         return sorted(markers, key=attrgetter("dist"))[0]
 
-    def find_markers_approx_position(self, marker_type, dist, dist_tolerance = 0.5):
+    def find_markers_approx_position(self, marker_type, dist, dist_tolerance=0.5):
         """
         Find and return a list of markers at an approximate location.
 
@@ -238,7 +239,7 @@ class CompanionCube(Robot):
         self.log.info("Found %s markers matching criteria", len(markers))
         return markers
 
-    def cone_search_approx_position(self, marker_type, dist, dist_tolerance = 0.5, max_left=45, max_right=45, delta=15, sleep_time=0.5):
+    def cone_search_approx_position(self, marker_type, dist, dist_tolerance=0.5, max_left=45, max_right=45, delta=15, sleep_time=0.5):
         # type: (...) -> list
         """
         Search for a specific marker type at an appproximate distance with tolerances

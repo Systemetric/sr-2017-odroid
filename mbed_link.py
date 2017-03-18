@@ -79,21 +79,21 @@ class Mbed(object):
         if amount <= 2.55:
             try:
                 self.send_command("f", int(amount * 100))
-            except CommandFailureError as e:
+            except CommandFailureError:
                 self.log.exception("Failed to move forwards (short movement)")
                 raise MovementInterruptedError
         else:
             amount, remainder = divmod(amount * 100, 10)  # decimetres, centimetres
             try:
                 self.send_command("F", int(amount))
-            except CommandFailureError as e:
+            except CommandFailureError:
                 self.log.exception("Failed to move forwards (long movement phase 1)")
                 raise MovementInterruptedError
             else:
                 if remainder >= 2:
                     try:
                         self.send_command("f", int(remainder))
-                    except CommandFailureError as e:
+                    except CommandFailureError:
                         self.log.exception("Failed to move forwards (long movement phase 2)")
                         raise MovementInterruptedError
                 else:
@@ -106,7 +106,7 @@ class Mbed(object):
         """
         try:
             self.send_command("b", int(amount*100))
-        except CommandFailureError as e:
+        except CommandFailureError:
             self.log.exception("Failed to move backwards")
             raise MovementInterruptedError()
 
@@ -119,7 +119,7 @@ class Mbed(object):
         self.log.debug("Turning left %s degrees", amount)
         try:
             self.send_command("l", int(round(amount)))
-        except CommandFailureError as e:
+        except CommandFailureError:
             self.log.exception("Failed to turn left")
             raise MovementInterruptedError()
 
@@ -132,7 +132,7 @@ class Mbed(object):
         self.log.debug("Turning right %s degrees", amount)
         try:
             self.send_command("r", int(round(amount)))
-        except CommandFailureError as e:
+        except CommandFailureError:
             self.log.exception("Failed to turn right")
             raise MovementInterruptedError()
             
