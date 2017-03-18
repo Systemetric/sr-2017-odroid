@@ -195,6 +195,7 @@ class CompanionCube(Robot):
         """
         self.log.info("Looking for markers (%s attempts)...", attempts)
         assert attempts > 0
+        markers = []
         for i in xrange(attempts):
             markers = filter(predicate, self.see())
             if markers:
