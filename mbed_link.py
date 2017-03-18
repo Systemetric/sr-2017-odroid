@@ -104,7 +104,7 @@ class Mbed(object):
             self.send_command("b", int(amount*100))
         except CommandFailureError as e:
             self.log.exception("Failed to move backwards")
-            raise MovementInterruptedError
+            raise MovementInterruptedError()
 
     def turn_left(self, amount):
         # type: (float) -> None
@@ -117,7 +117,7 @@ class Mbed(object):
             self.send_command("l", int(round(amount)))
         except CommandFailureError as e:
             self.log.exception("Failed to turn left")
-            raise MovementInterruptedError
+            raise MovementInterruptedError()
 
     def turn_right(self, amount):
         # type: (float) -> None
@@ -130,9 +130,20 @@ class Mbed(object):
             self.send_command("r", int(round(amount)))
         except CommandFailureError as e:
             self.log.exception("Failed to turn right")
-            raise MovementInterruptedError
+            raise MovementInterruptedError()
+            
+    def retry(self):
+        """
+        Retry the previous command on the mbed
+        """
+        self.log.debug("Continuing")
+        try:
+            self.send_command("c")
+        except CommandFailureError:
+            self.log.exception("Failed to continue")
+            raise MovementInterruptedError()
 
-    def send_command(self, command, data):
+    def send_command(self, command, data=None):
         # type: (str, int) -> None
         """
         Send a command (character) to the mbed with 1 byte of data.
@@ -144,7 +155,8 @@ class Mbed(object):
         send_time = time.time()
         try:
             self.conn.write(command)
-            self.conn.write(chr(data))
+            if data is not None:
+                self.conn.write(chr(data))
         except serial.SerialTimeoutException:
             self.log.exception("Timeout sending mbed command %s(%s)!", command, data)
             return
