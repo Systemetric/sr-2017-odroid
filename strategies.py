@@ -210,7 +210,7 @@ def route_b_c_a(robot, opposite_direction=False):
                 robot.log.debug("Now at A cube")
                 time.sleep(1)
                 right_marker_code = robot.zone * 7
-                left_marker_code = (right_marker - 1) % 28
+                left_marker_code = (right_marker_code - 1) % 28
                 markers = robot.see_markers(lambda m: m.info.marker_type == MARKER_ARENA)
                 marker_codes = [m.info.code for m in markers]
                 robot.log.debug("Seen %s arena markers (codes: %s)", len(markers), marker_codes)
