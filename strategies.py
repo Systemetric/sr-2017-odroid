@@ -136,7 +136,7 @@ def route_b_c_a(robot, opposite_direction=False):
             if markers:
                 marker = markers[0]
                 robot.move_to_cube(marker, crash_continue=True)
-                if Bmarkers == []:
+                if Bmarkers:
                     robot.log.debug("Turning to face home")
                     robot.wheels.turn(45 * turn_factor)
             else:
