@@ -139,7 +139,12 @@ def route_b_c_a(robot, opposite_direction=False):
                 robot.wheels.turn(45 * turn_factor)
             robot.move_continue(3)
             robot.log.info("Home?")
-    else: 
+    else:
+        if marker.info.marker_type != MARKER_TOKEN_B:
+            robot.log.warn("Last marker we saw wasn't a B marker despite being at a B cube, this is very weird.")
+        else:
+            robot.log.debug("Correcting for turn we made to face B cube (%s degrees)", marker.rot_y)
+            robot.wheels.turn(-marker.rot_y)
         robot.log.info("We have a B cube! Finding C cube")
         Cmarkers = robot.find_markers_approx_position(MARKER_TOKEN_C, 1.0)
         if Cmarkers == []:
