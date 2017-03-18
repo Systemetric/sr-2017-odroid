@@ -167,7 +167,7 @@ class Mbed(object):
         while not self.conn.inWaiting():
             pass
         response = self.conn.read(1)
-        rtt = int(round(time.time() - send_time, 2))
+        rtt = round(time.time() - send_time, 2)
         self.log.debug("mbed sent response %s after %s seconds", response, rtt)
         self.conn.flushInput()
         if response == "e":
