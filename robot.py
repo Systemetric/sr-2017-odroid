@@ -217,7 +217,7 @@ class CompanionCube(Robot):
         markers = [m for m in self.find_markers(filter_func=lambda marker: marker.info.marker_type == marker_type)]
         return sorted(markers, key=attrgetter("dist"))[0]
 
-    def find_marker_approx_position(self, marker_type, dist, dist_tolerance = 0.5):
+    def find_markers_approx_position(self, marker_type, dist, dist_tolerance = 0.5):
         """
         Find and return a list of markers at an approximate location.
 
@@ -246,7 +246,7 @@ class CompanionCube(Robot):
         angles = [0, -max_left] + ([delta]*(((max_left + max_right) // delta) + 1))
         for angle in angles:
             self.wheels.turn(angle)
-            markers = self.find_marker_approx_position(marker_type, dist, dist_tolerance)
+            markers = self.find_markers_approx_position(marker_type, dist, dist_tolerance)
             if markers:
                 self.log.info("Finished marker type cone search and found %s markers of type %s", len(markers), marker_type)
                 return markers

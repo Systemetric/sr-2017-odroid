@@ -44,7 +44,7 @@ def route_b_c_a(robot, opposite_direction=False):
     robot.move_continue(3.25)
     robot.wheels.turn(-90 * turn_factor)
     time.sleep(0.2)
-    markers = robot.find_marker_approx_position(MARKER_TOKEN_B, 1.5)
+    markers = robot.find_markers_approx_position(MARKER_TOKEN_B, 1.5)
     if markers:
         robot.log.debug("Found %s B cubes, moving to the 0th one", len(markers))
         marker = markers[0]
@@ -55,7 +55,7 @@ def route_b_c_a(robot, opposite_direction=False):
             robot.wheels.move(-1.0, ignore_crash=True)
             hasB = False
             robot.log.debug("Trying to find B again")
-            markers = robot.find_marker_approx_position(MARKER_TOKEN_B, 1.5)
+            markers = robot.find_markers_approx_position(MARKER_TOKEN_B, 1.5)
             if markers == []:
                 robot.log.warn("Can't see B cube!")
                 position_markers = robot.check_cube_alignment()
@@ -73,7 +73,7 @@ def route_b_c_a(robot, opposite_direction=False):
 
     if hasB == False:
         robot.log.info("Having not found the first B cube, finding C cube")
-        Cmarkers = robot.find_marker_approx_position(MARKER_TOKEN_C, 2.88)
+        Cmarkers = robot.find_markers_approx_position(MARKER_TOKEN_C, 2.88)
         if Cmarkers == []:
             robot.log.warn("Can't see C cube!")
             robot.log.debug("Cannot see a C, turning to roughly A cube")
@@ -119,7 +119,7 @@ def route_b_c_a(robot, opposite_direction=False):
             robot.move_to_cube(marker)
             robot.log.debug("Hasn't got B cube so turning to roughly B cube")
             robot.wheels.turn(-90 * turn_factor)
-            Bmarkers = robot.find_marker_approx_position(MARKER_TOKEN_B, 1.5)
+            Bmarkers = robot.find_markers_approx_position(MARKER_TOKEN_B, 1.5)
             if Bmarkers == []:
                 robot.log.debug("Cannot see a B, turning to roughly A cube")
                 robot.wheels.turn(-45 * turn_factor)
@@ -140,12 +140,12 @@ def route_b_c_a(robot, opposite_direction=False):
             robot.log.info("Home?")
     else: 
         robot.log.info("We have a B cube! Finding C cube")
-        Cmarkers = robot.find_marker_approx_position(MARKER_TOKEN_C, 1.0)
+        Cmarkers = robot.find_markers_approx_position(MARKER_TOKEN_C, 1.0)
         if Cmarkers == []:
             robot.log.warn("Can't see C cube!")
             robot.log.debug("Cannot see a C, turning to roughly A cube")
             robot.wheels.turn(-90 * turn_factor)
-            Amarkers = robot.find_marker_approx_position(MARKER_TOKEN_A, 1.0)
+            Amarkers = robot.find_markers_approx_position(MARKER_TOKEN_A, 1.0)
             if Amarkers:
                 marker = Amarkers[0]
                 robot.log.info("Moving to A cube")
@@ -173,7 +173,7 @@ def route_b_c_a(robot, opposite_direction=False):
                 robot.log.debug("Moving 0.5 metres backwards to get a better view of C because of a collision")
                 robot.wheels.move(-0.5, ignore_crash=True)
                 robot.log.debug("Trying to find C again")
-                markers = robot.find_marker_approx_position(MARKER_TOKEN_C, 1.5)
+                markers = robot.find_markers_approx_position(MARKER_TOKEN_C, 1.5)
                 if markers == []:
                     robot.log.warn("Cannot see C cube, attempting to get an A cube")
                     robot.wheels.turn(-117 * turn_factor)
@@ -204,7 +204,7 @@ def route_b_c_a(robot, opposite_direction=False):
 
 def route_c_b_a(robot):
     robot.log.info("Finding C cube")
-    Cmarkers = robot.find_marker_approx_position(MARKER_TOKEN_C, 3.25)
+    Cmarkers = robot.find_markers_approx_position(MARKER_TOKEN_C, 3.25)
     if Cmarkers == []:
         # TODO(jdh): do something sane when cubes are missing
         robot.log.warn("Can't see C cube!")
@@ -228,7 +228,7 @@ def route_c_b_a(robot):
         robot.move_to_cube(marker)
     robot.log.debug("Hasn't got B cube so turning to roughly B cube")
     robot.wheels.turn(-90)
-    Bmarkers = robot.find_marker_approx_position(MARKER_TOKEN_B, 1.5)
+    Bmarkers = robot.find_markers_approx_position(MARKER_TOKEN_B, 1.5)
     if Bmarkers == []:
         robot.log.debug("Cannot see a B, turning to roughly A cube")
         robot.wheels.turn(-45)
