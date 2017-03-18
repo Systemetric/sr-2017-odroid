@@ -126,7 +126,36 @@ class CompanionCube(Robot):
                 return 'Crash'
         self.log.debug("Done moving to cube")
         return 'Ok'
-    
+
+    def move_home_from_A(self):
+        # type: (...) -> None
+        """Given we are at our A cube and facing roughly home, get home.
+
+        If we can see either of the two markers inside our home area,
+        we can move home accurately. Otherwise, we will blindly move
+        forwards and hope we're facing in the right direction.
+        """
+        right_marker_code = self.zone * 7
+        left_marker_code = (right_marker_code - 1) % 28
+        markers = self.see_markers(lambda m: m.info.marker_type == MARKER_ARENA)
+        marker_codes = [m.info.code for m in markers]
+        self.log.debug("Seen %s arena markers (codes: %s)", len(markers), marker_codes)
+        if left_marker_code in marker_codes or right_marker_code in marker_codes:
+            if left_marker_code in marker_codes:
+                self.log.debug("Can see left marker!")
+                left_marker = filter(lambda m: m.info.code == left_marker_code, markers)[0]
+                self.wheels.turn(left_marker.rot_y + 16)
+            elif right_marker_code in marker_codes:
+                self.log.debug("Can see right marker!")
+                right_marker = filter(lambda m: m.info.code == right_marker_code, markers)[0]
+                self.wheels.turn(right_marker.rot_y - 16)
+            else:
+                self.log.critical("Python is lying to us! This can't happen.")
+            self.wheels.move(3.5)  # sqrt(2 * 2.5^2) = 3.5355 metres
+        else:
+            self.log.warn("Can't see any useful arena markers, driving forwards and praying...")
+            self.wheels.move(2)
+
     def see_markers(self, predicate=None, attempts=3):
         # type: (Callable[[Marker], bool], int) -> List[Marker]
         """

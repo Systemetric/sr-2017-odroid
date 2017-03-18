@@ -209,26 +209,7 @@ def route_b_c_a(robot, opposite_direction=False):
                 robot.move_to_cube(marker)
                 robot.log.debug("Now at A cube")
                 time.sleep(1)
-                right_marker_code = robot.zone * 7
-                left_marker_code = (right_marker_code - 1) % 28
-                markers = robot.see_markers(lambda m: m.info.marker_type == MARKER_ARENA)
-                marker_codes = [m.info.code for m in markers]
-                robot.log.debug("Seen %s arena markers (codes: %s)", len(markers), marker_codes)
-                if left_marker_code in marker_codes or right_marker_code in marker_codes:
-                    if left_marker_code in marker_codes:
-                        robot.log.debug("Can see left marker!")
-                        left_marker = filter(lambda m: m.info.code == left_marker_code, markers)[0]
-                        robot.wheels.turn(left_marker.rot_y + 16)
-                    elif right_marker_code in marker_codes:
-                        robot.log.debug("Can see right marker!")
-                        right_marker = filter(lambda m: m.info.code == right_marker_code, markers)[0]
-                        robot.wheels.turn(right_marker.rot_y - 16)
-                    else:
-                        robot.log.critical("Python is lying to us! This can't happen.")
-                    robot.wheels.move(3.5)  # sqrt(2 * 2.5^2) = 3.5355 metres
-                else:
-                    robot.log.warn("Can't see any useful arena markers, driving forwards and praying...")
-                    robot.wheels.move(2)
+                robot.move_home_from_A()
                 robot.log.info("Home?")
 
 
