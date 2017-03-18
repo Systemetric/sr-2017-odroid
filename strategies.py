@@ -187,9 +187,16 @@ def route_b_c_a(robot, opposite_direction=False):
                     else:
                         robot.log.info("Got B, got C and searching for A")
                         robot.wheels.turn(-135 * turn_factor)
-                marker = robot.cone_search_approx_position(MARKER_TOKEN_A, dist=1.3)
-                robot.move_to_cube(marker, crash_continue=True)
-                robot.log.info("Got B, lost C and got A cube. TODO: Go home.")
+                markers = robot.cone_search_approx_position(MARKER_TOKEN_A, dist=1.3)
+                if markers:
+                    marker = markers[0]
+                    robot.move_to_cube(marker, crash_continue=True)
+                    robot.log.info("Got B, lost C and got A cube.")
+                else:
+                    robot.log.info("Can't see A cube, going to roughly where it should be.")
+                    robot.move_continue(2.12)
+                robot.log.debug("Going home...")
+                robot.move_home_from_A()
             else:
                 robot.log.debug("Has B and C so turning to roughly A cube")
                 robot.wheels.turn(-135 * turn_factor)
