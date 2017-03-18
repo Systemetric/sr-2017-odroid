@@ -9,7 +9,15 @@ import serial
 import time
 
 
-class IOBoard(object):
+class CommandFailureError(Exception):
+    """The mbed responded with an error."""
+
+
+class MovementInterruptedError(CommandFailureError):
+    """The robot's movement was interrupted."""
+
+
+class Mbed(object):
     def __init__(self, log, timeout=None):
         self.log = log
         port = "/dev/ttyACM0"
@@ -30,6 +38,7 @@ class IOBoard(object):
         return response
 
     def move(self, amount):
+        # type: (...) -> None
         """
         Move the motors `abs(amount)`cm.
         If negative, go backwards
@@ -42,6 +51,7 @@ class IOBoard(object):
             self.backwards(abs(amount))
 
     def turn(self, amount):
+        # type: (...) -> None
         """
         Turn amount degrees right (clockwise)
         This function is clever and will turn the right direction
@@ -50,76 +60,85 @@ class IOBoard(object):
         amount %= 360
         self.log.debug("turn mod 360 is %s", amount)
         if amount > 180:
-            movement = self.turn_left(360 - amount)
-        elif amount == 0:            
+            self.turn_left(360 - amount)
+        elif amount == 0:
             self.log.debug("Told to turn by nothing. No command will be sent.")
             return
         else:
-            movement = self.turn_right(amount)
-        if movement == 'Error':
-            self.log.error("Failed to turn")
-            return 'Error'
+            self.turn_right(amount)
 
     def forwards(self, amount):
+        # type: (float) -> None
         """
         Go forwards `amount` m.
         """
         if amount <= 2.55:
-            movement = self.send_command("f", int(amount * 100))
-            self.log.info('Movement = [%s]',movement)
-            if movement == 'Error': 
-                self.log.error("Failed to move forwards when distance is less than 2.55m")
-                return 'Error' 
+            try:
+                self.send_command("f", int(amount * 100))
+            except CommandFailureError as e:
+                self.log.exception("Failed to move forwards (short movement)")
+                raise MovementInterruptedError
         else:
-            amount, remainder = divmod(amount * 100, 10)
-            movement = self.send_command("F", int(amount))
-            self.log.info('Movement = [%s]',movement)
-            if movement == 'Error': 
-                self.log.error("Failed to move forwards in step one when distance is greater than 2.55m")
-                return 'Error' 
-            if remainder >= 2:
-                self.send_command("f", int(remainder))
-                movement = self.log.info('Movement = [%s]',movement)
-                if movement == 'Error': 
-                    self.log.error("Failed to move forwards in step two  with remainder greater than 2")
-                    return 'Error' 
+            amount, remainder = divmod(amount * 100, 10)  # decimetres, centimetres
+            try:
+                self.send_command("F", int(amount))
+            except CommandFailureError as e:
+                self.log.exception("Failed to move forwards (long movement phase 1)")
+                raise MovementInterruptedError
             else:
-                self.log.warn("Discarding extra distance of %s cm", remainder)
+                if remainder >= 2:
+                    try:
+                        self.send_command("f", int(remainder))
+                    except CommandFailureError as e:
+                        self.log.exception("Failed to move forwards (long movement phase 2)")
+                        raise MovementInterruptedError
+                else:
+                    self.log.warn("Discarding extra distance of %s cm", remainder)
 
     def backwards(self, amount):
+        # type: (float) -> None
         """
         Go backwards `amount` m.
         """
-        movement = self.send_command("b", int(amount*100))
-        if movement == 'Error':
-            self.log.error("Failed to move backwards")
-            return 'Error'
+        try:
+            self.send_command("b", int(amount*100))
+        except CommandFailureError as e:
+            self.log.exception("Failed to move backwards")
+            raise MovementInterruptedError
 
     def turn_left(self, amount):
+        # type: (float) -> None
         """
         Turn left `amount` degrees.
         This function is not clever and will turn more than 180 degrees if asked.
         """
         self.log.debug("Turning left %s degrees", amount)
-        movement = self.send_command("l", int(round(amount)))
-        if movement == 'Error':
-            self.log.error("Failed to turn left")
-            return 'Error'
+        try:
+            self.send_command("l", int(round(amount)))
+        except CommandFailureError as e:
+            self.log.exception("Failed to turn left")
+            raise MovementInterruptedError
 
     def turn_right(self, amount):
+        # type: (float) -> None
         """
         Turn right `amount` degrees.
         This function is not clever and will turn more than 180 degrees if asked.
         """
         self.log.debug("Turning right %s degrees", amount)
-        movement = self.send_command("r", int(round(amount)))
-        if movement == 'Error':
-            self.log.error("Failed to turn right")
-            return 'Error'
+        try:
+            self.send_command("r", int(round(amount)))
+        except CommandFailureError as e:
+            self.log.exception("Failed to turn right")
+            raise MovementInterruptedError
 
     def send_command(self, command, data):
+        # type: (str, int) -> None
         """
-        Send the `command` (character) to the mbed with 1 byte of data (int)
+        Send a command (character) to the mbed with 1 byte of data.
+
+        Raises:
+            CommandFailureError: The mbed responded with an error.
         """
         self.log.debug("Starting mbed command %s(%s)", command, data)
         send_time = time.time()
@@ -127,14 +146,16 @@ class IOBoard(object):
             self.conn.write(command)
             self.conn.write(chr(data))
         except serial.SerialTimeoutException:
-            self.log.error("Timeout sending mbed command %s(%s). Not retrying.", command, data)
-            return 'Error'
+            self.log.exception("Timeout sending mbed command %s(%s)!", command, data)
+            return
         while not self.conn.inWaiting():
             pass
         response = self.conn.read(1)
-        self.log.debug("mbed sent response %s", response)
+        rtt = int(round(time.time() - send_time, 2))
+        self.log.debug("mbed sent response %s after %s seconds", response, rtt)
         self.conn.flushInput()
-        if response == 'e':
-            self.log.error("Failed to complete movement")
-            return 'Error'
-        self.log.debug("Sucessfully completed command %s(%s) after %s seconds", command, data, time.time() - send_time)
+        if response == "e":
+            self.log.warn("Command failed!")
+            raise CommandFailureError(response)
+        else:
+            self.log.debug("Completed command %s(%s) -> %s after %s seconds", command, data, response, rtt)

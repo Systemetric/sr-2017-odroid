@@ -17,7 +17,7 @@ from operator import attrgetter
 #except ImportError:
     #pass
 
-from mbed_link import IOBoard
+from mbed_link import Mbed, MovementInterruptedError
 import strategies
 import corrections
 from trig import sind, cosd, asind
@@ -32,7 +32,7 @@ class CompanionCube(Robot):
     def __init__(self):
         # Please use `log.debug`, `log.info`, `log.warning` or `log.error` instead of `print`
         self.init_logger()
-        
+
         self.strategy = "b c a"
         args = []
         kwargs = {"opposite_direction": False}
@@ -41,8 +41,7 @@ class CompanionCube(Robot):
         self.log.info("Start TobyDragon init")
         super(CompanionCube, self).__init__(init=False)
         self.init()
-        self.log.info("Initialising wheels")
-        self.wheels = IOBoard(self.log)
+        self.wheels = Mbed(self.log)
         self.log.info("Robot initialised")
         self.log.info("Battery(voltage = %s, current = %s)", self.power.battery.voltage, self.power.battery.current)
         switch_state = self.wheels.get_switch_state()
@@ -96,15 +95,17 @@ class CompanionCube(Robot):
         distance = self.face_cube(marker)
         if distance <= max_safe_distance:
             self.log.debug("Moving straight to cube, since distance (%s) is under max safe distance (%s)", distance, max_safe_distance)
-            validMovement = self.wheels.forwards(distance+distance_after)
-            if validMovement == 'Error':
+            try:
+                self.wheels.move(distance+distance_after)
+            except MovementInterruptedError:
                 return 'Crash'
         else:
             # We need to check where we are once we're check_at distance from the cube
             distance_to_move = distance - corrections.cube_width - check_at
             self.log.debug("Cube is %s metres away, moving %s metres then checking", distance, distance_to_move)
-            validMovement = self.wheels.forwards(distance_to_move)
-            if validMovement == 'Error':
+            try:
+                self.wheels.move(distance_to_move)
+            except MovementInterruptedError:
                 return 'Crash'
             while True:  # If the robot is over 1 degrees off:
                 markers = self.find_markers(filter_func = lambda m: m.info.code == marker.info.code)
@@ -119,8 +120,9 @@ class CompanionCube(Robot):
                 self.log.debug("We're %s degrees off, correcting...", vec.angle)  # The angle the marker is from the robot
                 self.wheels.turn(vec.angle)
             self.log.debug("Moving the rest of the way to the cube (%s + cube_size (0.255)); this should be about 1.255 metres", vec.distance)
-            validMovement = self.wheels.forwards(vec.distance+distance_after)
-            if validMovement == 'Error':
+            try:
+                self.wheels.move(vec.distance+distance_after)
+            except MovementInterruptedError:
                 return 'Crash'
         self.log.debug("Done moving to cube")
         return 'Ok'
@@ -192,7 +194,7 @@ class CompanionCube(Robot):
         outside of the visual range of the camera
         """
         self.log.info("Doing a cone based search with extremities (%s, %s) and delta %s for markers of type %s approximately %s metres away, give or take %s metres", max_left, max_right, delta, marker_type, dist, dist_tolerance)
-        angles = [0, -max_left] + ([delta]*(((max_left + max_right) // delta) + 1)) 
+        angles = [0, -max_left] + ([delta]*(((max_left + max_right) // delta) + 1))
         for angle in angles:
             self.wheels.turn(angle)
             markers = self.find_marker_approx_position(marker_type, dist, dist_tolerance)
@@ -207,7 +209,7 @@ class CompanionCube(Robot):
         Search for a specific marker outside of the visual range of the camera
         """
         self.log.info("Doing a cone based search with extremities (%s, %s) and delta %s for a marker (id %s)", max_left, max_right, delta, marker_id)
-        angles = [0, -max_left] + ([delta]*(((max_left + max_right) // delta) + 1)) 
+        angles = [0, -max_left] + ([delta]*(((max_left + max_right) // delta) + 1))
         for angle in angles:
             self.wheels.turn(angle)
             markers = self.see_markers(predicate=lambda marker: marker.info.code == marker_id)

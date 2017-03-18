@@ -57,7 +57,7 @@ def route_b_c_a(robot, opposite_direction=False):
         validMovement = robot.move_to_cube(marker)
         if validMovement == 'Crash':
             robot.log.debug("Moving 1.0 metres backwards to get a better view of B because of a collision")
-            robot.wheels.backwards(1.0)
+            robot.wheels.move(-1.0)
             hasB = False
             robot.log.debug("Trying to find B again")
             markers = robot.find_marker_approx_position(MARKER_TOKEN_B, 1.5)
@@ -73,7 +73,7 @@ def route_b_c_a(robot, opposite_direction=False):
                 validMovement = robot.move_to_cube(marker)
                 if validMovement == 'Crash':
                     robot.log.debug("Moving 0.2 metres backwards to unhook from a collision")
-                    robot.wheels.backwards(0.2)
+                    robot.wheels.move(-0.2)
                     hasB = False
 
     if hasB == False:
@@ -179,7 +179,7 @@ def route_b_c_a(robot, opposite_direction=False):
             validMovement = robot.move_to_cube(marker)
             if validMovement == 'Crash':
                 robot.log.debug("Moving 0.5 metres backwards to get a better view of C because of a collision")
-                robot.wheels.backwards(0.5)
+                robot.wheels.move(-0.5)
                 robot.log.debug("Trying to find C again")
                 markers = robot.find_marker_approx_position(MARKER_TOKEN_C, 1.5)
                 if markers == []:
@@ -192,7 +192,7 @@ def route_b_c_a(robot, opposite_direction=False):
                     validMovement = robot.move_to_cube(marker)
                     if validMovement == 'Crash':
                         robot.log.debug("Moving 0.2 metres backwards to unhook from a collision")
-                        robot.wheels.backwards(0.2)
+                        robot.wheels.move(-0.2)
                         robot.log.warn("Cannot see C cube, attempting to get an A cube")
                         robot.wheels.turn(-117 * turn_factor)
                     else:
