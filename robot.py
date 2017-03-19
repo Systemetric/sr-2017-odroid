@@ -112,7 +112,7 @@ class CompanionCube(Robot):
             except MovementInterruptedError:
                 return 'Crash'
             while True:  # If the robot is over 1 degrees off:
-                markers = self.find_markers(filter_func = lambda m: m.info.code == marker.info.code)
+                markers = self.find_markers(filter_func=lambda m: m.info.code == marker.info.code)
                 if not markers:
                     return 'Cant see'
                 marker = markers[0]
