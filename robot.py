@@ -255,7 +255,7 @@ class CompanionCube(Robot):
         self.log.info("Starting cone search (%s, %s, %s)...", start_angle, stop_angle, delta_angle)
         self.log.debug("Criteria:")
         self.log.debug("  type == %s", marker_type)
-        self.log.debug("  ID == ", marker_id)
+        self.log.debug("  ID == %s", marker_id)
         self.log.debug("  %s <= dist <= %s", dist - dist_tolerance, dist + dist_tolerance)
         angles = [0, start_angle] + [delta_angle for _ in range(0, stop_angle - start_angle, delta_angle)]
         angle_turned = 0
