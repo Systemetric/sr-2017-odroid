@@ -217,10 +217,15 @@ def route_b_c_a(robot, opposite_direction=False):
             else:
                 robot.log.debug("Has B and C so turning to roughly A cube")
                 robot.wheels.turn(-135 * turn_factor)
-                marker = robot.find_closest_marker(MARKER_TOKEN_A)
-                robot.log.info("Moving to A cube")
-                robot.move_to_cube(marker, crash_continue=True)
-                robot.log.debug("Now at A cube")
+                markers = robot.cone_search(marker_type=MARKER_TOKEN_A, dist=2.12, start_angle=-30, stop_angle=30)
+                if markers:
+                    marker = markers[0]
+                    robot.log.info("Moving to A cube")
+                    robot.move_to_cube(marker, crash_continue=True)
+                    robot.log.debug("Now at A cube")
+                else:
+                    robot.log.info("Can't see A cube, going to roughly where it should be.")
+                    robot.move_continue(2.12)
                 time.sleep(1)
                 robot.move_home_from_A()
                 robot.log.info("Home?")

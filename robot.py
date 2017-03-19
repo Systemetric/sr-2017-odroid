@@ -53,6 +53,7 @@ class CompanionCube(Robot):
         self.wait_start()
         self.log.info("Start signal recieved!")
         strategies.strategies[self.strategy](self, *args, **kwargs)
+        self.log.info("Strategy exited.")
 
     def faceMarker(self, marker):
         # type: (Marker) -> None
