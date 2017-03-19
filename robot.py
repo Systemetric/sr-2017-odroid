@@ -239,6 +239,45 @@ class CompanionCube(Robot):
         self.log.info("Found %s markers matching criteria", len(markers))
         return markers
 
+    def cone_search(self, marker_type=None, marker_id=None, dist=None,
+                    dist_tolerance=0.5, start_angle=-45, stop_angle=45, delta_angle=15):
+        # type: (...) -> List[Marker]
+        """Search for markers, turning from side to side.
+
+        As soon as markers satisfying the passed criteria are found,
+        this function exits and returns them.
+
+        The order of this function's arguments is not stable. Callers
+        should use keyword args only, never positional args.
+        """
+        self.log.info("Starting cone search (%s, %s, %s)...", start_angle, stop_angle, delta_angle)
+        self.log.debug("Criteria:")
+        self.log.debug("  type == %s", marker_type)
+        self.log.debug("  ID == ", marker_id)
+        self.log.debug("  %s <= dist <= %s", dist - dist_tolerance, dist + dist_tolerance)
+        angles = [0, start_angle] + [delta_angle for _ in range(0, stop_angle - start_angle, delta_angle)]
+        angle_turned = 0
+
+        def predicate(marker):
+            # type: (Marker) -> bool
+            correct_type = marker_type is None or marker.info.marker_type == marker_type
+            correct_id = marker_id is None or marker.info.code == marker_id
+            correct_dist = dist is None or dist - dist_tolerance <= marker.dist <= dist + dist_tolerance
+            return correct_type and correct_id and correct_dist
+
+        for angle in angles:
+            self.wheels.turn(angle)
+            angle_turned += angle
+            markers = self.see_markers(predicate)
+            if markers:
+                self.log.info("Found %s markers matching criteria, stopping search.", len(markers))
+                return markers
+            else:
+                time.sleep(0.5)
+        self.log.info("Found no markers matching criteria.")
+        self.wheels.turn(-angle_turned)  # Turn back to where we were facing originally.
+        return []
+
     def cone_search_approx_position(self, marker_type, dist, dist_tolerance=0.5, max_left=45, max_right=45, delta=15, sleep_time=0.5):
         # type: (...) -> list
         """
