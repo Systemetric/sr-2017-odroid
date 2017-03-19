@@ -10,6 +10,7 @@ from __future__ import division
 from sr.robot import *
 
 from collections import Callable, Hashable
+from math import sqrt
 import time
 
 import corrections
@@ -88,7 +89,10 @@ def route_b_c_a(robot, opposite_direction=False):
                 robot.face_cube(Amarkers[0])
                 robot.log.info("Moving to A cube (not from a corner)")
                 robot.wheels.turn(-45 * turn_factor)
-                robot.move_continue(1.5)
+                # a^2 = 2b^2 (right-angled isoceles triangle, hypotenuse a)
+                # a^2 / 2 = b^2
+                # sqrt(a^2 / 2) = b
+                robot.move_continue(sqrt(Amarkers[0].dist**2 / 2))
                 robot.wheels.turn(90 * turn_factor)
                 Amarkers = robot.cone_search_specific_marker(marker_id, max_left=30, max_right=30)
                 if Amarkers:
