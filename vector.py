@@ -5,6 +5,8 @@ the 2017 Student Robotics competition "Easy as ABC".
 """
 
 
+from __future__ import division
+
 from sr.robot import *
 
 import collections
