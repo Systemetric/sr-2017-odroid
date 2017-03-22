@@ -107,12 +107,12 @@ def route_b_c_a(robot, opposite_direction=False):
                         robot.wheels.turn(180)
                         robot.move_continue(1.5)
                         robot.wheels.turn(45 * turn_factor)
-                        robot.move_continue(3)
-                        robot.log.info("Achieved getting home?")
+                        robot.move_home_from_A()
+                        robot.log.info("Home?")
                     else:
                         robot.log.debug("Having not found B nor C cube but getting A cube, second B not visible, going home")
                         robot.wheels.turn(-135 * turn_factor)
-                        robot.move_continue(2)
+                        robot.move_home_from_A()
                         robot.log.info("Home?")
                 else:
                     robot.log.fatal("Having not found B nor C cube, found an A cube but it has moved when we weren't looking!")
@@ -173,7 +173,7 @@ def route_b_c_a(robot, opposite_direction=False):
                 robot.move_to_cube(marker, crash_continue=True)
                 robot.log.debug("going home")
                 robot.wheels.turn(-45 * turn_factor)
-                robot.move_continue(3)
+                robot.move_home_from_A()
                 robot.log.info("Home?")
             else:
                 # This is pretty soon after the round starts, so it's odd that our A cube is not
@@ -183,7 +183,7 @@ def route_b_c_a(robot, opposite_direction=False):
                 # they are, so go home via the missing A cube.
                 robot.move_continue(1.5)
                 robot.wheels.turn(-45 * turn_factor)
-                robot.move_continue(3)
+                robot.move_home_from_A()
                 robot.log.info("Home?")
         else:
             robot.log.debug("Found %s C cubes, moving to the 0th one", len(Cmarkers))
