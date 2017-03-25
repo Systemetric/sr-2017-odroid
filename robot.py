@@ -245,6 +245,7 @@ class CompanionCube(Robot):
         if not markers:
             self.log.error("We moved closer to the marker (maybe) and now can't see it.")
             return
+        marker = markers[0]
         # Move to 1.5 metres away from the wall
         self.log.debug("Moving to 1.5 metres from the WALL")
         # 1.75 is the distance to wall plus half of robot width.
