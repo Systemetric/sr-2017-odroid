@@ -224,11 +224,11 @@ class CompanionCube(Robot):
         # - if we can see an arena marker in front of us, drive to 1.5 m from it and repeat/go home
 
         if marker is None:
-            markers = sorted(self.see_markers(lambda m: m.info.marker_type == MARKER_ARENA), key=attrgetter("dist"))
+            markers = sorted(self.see_markers(lambda m: m.info.marker_type == MARKER_ARENA), key=lambda m: ([walls.index(wall) for wall in walls if m.info.code not in wall][0] in (self.zone, (self.zone - 1) % 4), m.dist))  # Arena markers, sorted by whether they're on one of our walls and then by the closest (the first element will be the closest marker that's on one of our walls)
             marker = markers[0]
-            self.log.debug("Fixating upon marker %s, since it's closest (%s metres away)", marker.info.code, marker.dist)
+            self.log.debug("Fixating upon marker %s (%s metres away)", marker.info.code, marker.dist)
         else:
-            self.log.info("Fixating upon marker %s, since we were passed it (%s metres away)", marker.info.code, marker.dist)
+            self.log.info("Told to fixate upon marker %s (%s metres away)", marker.info.code, marker.dist)
         self.wheels.turn(marker.rot_y)  # Face the marker
         # Find the marker again
         markers = self.see_markers(predicate=lambda m: m.info.code == marker.info.code)
