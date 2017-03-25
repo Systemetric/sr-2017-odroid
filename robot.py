@@ -271,7 +271,10 @@ class CompanionCube(Robot):
             return
         marker = markers[0]
         self.wheels.turn(marker.rot_y)
-        self.move_continue(marker.dist - 1.75)
+        if marker.dist > 1.75:
+            self.move_continue(marker.dist - 1.75)
+        else:
+            self.log.warn("We're closer than we should be! Not moving backwards, though.")  # since hopefully we still have some cubes...
         self.log.debug("We should now be 1.5 metres away from the wall and facing the marker head-on.")
         markers = self.see_markers(predicate=lambda m: m.info.code == marker.info.code)
         if not markers:
@@ -299,7 +302,7 @@ class CompanionCube(Robot):
         self.log.debug("Checking if wall marker is on one of our walls (%s or %s, since we're in zone %s)", self.zone, (self.zone - 1) % 4, self.zone)
         if orig_marker_wall not in (self.zone, (self.zone - 1) % 4):
             # We started at a wall opposite our corner, go round again
-            self.log.info("Recursing, since we need to go along another wall to get home. If this message appears more than once, something is wrong.")
+            self.log.info("Recursing, since we need to go along another wall to get home. If this message appears more than once, something might be wrong.")
             # Pass ourselves a sensible marker.
             marker = sorted(markers, key=attrgetter("dist"))[0]
             self.move_home_from_other_A(marker=marker)
