@@ -248,7 +248,7 @@ class CompanionCube(Robot):
         # Move to 1.5 metres away from the wall
         self.log.debug("Moving to 1.5 metres from the WALL")
         dist = sqrt(1.5 ** 2 + 1.5 ** 2 - 2 * 1.5 * 1.5 * cosd(marker.orientation.rot_y))
-        if marker.orientation.rot_y > 0:
+        if marker.orientation.rot_y < 0:
             # turning right first, then left
             self.log.debug("Turning right first")
             angle = (180 - marker.orientation.rot_y) / 2
