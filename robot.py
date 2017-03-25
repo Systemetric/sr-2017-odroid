@@ -257,6 +257,8 @@ class CompanionCube(Robot):
             # turning left first, then right
             self.log.debug("Turning left first (marker.orientation.rot_y = %s)", marker.orientation.rot_y)
             angle = (-180 - marker.orientation.rot_y) / 2
+        self.log.debug("Going to turn %s, move %s, turn %s", angle, dist, -angle)
+        return  # XXX REMOVE
         self.wheels.turn(angle)
         self.move_continue(dist)
         self.wheels.turn(-angle)
