@@ -236,6 +236,7 @@ class CompanionCube(Robot):
         # This is the index in `walls` of the wall we fixated upon.
         orig_marker_wall = [walls.index(wall) for wall in walls if marker.info.code in wall][0]
         # Move to 1.5 metres away from the marker
+        self.log.debug("Moving to 1.5 metres from the marker")
         if marker.dist > 1.5:
             self.move_continue(marker.dist - 1.5)
         else:
@@ -245,17 +246,21 @@ class CompanionCube(Robot):
             self.log.error("We moved closer to the marker (maybe) and now can't see it.")
             return
         # Move to 1.5 metres away from the wall
+        self.log.debug("Moving to 1.5 metres from the WALL")
         dist = sqrt(1.5 ** 2 + 1.5 ** 2 - 2 * 1.5 * 1.5 * cosd(marker.orientation.rot_y))
         if marker.orientation.rot_y > 0:
             # turning right first, then left
+            self.log.debug("Turning right first")
             angle = (180 - marker.orientation.rot_y) / 2
         else:
             # turning left first, then right
+            self.log.debug("Turning left first")
             angle = (-180 - marker.orientation.rot_y) / 2
         self.wheels.turn(angle)
         self.move_continue(dist)
         self.wheels.turn(-angle)
         # We should now be 1.5 metres away from the wall, facing the marker head-on.
+        self.log.debug("We should now be 1.5 metres away from the wall, facing the marker head-on.")
         markers = self.see_markers(predicate=lambda m: m.info.code == marker.info.code)
         if not markers:
             self.log.error("We moved to face the marker and now can't see it.")
