@@ -280,11 +280,14 @@ class CompanionCube(Robot):
         marker = markers[0]
         # Turn parallel to the wall (see Slack for diagram, search "parallel to wall" in #brainstorming)
         if orig_marker_wall in (self.zone, (self.zone + 1) % 4):
+            self.log.debug("Turning left (to have wall on right)")
             self.wheels.turn(90 + marker.orientation.rot_y)  # Turn left (wall on right, heading anticlockwise)
         else:
+            self.log.debug("Turning right (to have wall on left)")
             self.wheels.turn(90 - marker.orientation.rot_y)  # Turn right (wall on left, heading clockwise)
         # We should now be facing along the wall.
         # Look for wall markers that won't vanish on us and that aren't on the wall we're moving along.
+        self.log.debug("Original wall (orig_marker_wall): %s", orig_marker_wall)
         markers = self.see_markers(predicate=lambda m: m.info.marker_type == MARKER_ARENA and m.dist <3 and m.info.code not in walls[orig_marker_wall])
         while not markers:
             self.log.debug("Can't see any matching wall markers (wall, close, not the wall we first saw), going forwards a bit.")
@@ -292,7 +295,8 @@ class CompanionCube(Robot):
             time.sleep(1)
             markers = self.see_markers(predicate=lambda m: m.info.marker_type == MARKER_ARENA and m.dist <3 and m.info.code not in walls[orig_marker_wall])
         marker = markers[0]
-        self.log.debug("We see wall %s markers.", len(markers))
+        self.log.debug("We see %s wall markers.", len(markers))
+        self.log.debug("Checking if wall marker is on one of our walls (%s or %s, since we're in zone %s)", self.zone, (self.zone - 1) % 4, self.zone)
         if orig_marker_wall not in (self.zone, (self.zone - 1) % 4):
             # We started at a wall opposite our corner, go round again
             self.log.info("Recursing, since we need to go along another wall to get home. If this message appears more than once, something is wrong.")
@@ -303,10 +307,11 @@ class CompanionCube(Robot):
             return
         self.log.debug("We should now be facing our corner.")
         markers = self.see_markers(predicate=lambda m: m.info.marker_type == MARKER_ARENA)
-        if our_markers.intersection(markers):
-            self.log.debug("We can see some of our corner markers! (These ones: %s)", our_markers.intersection(markers))
+        marker_codes = [m.info.code for m in markers]
+        if our_markers.intersection(marker_codes):
+            self.log.debug("We can see some of our corner markers! (These ones: %s)", our_markers.intersection(marker_codes))
         else:
-            self.log.warn("We can't see any of our corner markers, but we should be able to (we see these: %s).", len(markers))
+            self.log.warn("We can't see any of our corner markers, but we should be able to (we see these: %s).", marker_codes)
         # TODO(jdh): actually getting home from here
 
     def see_markers(self, predicate=None, attempts=3):
