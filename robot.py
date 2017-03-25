@@ -206,6 +206,9 @@ class CompanionCube(Robot):
             list(range(21, 28))
         ]
 
+        inner_markers = [0, 6, 7, 13, 14, 20, 21, 27]
+        outer_markers = [1, 5, 8, 12, 15, 19, 22, 26]
+
         right_marker_code = self.zone * 7
         left_marker_code = (right_marker_code - 1) % 28
         other_codes = set(range(28))
@@ -313,17 +316,38 @@ class CompanionCube(Robot):
         marker_codes = [m.info.code for m in markers]
         if our_markers.intersection(marker_codes):
             self.log.debug("We can see some of our corner markers! (These ones: %s)", our_markers.intersection(marker_codes))
-            marker = [m for m in markers if m.info.code in our_markers.intersection(marker_codes)][0]
+            markers = [m for m in markers if m.info.code in our_markers.intersection(marker_codes)]
+            # Get an inner marker if we can see one, but an outer marker will do.
+            marker = sorted(markers, key=lambda m: (m.info.code in inner_markers, m.info.code in outer_markers))[-1]
             marker_wall = [walls.index(wall) for wall in walls if marker.info.code in wall][0]
-            self.log.debug("Driving to 1 metre away from marker %s (on wall %s)", marker.info.code, marker_wall)
-            self.wheels.turn(marker.rot_y)
-            self.move_continue(marker.dist - 1)
-            turn_to_corner = 45 if marker_wall == (self.zone - 1) % 4 else -45
-            self.log.debug("Turning into the corner (%s degrees)", turn_to_corner)
-            # Turn right if the marker is on the left of home, otherwise turn left.
-            self.wheels.turn(turn_to_corner)
-            self.move_continue(1.5)  # Go home.
-            self.log.info("We should now be home!")
+            if marker.info.code in inner_markers:
+                self.log.debug("Driving to 1 metre away from inner marker %s (on wall %s)", marker.info.code, marker_wall)
+                self.wheels.turn(marker.rot_y)
+                if marker.dist > 1:
+                    self.move_continue(marker.dist - 1)
+                else:
+                    self.log.warn("Marker is only %s metres away, which is less than the expected 1 metre! We may not make it home...", round(marker.dist, 2))
+                turn_to_corner = 45 if marker_wall == (self.zone - 1) % 4 else -45
+                self.log.debug("Turning into the corner (%s degrees)", turn_to_corner)
+                # Turn right if the marker is on the left of home, otherwise turn left.
+                self.wheels.turn(turn_to_corner)
+                self.move_continue(1.5)  # Go home.
+                self.log.info("We should now be home!")
+            elif marker.info.code in outer_markers:
+                self.log.debug("Driving to 2 metres away from outer marker %s (on wall %s)", marker.info.code, marker_wall)
+                self.wheels.turn(marker.rot_y)
+                if marker.dist > 2:
+                    self.move_continue(marker.dist - 2)
+                else:
+                    self.log.warn("Marker is only %s metres away, which is less than the expected 2 metres! We may not make it home...", round(marker.dist, 2))
+                turn_to_corner = 45 if marker_wall == (self.zone - 1) % 4 else -45
+                self.log.debug("Turning into the corner (%s degrees)", turn_to_corner)
+                # Turn right if the marker is on the left of home, otherwise turn left.
+                self.wheels.turn(turn_to_corner)
+                self.move_continue(3)  # Go home.
+                self.log.info("We should now be home!")
+            else:
+                self.log.error("We can see marker %s (on wall %s), but we don't know what to do with it!", marker.info.code, marker_wall)
         else:
             self.log.warn("We can't see any of our corner markers, but we should be able to (we see these: %s).", marker_codes)
             # TODO(jdh): getting home from here
