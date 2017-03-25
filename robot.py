@@ -260,10 +260,10 @@ class CompanionCube(Robot):
             angle = (-180 - marker.orientation.rot_y) / 2
         self.log.debug("Going to turn %s, move %s, turn %s", angle, dist, -angle)
         self.log.debug("marker.dist is %s", marker.dist)
-        return  # XXX REMOVE
         self.wheels.turn(angle)
         self.move_continue(dist)
         self.wheels.turn(-angle)
+        # TODO(jdh): make sure we're 1.5 metres away
         # We should now be 1.5 metres away from the wall, facing the marker head-on.
         self.log.debug("We should now be 1.5 metres away from the wall, facing the marker head-on.")
         markers = self.see_markers(predicate=lambda m: m.info.code == marker.info.code)
