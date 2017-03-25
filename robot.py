@@ -322,7 +322,7 @@ class CompanionCube(Robot):
             self.log.debug("Turning into the corner (%s degrees)", turn_to_corner)
             # Turn right if the marker is on the left of home, otherwise turn left.
             self.wheels.turn(turn_to_corner)
-            self.move_continue(1)  # Go home.
+            self.move_continue(1.5)  # Go home.
             self.log.info("We should now be home!")
         else:
             self.log.warn("We can't see any of our corner markers, but we should be able to (we see these: %s).", marker_codes)
