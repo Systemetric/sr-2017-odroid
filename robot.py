@@ -198,7 +198,7 @@ class CompanionCube(Robot):
             self.wheels.move(3.5)
 
     def move_home_from_other_A(self, marker=None):
-        # type: () -> None
+        # type: (...) -> None
         walls = [
             list(range(0, 7)),
             list(range(7, 14)),
