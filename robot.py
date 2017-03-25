@@ -247,7 +247,8 @@ class CompanionCube(Robot):
             return
         # Move to 1.5 metres away from the wall
         self.log.debug("Moving to 1.5 metres from the WALL")
-        dist = sqrt(1.5 ** 2 + 1.5 ** 2 - 2 * 1.5 * 1.5 * cosd(marker.orientation.rot_y))
+        # 1.75 is the distance to wall plus half of robot width.
+        dist = sqrt(1.75**2 + 1.75**2 - 2 * 1.75 * 1.75 * cosd(marker.orientation.rot_y))
         if marker.orientation.rot_y < 0:
             # turning right first, then left
             self.log.debug("Turning right first (marker.orientation.rot_y = %s)", marker.orientation.rot_y)
