@@ -281,10 +281,10 @@ class CompanionCube(Robot):
         # Turn parallel to the wall (see Slack for diagram, search "parallel to wall" in #brainstorming)
         if orig_marker_wall in (self.zone, (self.zone + 1) % 4):
             self.log.debug("Turning left (to have wall on right)")
-            self.wheels.turn(90 - marker.orientation.rot_y)  # Turn left (wall on right, heading anticlockwise)
+            self.wheels.turn(-90)  # Turn left (wall on right, heading anticlockwise)
         else:
             self.log.debug("Turning right (to have wall on left)")
-            self.wheels.turn(90 + marker.orientation.rot_y)  # Turn right (wall on left, heading clockwise)
+            self.wheels.turn(90)  # Turn right (wall on left, heading clockwise)
         # We should now be facing along the wall.
         # Look for wall markers that won't vanish on us and that aren't on the wall we're moving along.
         self.log.debug("Original wall (orig_marker_wall): %s", orig_marker_wall)
