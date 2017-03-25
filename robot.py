@@ -250,11 +250,11 @@ class CompanionCube(Robot):
         dist = sqrt(1.5 ** 2 + 1.5 ** 2 - 2 * 1.5 * 1.5 * cosd(marker.orientation.rot_y))
         if marker.orientation.rot_y < 0:
             # turning right first, then left
-            self.log.debug("Turning right first")
+            self.log.debug("Turning right first (marker.orientation.rot_y = %s)", marker.orientation.rot_y)
             angle = (180 - marker.orientation.rot_y) / 2
         else:
             # turning left first, then right
-            self.log.debug("Turning left first")
+            self.log.debug("Turning left first (marker.orientation.rot_y = %s)", marker.orientation.rot_y)
             angle = (-180 - marker.orientation.rot_y) / 2
         self.wheels.turn(angle)
         self.move_continue(dist)
