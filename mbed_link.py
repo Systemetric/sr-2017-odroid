@@ -45,6 +45,7 @@ class Mbed(object):
         Move the motors `abs(amount)`cm.
         If negative, go backwards
         """
+        self.log.debug("Told to move %s metres", amount)
         try:
             if amount > 0:
                 self.forwards(amount)
@@ -64,7 +65,6 @@ class Mbed(object):
         """
         self.log.debug("Told to turn %s degrees", amount)
         amount %= 360
-        self.log.debug("turn mod 360 is %s", amount)
         if amount > 180:
             self.turn_left(360 - amount)
         elif amount == 0:
