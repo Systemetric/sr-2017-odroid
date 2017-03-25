@@ -281,10 +281,10 @@ class CompanionCube(Robot):
         # Turn parallel to the wall (see Slack for diagram, search "parallel to wall" in #brainstorming)
         if orig_marker_wall in (self.zone, (self.zone + 1) % 4):
             self.log.debug("Turning left (to have wall on right)")
-            self.wheels.turn(-90)  # Turn left (wall on right, heading anticlockwise)
+            self.wheels.turn(-(90 - marker.orientation.rot_y))  # Turn left (wall on right, heading anticlockwise)
         else:
             self.log.debug("Turning right (to have wall on left)")
-            self.wheels.turn(90)  # Turn right (wall on left, heading clockwise)
+            self.wheels.turn(90 + marker.orientation.rot_y)  # Turn right (wall on left, heading clockwise)
         # We should now be facing along the wall.
         # Look for wall markers that won't vanish on us and that aren't on the wall we're moving along.
         self.log.debug("Original wall (orig_marker_wall): %s", orig_marker_wall)
@@ -310,9 +310,19 @@ class CompanionCube(Robot):
         marker_codes = [m.info.code for m in markers]
         if our_markers.intersection(marker_codes):
             self.log.debug("We can see some of our corner markers! (These ones: %s)", our_markers.intersection(marker_codes))
+            marker = [m for m in markers if m.info.code in our_markers.intersection(marker_codes)][0]
+            marker_wall = [walls.index(wall) for wall in walls if marker.info.code in wall][0]
+            self.log.debug("Driving to 1 metre away from marker %s (on wall %s)", marker.info.code, marker_wall)
+            self.move_continue(marker.dist - 1)
+            turn_to_corner = 45 if marker_wall in (self.zone - 1) % 4 else -45
+            self.log.debug("Turning into the corner (%s degrees)", turn_to_corner)
+            # Turn right if the marker is on the left of home, otherwise turn left.
+            self.wheels.turn(turn_to_corner)
+            self.move_continue(1)  # Go home.
+            self.log.info("We should now be home!")
         else:
             self.log.warn("We can't see any of our corner markers, but we should be able to (we see these: %s).", marker_codes)
-        # TODO(jdh): actually getting home from here
+            # TODO(jdh): getting home from here
 
     def see_markers(self, predicate=None, attempts=3):
         # type: (Callable[[Marker], bool], int) -> List[Marker]
