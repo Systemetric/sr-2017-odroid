@@ -198,7 +198,7 @@ class CompanionCube(Robot):
             self.wheels.move(3.5)
 
     def move_home_from_other_A(self, marker=None):
-        # type: (...) -> None
+        # type: () -> None
         walls = [
             list(range(0, 7)),
             list(range(7, 14)),
@@ -265,11 +265,19 @@ class CompanionCube(Robot):
         self.wheels.turn(-angle)
         # TODO(jdh): make sure we're 1.5 metres away
         # We should now be 1.5 metres away from the wall, facing the marker head-on.
-        self.log.debug("We should now be 1.5 metres away from the wall, facing the marker head-on.")
+        markers = self.cone_search(marker_id=marker.info.code)
+        if not markers:
+            self.log.error("Couldn't find the marker we fixated upon!")
+            return
+        marker = markers[0]
+        self.wheels.turn(marker.rot_y)
+        self.move_continue(marker.dist - 1.75)
+        self.log.debug("We should now be 1.5 metres away from the wall and facing the marker head-on.")
         markers = self.see_markers(predicate=lambda m: m.info.code == marker.info.code)
         if not markers:
             self.log.error("We moved to face the marker and now can't see it.")
             return
+        marker = markers[0]
         # Turn parallel to the wall (see Slack for diagram, search "parallel to wall" in #brainstorming)
         if orig_marker_wall in (self.zone, (self.zone + 1) % 4):
             self.wheels.turn(90 + marker.orientation.rot_y)  # Turn left (wall on right, heading anticlockwise)
@@ -278,13 +286,12 @@ class CompanionCube(Robot):
         # We should now be facing along the wall.
         # Look for wall markers that won't vanish on us and that aren't on the wall we're moving along.
         markers = self.see_markers(predicate=lambda m: m.info.marker_type == MARKER_ARENA and m.dist <3 and m.info.code not in walls[orig_marker_wall])
-        if markers:
-            marker = markers[0]
         while not markers:
             self.log.debug("Can't see any matching wall markers (wall, close, not the wall we first saw), going forwards a bit.")
             self.move_continue(1)
             time.sleep(1)
             markers = self.see_markers(predicate=lambda m: m.info.marker_type == MARKER_ARENA and m.dist <3 and m.info.code not in walls[orig_marker_wall])
+        marker = markers[0]
         self.log.debug("We see wall %s markers.", len(markers))
         if orig_marker_wall not in (self.zone, (self.zone - 1) % 4):
             # We started at a wall opposite our corner, go round again
