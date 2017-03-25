@@ -313,8 +313,9 @@ class CompanionCube(Robot):
             marker = [m for m in markers if m.info.code in our_markers.intersection(marker_codes)][0]
             marker_wall = [walls.index(wall) for wall in walls if marker.info.code in wall][0]
             self.log.debug("Driving to 1 metre away from marker %s (on wall %s)", marker.info.code, marker_wall)
+            self.wheels.turn(marker.rot_y)
             self.move_continue(marker.dist - 1)
-            turn_to_corner = 45 if marker_wall in (self.zone - 1) % 4 else -45
+            turn_to_corner = 45 if marker_wall == (self.zone - 1) % 4 else -45
             self.log.debug("Turning into the corner (%s degrees)", turn_to_corner)
             # Turn right if the marker is on the left of home, otherwise turn left.
             self.wheels.turn(turn_to_corner)
