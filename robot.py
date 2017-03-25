@@ -152,7 +152,7 @@ class CompanionCube(Robot):
                     return
 
     def move_home_from_A(self):
-        # type: (...) -> None
+        # type: () -> None
         """Given we are at our A cube and facing roughly home, get home.
 
         If we can see either of the two markers inside our home area,
@@ -161,9 +161,22 @@ class CompanionCube(Robot):
         """
         right_marker_code = self.zone * 7
         left_marker_code = (right_marker_code - 1) % 28
-        markers = self.see_markers(lambda m: m.info.marker_type == MARKER_ARENA)
+        other_codes = set(range(28))
+        other_codes.remove(left_marker_code)
+        other_codes.remove(left_marker_code - 1)
+        other_codes.remove(right_marker_code)
+        other_codes.remove((right_marker_code + 1) % 28)
+        markers = sorted(self.see_markers(lambda m: m.info.marker_type == MARKER_ARENA), key=attrgetter("dist"))
         marker_codes = [m.info.code for m in markers]
         self.log.debug("Seen %s arena markers (codes: %s)", len(markers), marker_codes)
+
+        walls = [
+            list(range(0, 7)),
+            list(range(7, 14)),
+            list(range(14, 21)),
+            list(range(21, 28))
+        ]
+
         if left_marker_code in marker_codes or right_marker_code in marker_codes:
             if left_marker_code in marker_codes:
                 self.log.debug("Can see left marker!")
@@ -176,9 +189,108 @@ class CompanionCube(Robot):
             else:
                 self.log.critical("Python is lying to us! This can't happen.")
             self.wheels.move(3.5)  # sqrt(2 * 2.5^2) = 3.5355 metres
+        elif other_codes.intersection(marker_codes):
+            bad_marker_codes = other_codes.intersection(marker_codes)
+            self.log.warn("Other teams' codes (%s) are visible! We're probably facing into another team's corner :(", bad_marker_codes)
+            self.move_home_from_other_A()
         else:
-            self.log.warn("Can't see any useful arena markers, driving forwards and praying...")
+            self.log.warn("Can't see any useful arena markers (ours or theirs), driving forwards and praying...")
             self.wheels.move(3.5)
+
+    def move_home_from_other_A(self, marker=None):
+        # type: () -> None
+        walls = [
+            list(range(0, 7)),
+            list(range(7, 14)),
+            list(range(14, 21)),
+            list(range(21, 28))
+        ]
+
+        right_marker_code = self.zone * 7
+        left_marker_code = (right_marker_code - 1) % 28
+        other_codes = set(range(28))
+        other_codes.remove(left_marker_code)
+        other_codes.remove(left_marker_code - 1)
+        other_codes.remove(right_marker_code)
+        other_codes.remove((right_marker_code + 1) % 28)
+        our_markers = {(left_marker_code - 1) % 28, left_marker_code, right_marker_code, (right_marker_code + 1) % 28}
+
+        # - move to 1.5 m away from a marker
+        # - look at marker.orientation.rot_y and turn parallel with the marker (towards our corner)
+        # - go forwards, checking every N metres that we're still parallel with the wall
+        # - if we can see an arena marker in front of us, drive to 1.5 m from it and repeat/go home
+
+        if marker is None:
+            markers = sorted(self.see_markers(lambda m: m.info.marker_type == MARKER_ARENA), key=attrgetter("dist"))
+            marker = markers[0]
+            self.log.debug("Fixating upon marker %s, since it's closest (%s metres away)", marker.info.code, marker.dist)
+        else:
+            self.log.info("Fixating upon marker %s, since we were passed it (%s metres away)", marker.info.code, marker.dist)
+        self.wheels.turn(marker.rot_y)  # Face the marker
+        # Find the marker again
+        markers = self.see_markers(predicate=lambda m: m.info.code == marker.info.code)
+        if not markers:
+            self.log.error("We turned to the marker and now can't see it.")  # Don't move!
+            return
+        marker = markers[0]
+        # This is the index in `walls` of the wall we fixated upon.
+        orig_marker_wall = [walls.index(wall) for wall in walls if marker.info.code in wall][0]
+        # Move to 1.5 metres away from the marker
+        if marker.dist > 1.5:
+            self.move_continue(marker.dist - 1.5)
+        else:
+            self.log.debug("We're closer than we should be (%s metres)!", marker.dist)
+        markers = self.see_markers(predicate=lambda m: m.info.code == marker.info.code)
+        if not markers:
+            self.log.error("We moved closer to the marker (maybe) and now can't see it.")
+            return
+        # Move to 1.5 metres away from the wall
+        dist = sqrt(1.5 ** 2 + 1.5 ** 2 - 2 * 1.5 * 1.5 * cosd(marker.orientation.rot_y))
+        if marker.orientation.rot_y > 0:
+            # turning right first, then left
+            angle = (180 - marker.orientation.rot_y) / 2
+        else:
+            # turning left first, then right
+            angle = (-180 - marker.orientation.rot_y) / 2
+        self.wheels.turn(angle)
+        self.move_continue(dist)
+        self.wheels.turn(-angle)
+        # We should now be 1.5 metres away from the wall, facing the marker head-on.
+        markers = self.see_markers(predicate=lambda m: m.info.code == marker.info.code)
+        if not markers:
+            self.log.error("We moved to face the marker and now can't see it.")
+            return
+        # Turn parallel to the wall (see Slack for diagram, search "parallel to wall" in #brainstorming)
+        if orig_marker_wall in (self.zone, (self.zone + 1) % 4):
+            self.wheels.turn(90 + marker.orientation.rot_y)  # Turn left (wall on right, heading anticlockwise)
+        else:
+            self.wheels.turn(90 - marker.orientation.rot_y)  # Turn right (wall on left, heading clockwise)
+        # We should now be facing along the wall.
+        # Look for wall markers that won't vanish on us and that aren't on the wall we're moving along.
+        markers = self.see_markers(predicate=lambda m: m.info.marker_type == MARKER_ARENA and m.dist <3 and m.info.code not in walls[orig_marker_wall])
+        if markers:
+            marker = markers[0]
+        while not markers:
+            self.log.debug("Can't see any matching wall markers (wall, close, not the wall we first saw), going forwards a bit.")
+            self.move_continue(1)
+            time.sleep(1)
+            markers = self.see_markers(predicate=lambda m: m.info.marker_type == MARKER_ARENA and m.dist <3 and m.info.code not in walls[orig_marker_wall])
+        self.log.debug("We see wall %s markers.", len(markers))
+        if orig_marker_wall not in (self.zone, (self.zone - 1) % 4):
+            # We started at a wall opposite our corner, go round again
+            self.log.info("Recursing, since we need to go along another wall to get home. If this message appears more than once, something is wrong.")
+            # Pass ourselves a sensible marker.
+            marker = sorted(markers, key=attrgetter("dist"))[0]
+            self.move_home_from_other_A(marker=marker)
+            self.log.info("Finished recursing, hopefully we're home now. Returning.")
+            return
+        self.log.debug("We should now be facing our corner.")
+        markers = self.see_markers(predicate=lambda m: m.info.marker_type == MARKER_ARENA)
+        if our_markers.intersection(markers):
+            self.log.debug("We can see some of our corner markers! (These ones: %s)", our_markers.intersection(markers))
+        else:
+            self.log.warn("We can't see any of our corner markers, but we should be able to (we see these: %s).", len(markers))
+        # TODO(jdh): actually getting home from here
 
     def see_markers(self, predicate=None, attempts=3):
         # type: (Callable[[Marker], bool], int) -> List[Marker]
