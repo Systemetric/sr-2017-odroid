@@ -309,7 +309,7 @@ class CompanionCube(Robot):
             self.log.info("Finished recursing, hopefully we're home now. Returning.")
             return
         self.log.debug("We should now be facing our corner.")
-        markers = self.see_markers(predicate=lambda m: m.info.marker_type == MARKER_ARENA)
+        markers = self.see_markers(predicate=lambda m: m.info.marker_type == MARKER_ARENA and m.info.code not in walls[orig_marker_wall])
         marker_codes = [m.info.code for m in markers]
         if our_markers.intersection(marker_codes):
             self.log.debug("We can see some of our corner markers! (These ones: %s)", our_markers.intersection(marker_codes))
