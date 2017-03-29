@@ -129,7 +129,7 @@ class CompanionCube(Robot):
                 try:
                     self.wheels.retry()
                 except MovementInterruptedError:
-                    pass
+                    continue
                 else:
                     return
 
