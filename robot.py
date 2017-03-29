@@ -163,7 +163,7 @@ class CompanionCube(Robot):
 
         # This sucks. Deal with it.
         if (left_marker_code in marker_codes or right_marker_code in marker_codes
-            or lefter_marker_code in marker_codes or righter_marker_code in marker_codes):
+                or lefter_marker_code in marker_codes or righter_marker_code in marker_codes):
             if left_marker_code in marker_codes:
                 self.log.debug("Can see left marker!")
                 left_marker = filter(lambda m: m.info.code == left_marker_code, markers)[0]
