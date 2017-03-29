@@ -98,7 +98,7 @@ class Mbed(object):
                     except CommandFailureError:
                         self.log.exception("Failed to move forwards (long movement phase 2)")
                         raise MovementInterruptedError
-                else:
+                elif remainder > 0:
                     self.log.warn("Discarding extra distance of %s cm", remainder)
 
     def backwards(self, amount):
