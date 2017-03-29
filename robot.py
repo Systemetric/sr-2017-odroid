@@ -55,24 +55,6 @@ class CompanionCube(Robot):
         strategies.strategies[self.strategy](self, *args, **kwargs)
         self.log.info("Strategy exited.")
 
-    def faceMarker(self, marker):
-        # type: (Marker) -> None
-        """
-        Given a marker, point towards it.
-        """
-        self.log.info("faceMarker is DEPRECATED. Turning to face marker")
-        self.log.debug("marker.centre.polar.rot_y = %s", marker.centre.polar.rot_y)  # The angle the marker is from the robot
-        self.log.debug("marker.orientation.rot_y = %s", marker.orientation.rot_y)  # The rotation of the marker
-        turnOne = marker.centre.polar.rot_y  # Turns the robot to face the marker
-        self.wheels.turn(turnOne)
-        marker = self.find_markers()[0]
-        while abs(marker.centre.polar.rot_y) > 5.0:  # If the robot is not facing the marker
-            marker = self.find_markers(delta_angle=10)[0]
-            self.log.debug("Not correctly aligned")
-            self.log.debug("marker.centre.polar.rot_y = %s", marker.centre.polar.rot_y)  # The angle the marker is from the robot
-            turnOne = marker.centre.polar.rot_y  # Turns the robot to face the marker
-            self.wheels.turn(turnOne)
-
     def face_cube(self, marker):
         # type: (Marker) -> float
         """
