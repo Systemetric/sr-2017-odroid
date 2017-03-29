@@ -199,7 +199,7 @@ def route_b_c_a(robot, opposite_direction=False):
                     robot.log.warn("Cannot see C cube, attempting to get an A cube")
                     robot.wheels.turn(-117 * turn_factor)
                 else:
-                    validMovement = robot.move_to_cube(marker)
+                    validMovement = robot.move_to_cube(markers[0])
                     if validMovement == 'Crash':
                         robot.log.debug("Moving 0.2 metres backwards to unhook from a collision")
                         robot.wheels.move(-0.2, ignore_crash=True)
