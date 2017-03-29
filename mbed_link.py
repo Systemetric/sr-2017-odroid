@@ -157,14 +157,14 @@ class Mbed(object):
         Raises:
             CommandFailureError: The mbed responded with an error.
         """
-        self.log.debug("Starting mbed command %s(%s)", command, data)
+        self.log.debug("Starting mbed command %s(%s)", command, data if data is not None else "")
         send_time = time.time()
         try:
             self.conn.write(command)
             if data is not None:
                 self.conn.write(chr(data))
         except serial.SerialTimeoutException:
-            self.log.exception("Timeout sending mbed command %s(%s)!", command, data)
+            self.log.exception("Timeout sending mbed command %s(%s)!", command, data if data is not None else "")
             return
         while not self.conn.inWaiting():
             pass
@@ -176,4 +176,4 @@ class Mbed(object):
             self.log.warn("Command failed!")
             raise CommandFailureError(response)
         else:
-            self.log.debug("Completed command %s(%s) -> %s after %s seconds", command, data, response, rtt)
+            self.log.debug("Completed command %s(%s) -> %s after %s seconds", command, data if data is not None else "", response, rtt)
