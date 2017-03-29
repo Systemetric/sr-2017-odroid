@@ -142,12 +142,14 @@ class CompanionCube(Robot):
         forwards and hope we're facing in the right direction.
         """
         right_marker_code = self.zone * 7
+        righter_marker_code = (right_marker_code + 1) % 28
         left_marker_code = (right_marker_code - 1) % 28
+        lefter_marker_code = (left_marker_code - 1) % 28
         other_codes = set(range(28))
         other_codes.remove(left_marker_code)
-        other_codes.remove(left_marker_code - 1)
+        other_codes.remove(lefter_marker_code)
         other_codes.remove(right_marker_code)
-        other_codes.remove((right_marker_code + 1) % 28)
+        other_codes.remove(righter_marker_code)
         markers = sorted(self.see_markers(lambda m: m.info.marker_type == MARKER_ARENA), key=attrgetter("dist"))
         marker_codes = [m.info.code for m in markers]
         self.log.debug("Seen %s arena markers (codes: %s)", len(markers), marker_codes)
@@ -159,7 +161,9 @@ class CompanionCube(Robot):
             list(range(21, 28))
         ]
 
-        if left_marker_code in marker_codes or right_marker_code in marker_codes:
+        # This sucks. Deal with it.
+        if (left_marker_code in marker_codes or right_marker_code in marker_codes
+            or lefter_marker_code in marker_codes or righter_marker_code in marker_codes):
             if left_marker_code in marker_codes:
                 self.log.debug("Can see left marker!")
                 left_marker = filter(lambda m: m.info.code == left_marker_code, markers)[0]
@@ -168,6 +172,14 @@ class CompanionCube(Robot):
                 self.log.debug("Can see right marker!")
                 right_marker = filter(lambda m: m.info.code == right_marker_code, markers)[0]
                 self.wheels.turn(right_marker.rot_y - 16)
+            elif lefter_marker_code in marker_codes:
+                self.log.debug("Can see lefter marker!")
+                lefter_marker = filter(lambda m: m.info.code == lefter_marker_code, markers)[0]
+                self.wheels.turn(lefter_marker.rot_y + 34)
+            elif righter_marker_code in marker_codes:
+                self.log.debug("Can see righter marker!")
+                righter_marker = filter(lambda m: m.info.code == righter_marker_code, markers)[0]
+                self.wheels.turn(righter_marker.rot_y - 34)
             else:
                 self.log.critical("Python is lying to us! This can't happen.")
             self.wheels.move(3.5)  # sqrt(2 * 2.5^2) = 3.5355 metres
