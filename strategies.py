@@ -37,16 +37,19 @@ def strategy(name):
 
 
 @strategy("b c a")
-def route_b_c_a(robot, opposite_direction=False):
+def route_b_c_a(robot, opposite_direction=False, skip_initial_walk=False):
     if opposite_direction:
         turn_factor = -1
     else:
         turn_factor = 1
     hasB = False
-    robot.log.debug("Moving 3.25 metres to next to B")
-    robot.move_continue(3.25)
-    robot.wheels.turn(-90 * turn_factor)
-    time.sleep(0.2)
+    if not skip_initial_walk:
+        robot.log.debug("Moving 3.25 metres to next to B")
+        robot.move_continue(3.25)
+        robot.wheels.turn(-90 * turn_factor)
+        time.sleep(0.2)
+    else:
+        robot.log.info("Skipping initial walk, presumably someone put the wrong USB stick in...")
     markers = robot.find_markers_approx_position(MARKER_TOKEN_B, 1.5)
     if markers:
         robot.log.debug("Found %s B cubes, moving to the 0th one", len(markers))
@@ -80,7 +83,19 @@ def route_b_c_a(robot, opposite_direction=False):
         Cmarkers = robot.find_markers_approx_position(MARKER_TOKEN_C, 2.88)
         if Cmarkers == []:
             robot.log.warn("Can't see C cube!")
-            robot.log.debug("Cannot see a C, turning to roughly A cube")
+            # Idiot check -- did we turn the wrong way?
+            robot.log.debug("Checking to see if someone put the wrong USB stick in...")
+            robot.wheels.turn(180)
+            markers = robot.cone_search(marker_type=MARKER_TOKEN_B, dist=1.5, start_angle=-30, stop_angle=30)
+            if markers:
+                robot.log.warn("Someone put the wrong USB stick in the robot! Starting again in the other direction.")
+                route_b_c_a(robot, opposite_direction=not opposite_direction, skip_initial_walk=True)
+                robot.log.info("Done recursing, we're probably home now.")
+                return
+            else:
+                robot.log.info("We can't see a B cube behind us, presumably all the other robots are just really good.")
+                robot.wheels.turn(180)  # Turn back to face the original direction.
+            robot.log.debug("Turning to roughly A cube")
             robot.wheels.turn(-45 * turn_factor)
             Amarkers = robot.cone_search_approx_position(MARKER_TOKEN_A, dist=1.8, dist_tolerance = 0.7)
             if Amarkers:
