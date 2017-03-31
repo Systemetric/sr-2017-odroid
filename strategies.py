@@ -134,7 +134,7 @@ def route_b_c_a(robot, opposite_direction=False):
             else:
                 robot.log.debug("Found %s B cubes, moving to the 0th one", len(Bmarkers))
                 marker = Bmarkers[0]
-                robot.move_to_cube(marker)
+                robot.move_to_cube(marker, crash_continue=True)
                 robot.log.debug("turning to roughly A cube")
                 robot.wheels.turn(-90 * turn_factor)
                 markers = robot.cone_search_approx_position(MARKER_TOKEN_A, 1.5, max_left=30, max_right=30)
