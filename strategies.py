@@ -349,12 +349,17 @@ def turn_once(robot):
 
 @strategy("test webcam rotational placement correction calibration")
 def test_webcam_rotational_placement_correction_calibration(robot, *args, **kwargs):
-    robot.wheels.move(-2)
-    markers = robot.lookForMarkers()
-    for marker in markers:
-        print "marker type = %s" % (marker.info.marker_type)
-        print "marker.rot_y = %s" % (marker.rot_y)
-        print "corrected marker.rot_y = %s" % (corrections.correct_for_webcam_rotational_placement(marker2vector(marker)).angle)
+    while True:
+        robot.wheels.move(-2)
+        markers = robot.lookForMarkers()
+        for marker in markers:
+            print "marker type = %s" % (marker.info.marker_type)
+            print "marker.rot_y = %s" % (marker.rot_y)
+            print "corrected marker.rot_y = %s" % (corrections.correct_for_webcam_rotational_placement(marker2vector(marker)).angle)
+        time.sleep(2)
+        robot.wheels.move(2)
+        time.sleep(10)
+        print "##### Restarting... #####"
 
 
 @strategy("test cube marker placement correction")
