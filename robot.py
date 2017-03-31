@@ -38,7 +38,7 @@ class CompanionCube(Robot):
 
         self.strategy = "b c a"
         args = []
-        kwargs = {"opposite_direction": False}
+        kwargs = {"opposite_direction": True}
         self.routeChange = False
 
         self.log.info("Start TobyDragon init")
