@@ -211,7 +211,7 @@ def route_b_c_a(robot, opposite_direction=False, skip_initial_walk=False):
                 time.sleep(1)
                 robot.wheels.move(-0.5, ignore_crash=True)
                 robot.log.debug("Trying to find C again")
-                markers = robot.find_markers_approx_position(MARKER_TOKEN_C, 1.5)
+                markers = robot.find_markers_approx_position(MARKER_TOKEN_C, 1.5, 2)
                 if markers == []:
                     robot.log.warn("Cannot see C cube, attempting to get an A cube")
                     robot.wheels.turn(-117 * turn_factor)
