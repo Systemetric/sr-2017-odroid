@@ -36,7 +36,7 @@ class CompanionCube(Robot):
         # Please use `log.debug`, `log.info`, `log.warning` or `log.error` instead of `print`
         self.init_logger()
 
-        self.strategy = "b c a"
+        self.strategy = "test webcam rotational placement correction calibration"
         args = []
         kwargs = {"opposite_direction": False}
         self.routeChange = False
