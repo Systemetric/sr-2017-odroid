@@ -123,7 +123,7 @@ def route_b_c_a(robot, opposite_direction=False):
             marker = Cmarkers[0]
             robot.log.info("Moving to C cube")
             # TODO: Add collsions stuff here, raises exception on failure
-            robot.move_to_cube(marker)
+            robot.move_to_cube(marker, crash_continue=True)
             robot.log.debug("Hasn't got B cube so turning to roughly B cube")
             robot.wheels.turn(-90 * turn_factor)
             Bmarkers = robot.find_markers_approx_position(MARKER_TOKEN_B, 1.5)
