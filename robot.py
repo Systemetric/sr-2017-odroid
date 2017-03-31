@@ -182,14 +182,14 @@ class CompanionCube(Robot):
                 self.wheels.turn(righter_marker.rot_y - 34)
             else:
                 self.log.critical("Python is lying to us! This can't happen.")
-            self.wheels.move(3.5)  # sqrt(2 * 2.5^2) = 3.5355 metres
+            self.move_continue(3.5)  # sqrt(2 * 2.5^2) = 3.5355 metres
         elif other_codes.intersection(marker_codes):
             bad_marker_codes = other_codes.intersection(marker_codes)
             self.log.warn("Other teams' codes (%s) are visible! We're probably facing into another team's corner :(", bad_marker_codes)
             self.move_home_from_other_A()
         else:
             self.log.warn("Can't see any useful arena markers (ours or theirs), driving forwards and praying...")
-            self.wheels.move(3.5)
+            self.move_continue(3.5)
 
     def move_home_from_other_A(self, marker=None):
         # type: () -> None
@@ -343,7 +343,7 @@ class CompanionCube(Robot):
             else:
                 self.log.error("We can see marker %s (on wall %s), but we don't know what to do with it!", marker.info.code, marker_wall)
         else:
-            self.log.warn("We can't see any of our corner markers, but we should be able to (we see these: %s).", marker_codes)
+            self.log.warn("We can't see any of our corner markers, but we should be able to (we see these: %s). We can't get home now!", marker_codes)
             # TODO(jdh): getting home from here
 
     def see_markers(self, predicate=None, attempts=3):
