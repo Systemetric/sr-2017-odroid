@@ -61,6 +61,10 @@ def correct_for_webcam_rotational_placement(vec):
     `vec.angle` means that the robot must actually turn right, presumably
     because the camera is looking to the right of the centre-line of the robot.
     """
+    # Verifying camera alignment correction:
+    # - cube exactly in middle of robot
+    # - reverse some
+    # - print out the corrected angle of the cube
     return Vector(distance=vec.distance, angle=vec.angle + camera_angular_offset)
 
 
