@@ -284,6 +284,7 @@ class CompanionCube(Robot):
         has_moved = False
         trying_to_move = True
         while (not has_moved) and trying_to_move:
+            trying_to_move = True
             initial_markers = self.see_markers()
             self.wheels.turn(marker.rot_y)  # Face the marker
             # Find the marker again
@@ -303,12 +304,14 @@ class CompanionCube(Robot):
                 trying_to_move = False  # Otherwise we loop forever, since we never try to move.
             markers = self.see_markers(predicate=lambda m: m.info.code == marker.info.code)
             if not markers:
-                self.log.error("We moved closer to the marker (maybe) and now can't see it.")
-                return
+                self.log.error("We moved closer to the marker (maybe) and now can't see it. Moving backwards slightly and trying again.")
+                self.wheels.move(-0.1, ignore_crash=True)
+                continue
             final_markers = self.see_markers()
             has_moved = self.are_we_moving(initial_markers, final_markers)
             if not has_moved:
-                self.log.error("We're stuck! Trying to move to the marker again forever, since there's nothing else we can do.")
+                self.log.error("We're stuck! Moving back slightly, then trying to move to the marker again forever, since there's nothing else we can do.")
+                self.wheels.move(-0.1, ignore_crash=True)
             else:
                 self.log.info("We're not stuck!")
         marker = markers[0]
@@ -331,10 +334,12 @@ class CompanionCube(Robot):
         self.wheels.turn(-angle)
         # TODO(jdh): make sure we're 1.5 metres away
         # We should now be 1.5 metres away from the wall, facing the marker head-on.
-        markers = self.cone_search(marker_id=marker.info.code)
-        if not markers:
-            self.log.error("Couldn't find the marker we fixated upon!")
-            return
+        markers = False
+        while not markers:
+            markers = self.cone_search(marker_id=marker.info.code)
+            if not markers:
+                self.log.error("Couldn't find the marker we fixated upon! Waiting and trying again -- hopefully whatever's in the way will move eventually.")
+                time.sleep(2)
         marker = markers[0]
         self.wheels.turn(marker.rot_y)
         if marker.dist > 1.75:
@@ -342,10 +347,12 @@ class CompanionCube(Robot):
         else:
             self.log.warn("We're closer than we should be! Not moving backwards, though.")  # since hopefully we still have some cubes...
         self.log.debug("We should now be 1.5 metres away from the wall and facing the marker head-on.")
-        markers = self.see_markers(predicate=lambda m: m.info.code == marker.info.code)
-        if not markers:
-            self.log.error("We moved to face the marker and now can't see it.")
-            return
+        markers = False
+        while not markers:
+            markers = self.see_markers(predicate=lambda m: m.info.code == marker.info.code)
+            if not markers:
+                self.log.error("We moved to face the marker and now can't see it. Waiting and trying again -- hopefully we'll see it eventually.")
+                time.sleep(2)
         marker = markers[0]
         # Turn parallel to the wall (see Slack for diagram, search "parallel to wall" in #brainstorming)
         if orig_marker_wall in (self.zone, (self.zone + 1) % 4):
