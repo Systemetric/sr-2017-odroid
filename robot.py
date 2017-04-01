@@ -36,7 +36,7 @@ class CompanionCube(Robot):
         # Please use `log.debug`, `log.info`, `log.warning` or `log.error` instead of `print`
         self.init_logger()
 
-        self.strategy = "test are we moving"
+        self.strategy = "test going home from anywhere"
         args = []
         kwargs = {"opposite_direction": True}
         self.routeChange = False
@@ -278,25 +278,36 @@ class CompanionCube(Robot):
             self.log.debug("Fixating upon marker %s (%s metres away)", marker.info.code, marker.dist)
         else:
             self.log.info("Told to fixate upon marker %s (%s metres away)", marker.info.code, marker.dist)
-        self.wheels.turn(marker.rot_y)  # Face the marker
-        # Find the marker again
-        markers = self.see_markers(predicate=lambda m: m.info.code == marker.info.code)
-        if not markers:
-            self.log.error("We turned to the marker and now can't see it.")  # Don't move!
-            return
-        marker = markers[0]
-        # This is the index in `walls` of the wall we fixated upon.
-        orig_marker_wall = [walls.index(wall) for wall in walls if marker.info.code in wall][0]
-        # Move to 1.5 metres away from the marker
-        self.log.debug("Moving to 1.5 metres from the marker")
-        if marker.dist > 1.5:
-            self.move_continue(marker.dist - 1.5)
-        else:
-            self.log.debug("We're closer than we should be (%s metres)!", marker.dist)
-        markers = self.see_markers(predicate=lambda m: m.info.code == marker.info.code)
-        if not markers:
-            self.log.error("We moved closer to the marker (maybe) and now can't see it.")
-            return
+
+        # Check that we can move.
+        has_moved = False
+        while not has_moved:
+            initial_markers = self.see_markers()
+            self.wheels.turn(marker.rot_y)  # Face the marker
+            # Find the marker again
+            markers = self.see_markers(predicate=lambda m: m.info.code == marker.info.code)
+            if not markers:
+                self.log.error("We turned to the marker and now can't see it.")  # Don't move!
+                return
+            marker = markers[0]
+            # This is the index in `walls` of the wall we fixated upon.
+            orig_marker_wall = [walls.index(wall) for wall in walls if marker.info.code in wall][0]
+            # Move to 1.5 metres away from the marker
+            self.log.debug("Moving to 1.5 metres from the marker")
+            if marker.dist > 1.5:
+                self.move_continue(marker.dist - 1.5)
+            else:
+                self.log.debug("We're closer than we should be (%s metres)!", marker.dist)
+            markers = self.see_markers(predicate=lambda m: m.info.code == marker.info.code)
+            if not markers:
+                self.log.error("We moved closer to the marker (maybe) and now can't see it.")
+                return
+            final_markers = self.see_markers()
+            has_moved = self.are_we_moving(initial_markers, final_markers)
+            if not has_moved:
+                self.log.error("We're stuck! Trying to move to the marker again forever, since there's nothing else we can do.")
+            else:
+                self.log.info("We're not stuck!")
         marker = markers[0]
         # Move to 1.5 metres away from the wall
         self.log.debug("Moving to 1.5 metres from the WALL")
