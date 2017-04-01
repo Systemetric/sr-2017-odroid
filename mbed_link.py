@@ -101,6 +101,15 @@ class Mbed(object):
                 elif remainder > 0:
                     self.log.warn("Discarding extra distance of %s cm", remainder)
 
+    def low_power_move(self, amount):
+        assert amount <= 2.55
+        self.log.debug("Moving forwards in low power mode")
+        try:
+            self.send_command("A", int(amount * 100))
+        except CommandFailureError:
+            self.log.exception("Failed to move forwards (low power movement)")
+            raise MovementInterruptedError
+
     def backwards(self, amount):
         # type: (float) -> None
         """
