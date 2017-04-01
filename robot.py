@@ -52,7 +52,7 @@ class CompanionCube(Robot):
         self.log.info("Waiting for start signal...")
         self.wait_start()
         self.log.info("Start signal recieved!")
-        strategies.strategies[self.strategy](self, *args, **kwargs)
+        #strategies.strategies[self.strategy](self, *args, **kwargs)
         self.log.info("Strategy exited.")
         self.was_a_triumph()
 
