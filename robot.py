@@ -79,8 +79,8 @@ class CompanionCube(Robot):
                 if initial_marker.info.code != final_marker.info.code:
                     # Markers aren't the same, no point comparing them.
                     continue
-                # Markers are similar if the difference in distance is less than 0.2 metres and the difference in angle is less than 15 degrees.
-                are_markers_similar = abs(initial_marker.dist - final_marker.dist) < 0.5 and abs(initial_marker.rot_y - final_marker.rot_y) < 40
+                # Markers are similar if the difference in distance is less than 0.1 metres and the difference in angle is less than 15 degrees.
+                are_markers_similar = abs(initial_marker.dist - final_marker.dist) < 0.1 and abs(initial_marker.rot_y - final_marker.rot_y) < 15
                 self.log.debug("Markers %s and %s are similar: %s", initial_marker.info.code, final_marker.info.code, are_markers_similar)
                 similar_markers += are_markers_similar
         self.log.debug("We have moved!" if not similar_markers else "We have not moved!")
@@ -305,13 +305,13 @@ class CompanionCube(Robot):
             markers = self.see_markers(predicate=lambda m: m.info.code == marker.info.code)
             if not markers:
                 self.log.error("We moved closer to the marker (maybe) and now can't see it. Moving backwards slightly and trying again.")
-                self.wheels.move(-0.1, ignore_crash=True)
+                self.wheels.move(-0.15, ignore_crash=True)
                 continue
             final_markers = self.see_markers()
             has_moved = self.are_we_moving(initial_markers, final_markers)
             if not has_moved:
                 self.log.error("We're stuck! Moving back slightly, then trying to move to the marker again forever, since there's nothing else we can do.")
-                self.wheels.move(-0.1, ignore_crash=True)
+                self.wheels.move(-0.15, ignore_crash=True)
             else:
                 self.log.info("We're not stuck!")
         marker = markers[0]
