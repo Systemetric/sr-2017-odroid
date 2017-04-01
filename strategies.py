@@ -462,3 +462,9 @@ def test_marker_drive_home(robot):
     robot.log.info("Corner: %r", vec)
     robot.wheels.turn(vec.angle)
     robot.wheels.move(vec.distance)
+
+
+@strategy("test marker attributes")
+def test_marker_attributes(robot):
+    for _ in xrange(4):
+        robot.log.debug(robot.see_markers())
