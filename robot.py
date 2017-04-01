@@ -296,7 +296,7 @@ class CompanionCube(Robot):
             orig_marker_wall = [walls.index(wall) for wall in walls if marker.info.code in wall][0]
             # Move to 1.5 metres away from the marker
             self.log.debug("Moving to 1.5 metres from the marker")
-            if marker.dist > 1.5:
+            if marker.dist > 1.55:
                 self.move_continue(marker.dist - 1.5)
             else:
                 self.log.debug("We're closer than we should be (%s metres)!", marker.dist)
