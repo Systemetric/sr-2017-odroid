@@ -56,6 +56,34 @@ class CompanionCube(Robot):
         self.log.info("Strategy exited.")
         #self.was_a_triumph()
 
+    def are_we_moving(self, initial_markers, final_markers):
+        # type: (List[Marker], List[Marker]) -> bool
+        """
+        Checks if two sets of markers are different enough to make it seem like we're moving.
+        """
+        self.log.debug("Checking if we've moved.")
+        similar_markers = 0
+        initial_marker_codes = set(filter(attrgetter("info.code"), initial_markers))
+        final_marker_codes = set(filter(attrgetter("info.code"), final_markers))
+        if not initial_marker_codes.intersection(final_marker_codes):
+            self.log.debug("All the markers are different, we've probably moved.")
+            return True
+        if (initial_markers and not final_markers) or (final_markers and not initial_markers):
+            # We saw markers and then lost them, or we couldn't see anything and now we can.
+            self.log.debug("We can see markers before/after and can't see markers after/before, we've probably (emphasis on probably) moved.")
+            return True
+        for initial_marker in initial_markers:
+            for final_marker in final_markers:
+                if initial_marker.info.code != final_marker.code:
+                    # Markers aren't the same, no point comparing them.
+                    continue
+                # Markers are similar if the difference in distance is less than 0.2 metres.
+                are_markers_similar = abs(initial_marker.dist - final_marker.dist) < 0.2
+                self.log.debug("Markers %s and %s are similar: %s", initial_marker.info.code, final_marker.info.code, are_markers_similar)
+                similar_markers += are_markers_similar
+        self.log.debug("We have moved!" if similar_markers else "We have not moved!")
+        return bool(similar_markers)
+
     def face_cube(self, marker):
         # type: (Marker) -> float
         """
