@@ -465,6 +465,6 @@ def test_marker_drive_home(robot):
 
 
 @strategy("test marker attributes")
-def test_marker_attributes(robot):
+def test_marker_attributes(robot, *args, **kwargs):
     for _ in xrange(4):
         robot.log.debug(robot.see_markers())
