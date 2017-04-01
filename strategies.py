@@ -468,3 +468,4 @@ def test_marker_drive_home(robot):
 def test_marker_attributes(robot, *args, **kwargs):
     for _ in xrange(4):
         robot.log.debug(robot.see_markers())
+        time.sleep(1)
