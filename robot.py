@@ -79,7 +79,29 @@ class CompanionCube(Robot):
         from the cube. "The right way" is defined as within angle_tolerance of
         the angle we should be facing.
         """
+        marker_code = marker.info.code
         distance = self.face_cube(marker)
+        for i in xrange(2):
+            markers = self.find_markers(filter_func=lambda m: m.info.code == marker_code)
+            if not markers:
+                self.log.debug("Can't see the right marker any more (pre-turn, i=%s), hoping we're facing the right way.", i)
+                break
+            marker = markers[0]
+            self.log.debug("facing cube, rot_y = %s", marker.rot_y)
+            distance = self.face_cube(marker)
+            markers = self.find_markers(filter_func=lambda m: m.info.code == marker_code)
+            if not markers:
+                self.log.debug("Can't see the right marker any more (pre-check, i=%s), hoping we're facing the right way.", i)
+                break
+            marker = markers[0]
+            vec = marker2vector(marker)
+            vec = corrections.correct_all_cube(vec, marker.orientation.rot_y)
+            self.log.debug("Corrected cube angle is %s", vec.angle)
+            if abs(vec.angle) <= angle_tolerance:
+                self.log.debug("This is allowed, not facing any more.")
+                break
+            else:
+                self.log.debug("This is too far out, going round again (if this is the first time this message appears)")
         move = self.wheels.move
         if crash_continue:
             move = self.move_continue
