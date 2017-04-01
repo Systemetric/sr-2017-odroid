@@ -216,8 +216,6 @@ class CompanionCube(Robot):
             self.log.warn("Can't see any useful arena markers (ours or theirs), driving forwards and praying...")
             self.wheels.low_power_move(1.5)
             self.wheels.low_power_move(2)
-        # We should be home now, time to get some more cubes!
-        self.get_more_cubes()
 
     def move_home_from_other_A(self, marker=None):
         # type: () -> None
@@ -375,6 +373,7 @@ class CompanionCube(Robot):
             # TODO(jdh): getting home from here
 
     def get_more_cubes(self):
+        self.log.critical("##### THIS CODE SHOULD NEVER RUN #####")
         self.log.info("Going to get some more cubes!")
         self.move_continue(-1.5)
         self.move_continue(-1.5)
