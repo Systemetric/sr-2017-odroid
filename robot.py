@@ -379,14 +379,29 @@ class CompanionCube(Robot):
 
     def get_more_cubes(self):
         self.log.info("Going to get some more cubes!")
-        self.move_continue(-1)
-        #self.wheels.turn(135)
-        #self.log.debug("Finding cube markers.")
-        #markers = self.see_markers(predicate=lambda m: m.info.marker_type in (MARKER_TOKEN_A, MARKER_TOKEN_B, MARKER_TOKEN_C))
-        #if not markers:
-        #    self.log.info("We can't see any markers :(")
-        #if filter(lambda m: m.info.marker_type == MARKER_TOKEN_B, markers):
-        #    self.log.debug("We see at least 1 B marker.")
+        self.move_continue(-3)
+        self.wheels.turn(45)
+        for _ in xrange(4):
+            self.wheels.turn(90)
+            self.log.debug("Finding cube markers.")
+            markers = sorted(self.see_markers(predicate=lambda m: m.info.marker_type == MARKER_TOKEN_B and 1 < m.dist < 2), key=attrgetter("dist"))
+            if markers:
+                self.log.debug("We see a B cube, driving to it...")
+                self.move_to_cube(markers[0], crash_continue=True)
+            else:
+                self.log.info("We can't see any B markers at the right distance :( Going to roughly where it should be.")
+                self.move_continue(1.5)
+            markers = sorted(self.see_markers(predicate=lambda m: m.info.marker_type == MARKER_TOKEN_A and 1 < m.dist < 2), key=attrgetter("dist"))
+            if markers:
+                self.log.debug("We see an A cube, driving to it...")
+                self.move_to_cube(markers[0], crash_continue=True)
+            else:
+                self.log.info("We can't see any A markers at the right distance :( Going to roughly where it should be.")
+                self.move_continue(1.5)
+            self.log.debug("Turning round the corner...")
+        self.wheels.turn(-45)
+        self.log.info("Going home")
+        self.move_home_from_A()
         self.log.info("Done getting more cubes.")
 
     def see_markers(self, predicate=None, attempts=3):
