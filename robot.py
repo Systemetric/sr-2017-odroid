@@ -36,7 +36,7 @@ class CompanionCube(Robot):
         # Please use `log.debug`, `log.info`, `log.warning` or `log.error` instead of `print`
         self.init_logger()
 
-        self.strategy = "b c a"
+        self.strategy = "test 4 metre square"
         args = []
         kwargs = {"opposite_direction": False}
         self.routeChange = False
