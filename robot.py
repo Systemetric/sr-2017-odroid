@@ -82,8 +82,8 @@ class CompanionCube(Robot):
                 are_markers_similar = abs(initial_marker.dist - final_marker.dist) < 0.2
                 self.log.debug("Markers %s and %s are similar: %s", initial_marker.info.code, final_marker.info.code, are_markers_similar)
                 similar_markers += are_markers_similar
-        self.log.debug("We have moved!" if similar_markers else "We have not moved!")
-        return bool(similar_markers)
+        self.log.debug("We have moved!" if not similar_markers else "We have not moved!")
+        return not similar_markers
 
     def face_cube(self, marker):
         # type: (Marker) -> float
