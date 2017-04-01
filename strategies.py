@@ -483,3 +483,8 @@ def test_are_we_moving(robot, *args, **kwargs):
     b = robot.see_markers()
     robot.log.debug("We should have moved -- we should log True now.")
     robot.log.debug(robot.are_we_moving(a, b))
+
+
+@strategy("test going home from anywhere")
+def test_going_home(robot, *args, **kwargs):
+    robot.move_home_from_other_A()
