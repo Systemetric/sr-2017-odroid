@@ -281,7 +281,8 @@ class CompanionCube(Robot):
 
         # Check that we can move.
         has_moved = False
-        while not has_moved:
+        trying_to_move = True
+        while (not has_moved) and trying_to_move:
             initial_markers = self.see_markers()
             self.wheels.turn(marker.rot_y)  # Face the marker
             # Find the marker again
@@ -298,6 +299,7 @@ class CompanionCube(Robot):
                 self.move_continue(marker.dist - 1.5)
             else:
                 self.log.debug("We're closer than we should be (%s metres)!", marker.dist)
+                trying_to_move = False  # Otherwise we loop forever, since we never try to move.
             markers = self.see_markers(predicate=lambda m: m.info.code == marker.info.code)
             if not markers:
                 self.log.error("We moved closer to the marker (maybe) and now can't see it.")
