@@ -469,3 +469,17 @@ def test_marker_attributes(robot, *args, **kwargs):
     for _ in xrange(4):
         robot.log.debug(robot.see_markers())
         time.sleep(1)
+
+
+@strategy("test are we moving")
+def test_are_we_moving(robot, *args, **kwargs):
+    a = robot.see_markers()
+    time.sleep(1)
+    b = robot.see_markers()
+    robot.log.debug("We should not have moved -- we should log False now.")
+    robot.log.debug(robot.have_we_moved(a, b))
+    a = robot.see_markers()
+    robot.wheels.move(0.5)
+    b = robot.see_markers()
+    robot.log.debug("We should have moved -- we should log True now.")
+    robot.log.debug(robot.have_we_moved(a, b))
