@@ -205,14 +205,22 @@ class CompanionCube(Robot):
                 self.wheels.turn(righter_marker.rot_y - 34)
             else:
                 self.log.critical("Python is lying to us! This can't happen.")
-            self.move_continue(3.5)  # sqrt(2 * 2.5^2) = 3.5355 metres
+            for _ in xrange(7):
+                # Move home 3.5 metres in 7 steps. (sqrt(2 * 2.5^2) = 3.5355 metres)
+                self.move_continue(0.5)
+                time.sleep(1)
         elif other_codes.intersection(marker_codes):
             bad_marker_codes = other_codes.intersection(marker_codes)
             self.log.warn("Other teams' codes (%s) are visible! We're probably facing into another team's corner :(", bad_marker_codes)
             self.move_home_from_other_A()
         else:
             self.log.warn("Can't see any useful arena markers (ours or theirs), driving forwards and praying...")
-            self.move_continue(3.5)
+            for _ in xrange(7):
+                # Move home 3.5 metres in 7 steps.
+                self.move_continue(0.5)
+                time.sleep(1)
+        # We should be home now, time to get some more cubes!
+        self.get_more_cubes()
 
     def move_home_from_other_A(self, marker=None):
         # type: () -> None
@@ -368,6 +376,18 @@ class CompanionCube(Robot):
         else:
             self.log.warn("We can't see any of our corner markers, but we should be able to (we see these: %s). We can't get home now!", marker_codes)
             # TODO(jdh): getting home from here
+
+    def get_more_cubes(self):
+        self.log.info("Going to get some more cubes!")
+        self.move_continue(-1)
+        #self.wheels.turn(135)
+        #self.log.debug("Finding cube markers.")
+        #markers = self.see_markers(predicate=lambda m: m.info.marker_type in (MARKER_TOKEN_A, MARKER_TOKEN_B, MARKER_TOKEN_C))
+        #if not markers:
+        #    self.log.info("We can't see any markers :(")
+        #if filter(lambda m: m.info.marker_type == MARKER_TOKEN_B, markers):
+        #    self.log.debug("We see at least 1 B marker.")
+        self.log.info("Done getting more cubes.")
 
     def see_markers(self, predicate=None, attempts=3):
         # type: (Callable[[Marker], bool], int) -> List[Marker]
