@@ -63,6 +63,7 @@ class CompanionCube(Robot):
         """
         self.log.debug("Checking if we've moved.")
         similar_markers = 0
+        self.log.debug("initial_markers: %s", filter(attrgetter("info.code"), initial_markers))
         initial_marker_codes = set(filter(attrgetter("info.code"), initial_markers))
         final_marker_codes = set(filter(attrgetter("info.code"), final_markers))
         if not initial_marker_codes.intersection(final_marker_codes):
