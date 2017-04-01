@@ -205,20 +205,17 @@ class CompanionCube(Robot):
                 self.wheels.turn(righter_marker.rot_y - 34)
             else:
                 self.log.critical("Python is lying to us! This can't happen.")
-            for _ in xrange(7):
-                # Move home 3.5 metres in 7 steps. (sqrt(2 * 2.5^2) = 3.5355 metres)
-                self.move_continue(0.5)
-                time.sleep(1)
+            # (sqrt(2 * 2.5^2) = 3.5355 metres)
+            self.wheels.low_power_move(1.5)
+            self.wheels.low_power_move(2)
         elif other_codes.intersection(marker_codes):
             bad_marker_codes = other_codes.intersection(marker_codes)
             self.log.warn("Other teams' codes (%s) are visible! We're probably facing into another team's corner :(", bad_marker_codes)
             self.move_home_from_other_A()
         else:
             self.log.warn("Can't see any useful arena markers (ours or theirs), driving forwards and praying...")
-            for _ in xrange(7):
-                # Move home 3.5 metres in 7 steps.
-                self.move_continue(0.5)
-                time.sleep(1)
+            self.wheels.low_power_move(1.5)
+            self.wheels.low_power_move(2)
         # We should be home now, time to get some more cubes!
         self.get_more_cubes()
 
