@@ -75,7 +75,7 @@ class CompanionCube(Robot):
             return True
         for initial_marker in initial_markers:
             for final_marker in final_markers:
-                if initial_marker.info.code != final_marker.code:
+                if initial_marker.info.code != final_marker.info.code:
                     # Markers aren't the same, no point comparing them.
                     continue
                 # Markers are similar if the difference in distance is less than 0.2 metres.
