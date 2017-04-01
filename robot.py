@@ -376,7 +376,8 @@ class CompanionCube(Robot):
 
     def get_more_cubes(self):
         self.log.info("Going to get some more cubes!")
-        self.move_continue(-3)
+        self.move_continue(-1.5)
+        self.move_continue(-1.5)
         self.wheels.turn(45)
         for _ in xrange(4):
             self.wheels.turn(90)
