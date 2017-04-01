@@ -340,11 +340,24 @@ def test_marker_print(robot):
     robot.log.info(markers)
     
 
-
 @strategy("test move 4 metres")
 def move_4_metres(robot):
     robot.wheels.move(2)
     robot.wheels.move(2)
+
+
+@strategy("test 4 metre square")
+def square_4_metres(robot, opposite_direction=False):
+    if opposite_direction:
+        turn_factor = -1
+    else:
+        turn_factor = 1
+    robot.log.debug("opposite_direction is %s", opposite_direction)
+    for _ in xrange(4):
+        robot.log.debug("Moving forwards")
+        robot.move_continue(4)
+        robot.log.debug("Turning %s degrees", -90 * turn_factor)
+        robot.wheels.turn(-90 * turn_factor)
 
 
 @strategy("test move forward")
