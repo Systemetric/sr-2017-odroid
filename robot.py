@@ -80,7 +80,7 @@ class CompanionCube(Robot):
                     # Markers aren't the same, no point comparing them.
                     continue
                 # Markers are similar if the difference in distance is less than 0.2 metres and the difference in angle is less than 15 degrees.
-                are_markers_similar = abs(initial_marker.dist - final_marker.dist) < 0.2 and abs(initial_marker.rot_y - final_marker.rot_y) < 15
+                are_markers_similar = abs(initial_marker.dist - final_marker.dist) < 0.5 and abs(initial_marker.rot_y - final_marker.rot_y) < 40
                 self.log.debug("Markers %s and %s are similar: %s", initial_marker.info.code, final_marker.info.code, are_markers_similar)
                 similar_markers += are_markers_similar
         self.log.debug("We have moved!" if not similar_markers else "We have not moved!")
