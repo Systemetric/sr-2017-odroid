@@ -54,6 +54,7 @@ class CompanionCube(Robot):
         self.log.info("Start signal recieved!")
         strategies.strategies[self.strategy](self, *args, **kwargs)
         self.log.info("Strategy exited.")
+        self.was_a_triumph()
 
     def face_cube(self, marker):
         # type: (Marker) -> float
@@ -626,6 +627,16 @@ class CompanionCube(Robot):
         formatter = logging.Formatter("%(module)s:%(lineno)d - %(funcName)s() - %(levelname)s: %(message)s")
         console_handler.setFormatter(formatter)
         self.log.addHandler(console_handler)
+
+    def was_a_triumph(self):
+        """
+        It was
+        """
+        self.power.beep(250, frequency=392) # G4
+        self.power.beep(250, frequency=370) # F#4
+        self.power.beep(250, frequency=330) # E4
+        self.power.beep(250, frequency=330) # E4
+        self.power.beep(1, frequency=370)   # F#4
 
 
 if __name__ == "__main__":
