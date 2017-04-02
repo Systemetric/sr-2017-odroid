@@ -38,7 +38,7 @@ class CompanionCube(Robot):
 
         self.strategy = "test going home from anywhere"
         args = []
-        kwargs = {"opposite_direction": True}
+        kwargs = {"opposite_direction": False}
         self.routeChange = False
 
         self.log.info("Start TobyDragon init")
