@@ -45,14 +45,23 @@ def route_b_c_a(robot, opposite_direction=False, skip_initial_walk=False):
     hasB = False
     if not skip_initial_walk:
         robot.log.debug("Moving 3.25 metres to next to B")
-        robot.move_continue(3.25)
+        initial_walk_successful = robot.move_continue(3.25)
         robot.wheels.turn(-90 * turn_factor)
         time.sleep(0.2)
     else:
         robot.log.info("Skipping initial walk, presumably someone put the wrong USB stick in...")
-    markers = robot.find_markers_approx_position(MARKER_TOKEN_B, 1.5)
+        initial_walk_successful = True
+    if initial_walk_successful:
+        markers = robot.find_markers_approx_position(MARKER_TOKEN_B, 1.5)
+    else:
+        robot.log.warn("Initial walk had a problem, doing a cone search since we don't know where we are.")
+        if opposite_direction:
+            angles = {}
+        else:
+            angles = {}
+        markers = robot.cone_search(marker_type=MARKER_TOKEN_B, dist=1.5, dist_tolerance=1, **angles)
     if markers:
-        robot.log.debug("Found %s B cubes, moving to the 0th one", len(markers))
+        robot.log.debug("Found %s B cubes, moving to the 0th one (code %s)", len(markers), markers[0].info.code)
         marker = markers[0]
         hasB = True
         validMovement = robot.move_to_cube(marker)
