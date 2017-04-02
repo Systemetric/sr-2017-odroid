@@ -172,6 +172,8 @@ class CompanionCube(Robot):
     def move_continue(self, distance):
         """
         Attempt to continuously move a distance, retrying if required.
+
+        Returns True if movement completed, False if there was an error (and we tried to keep going).
         """
         try:
             self.wheels.move(distance)
@@ -184,7 +186,9 @@ class CompanionCube(Robot):
                 except MovementInterruptedError:
                     continue
                 else:
-                    return
+                    return False
+        else:
+            return True
 
     def move_home_from_A(self):
         # type: () -> None
