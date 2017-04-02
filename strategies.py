@@ -56,7 +56,7 @@ def route_b_c_a(robot, opposite_direction=False, skip_initial_walk=False):
     else:
         robot.log.warn("Initial walk had a problem, doing a cone search since we don't know where we are.")
         if opposite_direction:
-            angles = {}
+            angles = {"start_angle"}
         else:
             angles = {}
         markers = robot.cone_search(marker_type=MARKER_TOKEN_B, dist=1.5, dist_tolerance=1, **angles)
@@ -497,3 +497,16 @@ def test_are_we_moving(robot, *args, **kwargs):
 @strategy("test going home from anywhere")
 def test_going_home(robot, *args, **kwargs):
     robot.move_home_from_other_A()
+
+
+@strategy("print visible codes forever")
+def print_visible_codes_forever(robot, *args, **kwargs):
+    while True:
+        robot.log.debug("Looking for markers...")
+        markers = robot.see_markers()
+        if markers:
+            for marker in markers:
+                robot.log.debug("  I can see marker %s, %s metres away.", marker.info.code, marker.dist)
+        else:
+            robot.log.debug("  I can't see any markers :(")
+        time.sleep(2)
