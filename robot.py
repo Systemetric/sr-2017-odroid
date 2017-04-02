@@ -365,6 +365,7 @@ class CompanionCube(Robot):
             markers = self.see_markers(predicate=lambda m: m.info.code == marker.info.code)
             if markers:
                 self.log.warn("We didn't manage to turn parallel to the wall, since the marker that should be next to us is in front of us (code %s)!", markers[0].info.code)
+                self.wheels.move(-0.1, ignore_crash=True)
             else:
                 self.log.debug("We're parallel to the wall, continuing on the way home.")
                 parallel_to_wall = True
