@@ -347,21 +347,27 @@ class CompanionCube(Robot):
         else:
             self.log.warn("We're closer than we should be! Not moving backwards, though.")  # since hopefully we still have some cubes...
         self.log.debug("We should now be 1.5 metres away from the wall and facing the marker head-on.")
-        markers = False
-        while not markers:
+        parallel_to_wall = False
+        while not parallel_to_wall:
             markers = self.see_markers(predicate=lambda m: m.info.code == marker.info.code)
             if not markers:
                 self.log.error("We moved to face the marker and now can't see it. Waiting and trying again -- hopefully we'll see it eventually.")
                 time.sleep(2)
-        marker = markers[0]
-        # Turn parallel to the wall (see Slack for diagram, search "parallel to wall" in #brainstorming)
-        if orig_marker_wall in (self.zone, (self.zone + 1) % 4):
-            self.log.debug("Turning left (to have wall on right)")
-            self.wheels.turn(-(90 - marker.orientation.rot_y))  # Turn left (wall on right, heading anticlockwise)
-        else:
-            self.log.debug("Turning right (to have wall on left)")
-            self.wheels.turn(90 + marker.orientation.rot_y)  # Turn right (wall on left, heading clockwise)
-        # We should now be facing along the wall.
+            marker = markers[0]
+            # Turn parallel to the wall (see Slack for diagram, search "parallel to wall" in #brainstorming)
+            if orig_marker_wall in (self.zone, (self.zone + 1) % 4):
+                self.log.debug("Turning left (to have wall on right)")
+                self.wheels.turn(-(90 - marker.orientation.rot_y))  # Turn left (wall on right, heading anticlockwise)
+            else:
+                self.log.debug("Turning right (to have wall on left)")
+                self.wheels.turn(90 + marker.orientation.rot_y)  # Turn right (wall on left, heading clockwise)
+            # We should now be facing along the wall. Check that we did actually turn:
+            markers = self.see_markers(predicate=lambda m: m.info.code == marker.info.code)
+            if markers:
+                self.log.warn("We didn't manage to turn parallel to the wall, since the marker that should be next to us is in front of us (code %s)!", markers[0].info.code)
+            else:
+                self.log.debug("We're parallel to the wall, continuing on the way home.")
+                parallel_to_wall = True
         # Look for wall markers that won't vanish on us and that aren't on the wall we're moving along.
         self.log.debug("Original wall (orig_marker_wall): %s", orig_marker_wall)
         markers = self.see_markers(predicate=lambda m: m.info.marker_type == MARKER_ARENA and m.dist <3 and m.info.code not in walls[orig_marker_wall])
