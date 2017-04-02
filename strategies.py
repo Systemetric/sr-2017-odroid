@@ -37,7 +37,7 @@ def strategy(name):
 
 
 @strategy("b c a")
-def route_b_c_a(robot, opposite_direction=False, skip_initial_walk=False):
+def route_b_c_a(robot, opposite_direction=False, skip_initial_walk=False, ignore_C=False):
     if opposite_direction:
         turn_factor = -1
     else:
@@ -91,6 +91,9 @@ def route_b_c_a(robot, opposite_direction=False, skip_initial_walk=False):
     if hasB == False:
         robot.log.info("Having not found the first B cube, finding C cube")
         Cmarkers = robot.find_markers_approx_position(MARKER_TOKEN_C, 2.88)
+        if ignore_C:
+            robot.log.info("Ignoring C -- we could see %s C markers", len(Cmarkers))
+            Cmarkers = []
         if Cmarkers == []:
             robot.log.warn("Can't see C cube!")
             # Idiot check -- did we turn the wrong way?
@@ -187,6 +190,9 @@ def route_b_c_a(robot, opposite_direction=False, skip_initial_walk=False):
             robot.wheels.turn(-marker.rot_y)
         robot.log.info("We have a B cube! Finding C cube")
         Cmarkers = robot.find_markers_approx_position(MARKER_TOKEN_C, 1.0)
+        if ignore_C:
+            robot.log.info("Ignoring C -- we could see %s C markers", len(Cmarkers))
+            Cmarkers = []
         if Cmarkers == []:
             robot.log.warn("Can't see C cube!")
             robot.log.debug("Cannot see a C, turning to roughly A cube")
